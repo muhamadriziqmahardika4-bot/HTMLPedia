@@ -4,7 +4,12 @@ export default function CanvasDraw() {
   const ref = useRef(null);
 
   useEffect(() => {
-    const ctx = ref.current?.getContext("2d");
+    let ctx = null;
+    try {
+      ctx = ref.current?.getContext("2d");
+    } catch {
+      ctx = null;
+    }
     if (!ctx) return;
     const draw = () => {
       ctx.clearRect(0, 0, 220, 110);
