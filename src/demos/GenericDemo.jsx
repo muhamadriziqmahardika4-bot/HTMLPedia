@@ -58,7 +58,7 @@ export default function GenericDemo({ entry }) {
         <pre className="code" style={{ marginTop: ".3rem", whiteSpace: "pre-wrap" }}>{entry?.contohKode}</pre>
       </div>
 
-      <p style={{ fontSize: ".72rem", color: "#64748b", margin: ".3rem 0 0" }}>Tag ini tampil lewat playground di bawah — coba ubah kodenya dan lihat! 👇</p>
+      <p style={{ fontSize: ".72rem", color: "#64748b", margin: ".3rem 0 0" }}>Tag ini belum punya demo interaktif — tapi contoh kodenya bisa kamu praktikkan di langkah berikutnya. 👇</p>
     </div>
   );
 }

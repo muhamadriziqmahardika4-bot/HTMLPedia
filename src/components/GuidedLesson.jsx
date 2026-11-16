@@ -28,8 +28,26 @@ function tokensOf(code) {
 function checkGeneric(code, entry) {
   const c = tokensOf(code);
   const ch = CHALLENGES[entry.slug];
-  if (ch) return ch.must.every((t) => c.includes(t.toLowerCase()));
-  const tagName = entry.slug.toLowerCase();
+  if (ch) {
+    // Token dengan tanda kutip opsional — ketik value=70 tetap dianggap benar (valid HTML)
+    return ch.must.every((t) => {
+      // Pecah token di tiap tanda kutip, escape tiap segmen, lalu gabung dengan kutip opsional
+      const pattern = t.split('"').map((seg) => seg.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join('["\\\']?');
+      try { return new RegExp(pattern, "i").test(code); } catch { return c.includes(t.toLowerCase()); }
+    });
+  }
+  // CSS / JavaScript: minimal 60% token penting dari contoh kode harus ada di kodemu
+  if (entry.category === "css" || entry.category === "javascript") {
+    const tokens = entry.contohKode
+      .toLowerCase()
+      .split(/[^a-z0-9_#.-]+/)
+      .filter((t) => t.length > 3);
+    if (tokens.length === 0) return code.trim().length >= 8;
+    const hits = tokens.filter((t) => c.includes(t)).length;
+    return hits / tokens.length >= 0.6;
+  }
+  // HTML: cek nama tag sebenarnya (bukan slug — mis. script-meta bertag <script>)
+  const tagName = entry.tag.replace(/[</>]/g, "").split(/\s/)[0].toLowerCase();
   if (!c.includes(`<${tagName}`)) return false;
   return code.trim().length >= 8;
 }
