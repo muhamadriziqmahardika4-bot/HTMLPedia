@@ -894,10 +894,18 @@ export const TAGS = [
     level: "Pemula",
     summary: "Daftar dengan poin — urutan tidak penting, misalnya daftar belanjaan atau daftar fitur. Tiap item ditulis dengan <li> di dalamnya.",
     atribut: [{ name: "(global)", desc: "Atribut global berlaku" }],
-    contohKode: "<ul>\n  <li>Bawang merah</li>\n  <li>Bawang putih</li>\n</ul>",
+    contohKode: `<!-- Daftar belanjaan -->
+<ul>
+  <li>Bawang merah 1 kg</li>
+  <li>Bawang putih 500 g</li>
+  <li>Cabai rawit 250 g</li>
+  <li>Jahe 100 g</li>
+</ul>`,
     related: ["ol", "li"],
     analogi: "Ul itu daftar belanja dengan poin bulat — urutannya tidak penting, yang penting lengkap.",
     demo: "generic",
+    kapan: "Untuk daftar yang urutannya TIDAK penting — misalnya belanjaan, daftar fitur, atau menu.",
+    output: "Tampil sebagai daftar ber-bullet (titik-titik) di halaman.",
   },
   {
     slug: "ol",
@@ -911,10 +919,18 @@ export const TAGS = [
       { name: "start", desc: "Nomor awal, misal start=\"5\"" },
       { name: "reversed", desc: "Urutan terbalik (3, 2, 1)" },
     ],
-    contohKode: "<ol>\n  <li>Panaskan minyak</li>\n  <li>Tumis bumbu</li>\n</ol>",
+    contohKode: `<!-- Langkah memasak nasi goreng -->
+<ol>
+  <li>Panaskan minyak di wajan</li>
+  <li>Tumis bumbu halus sampai harum</li>
+  <li>Masukkan nasi, aduk rata</li>
+  <li>Tambahkan kecap manis &amp; garam</li>
+</ol>`,
     related: ["ul", "li"],
     analogi: "Ol itu langkah-langkah resep — nomor urutnya WAJIB diikuti.",
     demo: "generic",
+    kapan: "Untuk langkah-langkah yang urutannya PENTING — resep, tutorial, atau prosedur.",
+    output: "Tampil sebagai daftar bernomor otomatis (1. 2. 3. …) di halaman.",
   },
   {
     slug: "li",
@@ -925,9 +941,16 @@ export const TAGS = [
     analogi: "Seperti daftar dan laporan di buku — data yang butuh keteraturan.",
     summary: "Satu item di dalam <ul>, <ol>, atau <menu>. Browser memberi poin atau nomor otomatis — jangan tulis nomor manual di depan teks.",
     atribut: [{ name: "value", desc: "Nomor item ini saja (hanya di dalam <ol>)" }],
-    contohKode: "<li>Gula pasir 2 sdm</li>",
+    contohKode: `<h3>Menu Favorit Warung Sederhana</h3>
+<ul>
+  <li>Nasi goreng kampung</li>
+  <li>Mie ayam spesial</li>
+  <li>Es teh manis</li>
+</ul>`,
     related: ["ul", "ol"],
     demo: "generic",
+    kapan: "Untuk setiap item di dalam daftar (<ul>, <ol>, atau <menu>).",
+    output: "Item tampil sebagai baris dengan bullet/nomor mengikuti elemen induknya.",
   },
   {
     slug: "dl",
@@ -938,9 +961,19 @@ export const TAGS = [
     analogi: "Seperti daftar dan laporan di buku — data yang butuh keteraturan.",
     summary: "Pasangan istilah dan penjelasannya — dipakai untuk glossary, FAQ, atau kamus. Berisi <dt> (istilah) dan <dd> (penjelasan).",
     atribut: [{ name: "(global)", desc: "Atribut global berlaku" }],
-    contohKode: "<dl>\n  <dt>Rendang</dt>\n  <dd>Masakan daging khas Minangkabau.</dd>\n</dl>",
+    contohKode: `<!-- Kamus kecil istilah -->
+<dl>
+  <dt>HTML</dt>
+  <dd>Bahasa markup untuk membuat struktur halaman web.</dd>
+  <dt>CSS</dt>
+  <dd>Bahasa untuk mengatur tampilan halaman web.</dd>
+  <dt>JavaScript</dt>
+  <dd>Bahasa untuk membuat halaman web interaktif.</dd>
+</dl>`,
     related: ["dt", "dd"],
     demo: "generic",
+    kapan: "Untuk kamus/FAQ/glosarium — pasangan istilah dan penjelasannya.",
+    output: "Tampil sebagai daftar istilah (cetak tebal) diikuti penjelasannya di bawahnya.",
   },
   {
     slug: "dt",
@@ -951,9 +984,18 @@ export const TAGS = [
     analogi: "Seperti daftar dan laporan di buku — data yang butuh keteraturan.",
     summary: "Satu istilah yang didefinisikan — muncul di dalam <dl>, biasanya diikuti satu atau lebih <dd>.",
     atribut: [{ name: "(global)", desc: "Atribut global berlaku" }],
-    contohKode: "<dt>HTML</dt>",
+    contohKode: `<dl>
+  <dt>HTML</dt>
+  <dd>Bahasa markup untuk membuat struktur halaman web.</dd>
+  <dt>CSS</dt>
+  <dd>Bahasa untuk mengatur tampilan halaman web.</dd>
+  <dt>JavaScript</dt>
+  <dd>Bahasa untuk membuat halaman web interaktif.</dd>
+</dl>`,
     related: ["dl", "dd"],
     demo: "generic",
+    kapan: "Istilah yang sedang didefinisikan di dalam <dl>.",
+    output: "Istilah tampil menonjol sendiri di atas penjelasannya.",
   },
   {
     slug: "dd",
@@ -964,9 +1006,18 @@ export const TAGS = [
     analogi: "Seperti daftar dan laporan di buku — data yang butuh keteraturan.",
     summary: "Penjelasan dari istilah <dt> — boleh lebih dari satu penjelasan per istilah.",
     atribut: [{ name: "(global)", desc: "Atribut global berlaku" }],
-    contohKode: "<dd>Bahasa markup untuk membangun halaman web.</dd>",
+    contohKode: `<dl>
+  <dt>Rendang</dt>
+  <dd>Masakan daging khas Minangkabau yang dimasak hingga empuk dengan santan.</dd>
+  <dt>Sate</dt>
+  <dd>Daging yang ditusuk dan dibakar, disajikan dengan saus.</dd>
+  <dt>Gado-gado</dt>
+  <dd>Sayur rebus dengan bumbu kacang — makanan khas Indonesia.</dd>
+</dl>`,
     related: ["dl", "dt"],
     demo: "generic",
+    kapan: "Penjelasan dari istilah <dt>. Boleh lebih dari satu penjelasan per istilah.",
+    output: "Penjelasan tampil menjorok di bawah istilahnya.",
   },
   {
     slug: "table",
