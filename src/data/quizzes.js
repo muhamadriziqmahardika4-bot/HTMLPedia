@@ -196,7 +196,7 @@ function genericQuestions(entry) {
     entry.slug
   );
   const answer = options.indexOf(CATEGORIES.find((c) => c.id === entry.category).name);
-  const levelOpts = ["Pemula", "Menengah", "Ahli"];
+  const levelOpts = ["Pemula", "Menengah"];
   const levelAnswer = entry.level === "Menengah" ? 1 : 0;
   return [
     { q: `🏷️ Kategori tag ${entry.tag} adalah…`, options, answer },

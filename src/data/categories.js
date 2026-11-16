@@ -1,4 +1,4 @@
-// 9 kategori tag HTML — dipakai oleh halaman beranda (kartu kategori) dan halaman /tag (filter).
+// 11 kategori tag HTML — dipakai oleh halaman beranda (kartu kategori) dan halaman /tag (filter).
 export const CATEGORIES = [
   { id: "struktur", name: "Struktur Dokumen", emoji: "🏗️", desc: "html · head · body", color: "#0369a1", border: "#bae6fd" },
   { id: "teks", name: "Teks & Heading", emoji: "📝", desc: "p · h1–h6 · strong", color: "#4338ca", border: "#c7d2fe" },

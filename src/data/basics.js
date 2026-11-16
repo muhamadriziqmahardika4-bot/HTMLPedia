@@ -26,7 +26,7 @@ export const BASICS = [
       "Gratis: GitHub Pages, Vercel, Netlify — berbayar: VPS, shared hosting",
       "Server tidak pernah tidur — itu tugas hosting yang berjalan 24/7",
     ],
-    contoh: "Upload index.html ke hosting →\nbukapun masakku.id → webmu tampil!",
+    contoh: "Upload index.html ke hosting →\nbuka masakku.id → webmu tampil!",
   },
   {
     slug: "file-folder",
@@ -56,7 +56,7 @@ export const BASICS = [
   },
   {
     slug: "deploy",
-    title: "Deploy: Mempublish Webmu",
+    title: "Deploy: Memublikasikan Webmu",
     emoji: "🚀",
     summary: "Langkah terakhir: website kamu 'naik panggung' dan bisa dikunjungi siapa pun.",
     poin: [

@@ -24,7 +24,7 @@ export default function Home() {
     <>
       <header className="hero">
         <span className="badge badge-glow">✨ ENSIKLOPEDIA HTML INTERAKTIF ✨</span>
-        <h1>Belajar Tag HTML,<br /><span className="text-shimmer">Raih &amp; Buat Web Kamu Sendiri</span> 🚀</h1>
+        <h1>Belajar Tag HTML,<br /><span className="text-shimmer">Rancang &amp; Bangun Web Kamu Sendiri</span> 🚀</h1>
         <p>Dari nol sampai bisa bikin halaman web — satu tag, satu langkah.</p>
         <form onSubmit={submitSearch}>
           <SearchSuggest value={query} onChange={setQuery} onPick={(entry) => navigate(`/tag/${entry.slug}`)} />

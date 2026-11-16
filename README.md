@@ -4,8 +4,8 @@ Ensiklopedia interaktif **semua tag HTML** (114 entri, termasuk tag deprecated d
 
 ## Fitur
 
-- **114 tag** dalam 9 kategori — search instan, filter kategori, daftar A–Z
-- **Dasar-Dasar HTML** (`/dasar`) — 12 materi penting untuk pemula
+- **141 materi** dalam 11 kategori — search instan, filter kategori, daftar A–Z
+- **Dasar-Dasar HTML** (`/dasar`) — 18 materi penting untuk pemula
 - **Demo hidup** per tag kunci (tabel, form, canvas, dialog, dll.) + playground sandboxed
 - **Kuis** (`/kuis`) — 🌱 Latihan / 🔥 Greget / 💀 Gacor × HTML / CSS / JavaScript, dengan skor terbaik tersimpan
 - **Progress belajar** — centang tag selesai, tersimpan di localStorage + confetti 🎉
@@ -24,7 +24,7 @@ npm test          # Vitest
 
 ## Struktur
 
-- `src/data/` — konten: `tags.js` (114 tag), `categories.js`, `quizzes.js`, `basics.js`
+- `src/data/` — konten: `tags.js` (data tag HTML, `categories.js`, `quizzes.js`, `basics.js`
 - `src/demos/` — preset demo hidup per tag kunci
 - `src/components/` — Navbar, Playground, DemoRenderer, QuizFlow, dst.
 - `src/hooks/` — `useProgress`, `useQuiz` (localStorage, tahan data rusak)
