@@ -5,7 +5,7 @@ import FloatingShapes from "./components/FloatingShapes.jsx";
 import CandySweep from "./components/CandySweep.jsx";
 import Splash from "./pages/Splash.jsx";
 import IntroBasics from "./pages/IntroBasics.jsx";
-import { startBgm, stopBgm, getBgmState, TRACKS } from "./lib/bgm.js";
+import BgmPlayer from "./components/BgmPlayer.jsx";
 import { playClick } from "./lib/sounds.js";
 import Home from "./pages/Home.jsx";
 import Resources from "./pages/Resources.jsx";
@@ -17,7 +17,14 @@ import TagDetail from "./pages/TagDetail.jsx";
 import Quiz from "./pages/Quiz.jsx";
 
 function Navbar() {
-  const [bgmState, setBgmState] = useState(() => getBgmState());
+  const [bgmOn, setBgmOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
+  const toggleBgm = () => {
+    const next = !bgmOn;
+    localStorage.setItem("htmlpedia-bgm", next ? "on" : "off");
+    setBgmOn(next);
+    window.dispatchEvent(new CustomEvent("bgm-change", { detail: next }));
+    playClick();
+  };
   return (
     <nav className="nav">
       <Link to="/" className="logo" style={{ textDecoration: "none" }} onClick={playClick}>🍡 HTMLpedia</Link>
@@ -32,23 +39,15 @@ function Navbar() {
         <NavLink to="/kuis" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Kuis</NavLink>
         <NavLink to="/sumber" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📺 Sumber</NavLink>
         <NavLink to="/tentang" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👨‍💻 Tentang</NavLink>
-        <select
-          aria-label="Pilih musik belajar"
-          value={bgmState.enabled ? String(bgmState.track) : "off"}
-          onChange={(e) => {
-            const v = e.target.value;
-            if (v === "off") { stopBgm(); setBgmState({ enabled: false, track: 0 }); }
-            else { const idx = Number(v); startBgm(idx); setBgmState({ enabled: true, track: idx }); }
-          }}
-          style={{
-            fontSize: ".78rem", fontWeight: 800, color: "#0369a1", background: "#fff",
-            border: "2px solid var(--border)", borderRadius: 999, padding: ".3rem .7rem",
-            cursor: "pointer", fontFamily: "inherit",
-          }}
+        <button
+          className="pill"
+          aria-pressed={bgmOn}
+          title={bgmOn ? "Matikan musik" : "Nyalakan musik"}
+          onClick={toggleBgm}
+          style={{ fontSize: ".85rem" }}
         >
-          <option value="off">🔇 Musik: Off</option>
-          {TRACKS.map((t, i) => <option key={i} value={String(i)}>{t.name}</option>)}
-        </select>
+          {bgmOn ? "🎵 Musik: On" : "🔇 Musik: Off"}
+        </button>
       </div>
     </nav>
   );
@@ -72,10 +71,10 @@ function AnimatedRoutes() {
       <CandySweep key={`sweep-${location.pathname}`} />
       <motion.main
         key={location.pathname}
-        initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 120, scale: 0.96 }}
-        animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, scale: 1 }}
-        exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -90, scale: 0.96 }}
-        transition={{ type: "spring", stiffness: 210, damping: 26, mass: 0.9 }}
+        initial={{ opacity: 0, x: 90, scale: 0.97, filter: "blur(5px)" }}
+        animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+        exit={{ opacity: 0, x: -70, scale: 0.97, filter: "blur(5px)" }}
+        transition={{ type: "spring", stiffness: 260, damping: 30 }}
       >
         <Routes location={location}>
           <Route path="/" element={<Home />} />
@@ -100,21 +99,25 @@ export default function App() {
   const start = () => setStage("intro");
 
   const introDone = (target) => {
-    const s = getBgmState();
-    // Mulai musik otomatis hanya jika belum pernah dimatikan
-    if (localStorage.getItem("htmlpedia-bgm") !== "off") startBgm(s.track ?? 0);
     setStage("app");
     if (target === "dasar") setTimeout(() => navigate("/dasar"), 60);
   };
 
+  const [bgmOn, setBgmOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
+  React.useEffect(() => {
+    const h = (e) => setBgmOn(Boolean(e.detail));
+    window.addEventListener("bgm-change", h);
+    return () => window.removeEventListener("bgm-change", h);
+  }, []);
+
   return (
     <>
+      {bgmOn && <BgmPlayer />}
       <FloatingShapes />
       <AnimatePresence mode="wait" initial={false}>
       {stage === "splash" && (
-        <motion.div key="splash" exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -140, scale: 0.92, filter: "blur(6px)", transition: { duration: 0.5, ease: [0.65, 0, 0.35, 1] } }}>
+        <motion.div key="splash" exit={{ opacity: 0, scale: 0.94, filter: "blur(6px)", transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}>
           <div className="app splash-screen">
-            <FloatingShapes />
             <Splash onStart={start} />
           </div>
         </motion.div>
@@ -122,10 +125,10 @@ export default function App() {
 
       {stage === "intro" && (
         <motion.div key="intro"
-          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 160, scale: 0.94 }}
-          animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, scale: 1 }}
-          exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -140, filter: "blur(6px)", transition: { duration: 0.45, ease: [0.65, 0, 0.35, 1] } }}
-          transition={{ type: "spring", stiffness: 210, damping: 26 }}
+          initial={{ opacity: 0, x: 130, scale: 0.96, filter: "blur(5px)" }}
+          animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, x: -120, scale: 0.96, filter: "blur(5px)", transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] } }}
+          transition={{ type: "spring", stiffness: 260, damping: 30 }}
           className="intro-root"
         >
           <CandySweep key="intro-sweep" />
@@ -135,9 +138,9 @@ export default function App() {
 
       {stage === "app" && (
         <motion.div key="app"
-          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 160, scale: 0.94 }}
-          animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, scale: 1 }}
-          transition={{ type: "spring", stiffness: 210, damping: 26 }}
+          initial={{ opacity: 0, x: 130, scale: 0.96, filter: "blur(5px)" }}
+          animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+          transition={{ type: "spring", stiffness: 260, damping: 30 }}
           className="app app-root"
         >
           <Navbar />
