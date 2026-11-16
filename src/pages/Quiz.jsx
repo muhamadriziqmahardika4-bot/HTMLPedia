@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import confetti from "canvas-confetti";
-import { QUIZZES, TOPIC_TAGS, MODES } from "../data/quizzes.js";
+import { QUIZZES, MODES } from "../data/quizzes.js";
 import { useQuiz } from "../hooks/useQuiz.js";
 
 export default function Quiz() {
   const [topic, setTopic] = useState(null);
   const [mode, setMode] = useState(null);
-  const [tag, setTag] = useState(null);
   const [answers, setAnswers] = useState({});
   const { best, saveResult } = useQuiz();
 
-  const reset = () => { setTopic(null); setMode(null); setTag(null); setAnswers({}); };
+  const reset = () => { setTopic(null); setMode(null); setAnswers({}); };
   const questions = topic && mode ? QUIZZES[topic][mode] : [];
   const answeredCount = Object.keys(answers).filter((k) => k !== "saved").length;
   const score = questions.filter((q, i) => answers[i] === q.answer).length;
@@ -38,20 +37,20 @@ export default function Quiz() {
         </p>
       )}
 
-      <div className="stepper"><span><b>1</b> Pilih topik</span> → <span><b>2</b> Pilih mode</span> → <span><b>3</b> Pilih materi</span> → <span><b>4</b> Kerjakan!</span></div>
+      <div className="stepper"><span><b>1</b> Pilih topik</span> → <span><b>2</b> Pilih mode</span> → <span><b>3</b> Kerjakan!</span></div>
 
       {/* Langkah 1: topik */}
       <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap", marginBottom: ".8rem" }}>
-        <button className={`chip ${topic === "HTML" ? "active" : ""}`} onClick={() => { setTopic("HTML"); setMode(null); setTag(null); setAnswers({}); }}>🌐 HTML</button>
-        <button className={`chip css ${topic === "CSS" ? "active" : ""}`} onClick={() => { setTopic("CSS"); setMode(null); setTag(null); setAnswers({}); }}>🎨 CSS</button>
-        <button className={`chip js ${topic === "JavaScript" ? "active" : ""}`} onClick={() => { setTopic("JavaScript"); setMode(null); setTag(null); setAnswers({}); }}>⚡ JavaScript</button>
+        <button className={`chip ${topic === "HTML" ? "active" : ""}`} onClick={() => { setTopic("HTML"); setMode(null); setAnswers({}); }}>🌐 HTML</button>
+        <button className={`chip css ${topic === "CSS" ? "active" : ""}`} onClick={() => { setTopic("CSS"); setMode(null); setAnswers({}); }}>🎨 CSS</button>
+        <button className={`chip js ${topic === "JavaScript" ? "active" : ""}`} onClick={() => { setTopic("JavaScript"); setMode(null); setAnswers({}); }}>⚡ JavaScript</button>
       </div>
 
       {/* Langkah 2: mode */}
       {topic && !finished && (
         <div className="grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
           {MODES.map((m) => (
-            <button key={m.id} className={`mode-card ${m.cls}`} onClick={() => { setMode(m.id); setTag(null); setAnswers({}); }}
+            <button key={m.id} className={`mode-card ${m.cls}`} onClick={() => { setMode(m.id); setAnswers({}); }}
               style={mode === m.id ? { outline: "4px solid #38bdf8" } : {}}>
               <div className="mode-emoji">{m.emoji}</div>
               <div className="mode-name">{m.name}</div>
@@ -61,21 +60,8 @@ export default function Quiz() {
         </div>
       )}
 
-      {/* Langkah 3: pilih materi */}
-      {topic && mode && !tag && !finished && (
-        <>
-          <p className="section-title">Mau latih bagian mana dari {topic}?</p>
-          <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}>
-            {TOPIC_TAGS[topic].map((t) => (
-              <button key={t} className="chip" onClick={() => { setTag(t); setAnswers({}); }}>{t}</button>
-            ))}
-            <button className="chip" style={{ borderColor: "#fbcfe8", color: "#be185d" }} onClick={() => { setTag("Campuran"); setAnswers({}); }}>🎲 Campuran semua</button>
-          </div>
-        </>
-      )}
-
-      {/* Langkah 4: soal */}
-      {tag && !finished && questions.map((item, i) => (
+      {/* Langkah 3: soal (bank soal per materi belum tersedia) */}
+      {topic && mode && !finished && questions.map((item, i) => (
         <div key={i} style={{ marginBottom: ".8rem" }}>
           <div style={{ fontWeight: 700, fontSize: ".88rem" }}>{i + 1}. {item.q}</div>
           {item.options.map((opt, j) => {

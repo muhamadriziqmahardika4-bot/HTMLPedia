@@ -3,7 +3,6 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Quiz from "../src/pages/Quiz.jsx";
-import { useQuiz } from "../src/hooks/useQuiz.js";
 
 beforeEach(() => localStorage.clear());
 
@@ -15,10 +14,7 @@ describe("Alur Kuis", () => {
     fireEvent.click(screen.getByText("🌐 HTML"));
     // Langkah 2: mode
     fireEvent.click(screen.getByText("Latihan"));
-    // Langkah 3: materi
-    fireEvent.click(screen.getByText("<table>"));
-    // Langkah 4: jawab benar semua (jawaban: 1,1,2)
-    const opsi = ["<table>", "<h1>", "src"];
+    // Jawab 3 soal (jawaban: 1,1,2)
     fireEvent.click(screen.getByText("<table>"));
     fireEvent.click(screen.getByText("<h1>"));
     fireEvent.click(screen.getByText("src"));

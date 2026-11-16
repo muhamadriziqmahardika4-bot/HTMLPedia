@@ -3,11 +3,7 @@
 // TOPIC_TAGS: daftar materi yang bisa dipilih per topik.
 // TAG_QUIZZES: soal singkat per tag (untuk kuis mini di halaman detail tag).
 
-export const TOPIC_TAGS = {
-  HTML: ["<table>", "<a>", "<img>", "<form>", "<input>", "<ul>"],
-  CSS: ["flexbox", "grid", "selector", "box-model", "position", "warna"],
-  JavaScript: ["variabel", "fungsi", "DOM", "array", "event", "async"],
-};
+// Catatan: bank soal per materi belum tersedia — alur /kuis memakai topik + mode saja.
 
 export const MODES = [
   { id: "latihan", emoji: "🌱", name: "Latihan", desc: "3 soal pemanasan, santai, cocok untuk pemula", cls: "mode-latihan" },
@@ -118,3 +114,5 @@ export const TAG_QUIZZES = {
 export function questionsForTag(tagSlug) {
   return TAG_QUIZZES[tagSlug] || [];
 }
+
+
