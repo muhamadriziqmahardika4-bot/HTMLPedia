@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import confetti from "canvas-confetti";
 import Cubby from "../components/Cubby.jsx";
@@ -12,6 +12,14 @@ const CODE_KEY = "htmlpedia-code";
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { return {}; } };
 const loadCode = () => { try { return JSON.parse(localStorage.getItem(CODE_KEY) || "{}"); } catch { return {}; } };
 
+/* ===== Langkah kerja yang sama untuk semua proyek ===== */
+const STEPS = [
+  { emoji: "📋", title: "Baca misinya & lihat target hasil", desc: "Pahami apa yang harus dibuat dan seperti apa hasil jadinya." },
+  { emoji: "✍️", title: "Tulis kodemu di CodePen", desc: "Buka CodePen → klik 'New Pen' → tulis kode (atau copy starter template di bawah)." },
+  { emoji: "📤", title: "Tempel kodemu di bawah", desc: "Copy semua kode HTML kamu → paste ke kotak 'Tempel kode' di halaman ini." },
+  { emoji: "🔍", title: "Klik 'Cek Kode'", desc: "Sistem menilai → kalau lulus tahap tercentang → lanjut tahap berikutnya sampai tuntas!" },
+];
+
 const PROJECTS = [
   {
     id: "biodata",
@@ -20,6 +28,61 @@ const PROJECTS = [
     need: 5,
     tag: "HTML",
     desc: "Ceritakan dirimu di web. Ikuti tahapan — tempel kodemu di sini, sistem yang menilai.",
+    template: `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Biodata Saya</title>
+  <style>
+    body { font-family: sans-serif; max-width: 480px; margin: 2rem auto; text-align: center; }
+  </style>
+</head>
+<body>
+  <!-- TODO 1: <h1>nama kamu</h1> -->
+
+  <!-- TODO 2: emoji/foto profil besar -->
+
+  <!-- TODO 3: <p>perkenalan singkat</p> -->
+
+  <!-- TODO 4: <ul> daftar 3+ hobi -->
+
+  <!-- TODO 5: <a> link instagram, target="_blank" -->
+
+</body>
+</html>`,
+    sampleCode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Biodata Mahardika</title>
+  <style>
+    body { font-family: sans-serif; max-width: 480px; margin: 2rem auto; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Mahardika</h1>
+  <div style="font-size:5rem">🧑‍💻</div>
+  <p>Halo, aku mahasiswa Universitas BumiGora yang suka ngoprek web dan ngopi sore.</p>
+  <h2>Hobiku</h2>
+  <ul>
+    <li>Ngoding</li>
+    <li>Main game</li>
+    <li>Mancing</li>
+  </ul>
+  <a href="https://instagram.com/mhmdrziqmhrdika" target="_blank">@mhmdrziqmhrdika</a>
+</body>
+</html>`,
+    preview: (
+      <div style={{ background: "#fff", border: "2px solid #e2e8f0", borderRadius: 16, padding: ".6rem .9rem", maxWidth: 260, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ fontSize: "2.2rem" }}>🧑‍💻</div>
+        <div style={{ fontWeight: 800, color: "#0c4a6e", fontSize: ".85rem" }}>Mahardika</div>
+        <div style={{ fontSize: ".62rem", color: "#64748b", margin: ".2rem 0" }}>Mahasiswa Universitas BumiGora…</div>
+        <ul style={{ fontSize: ".62rem", color: "#64748b", paddingLeft: 18, margin: ".2rem 0", textAlign: "left", display: "inline-block" }}>
+          <li>Ngoding</li><li>Main game</li><li>Mancing</li>
+        </ul>
+        <div style={{ fontSize: ".68rem", color: "#c13584", fontWeight: 800 }}>@mhmdrziqmhrdika</div>
+      </div>
+    ),
   },
   {
     id: "jadwal",
@@ -28,6 +91,60 @@ const PROJECTS = [
     need: 20,
     tag: "HTML + CSS",
     desc: "Tabel jadwal yang berwarna dan hidup. Ikuti tahapan sampai tuntas.",
+    template: `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Jadwal Pelajaran</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; }
+    /* TODO 3: th { background: …; color: …; } */
+    /* TODO 4: border-radius … */
+    /* TODO 5: tr:hover … */
+  </style>
+</head>
+<body>
+  <h1>Jadwal Belajarku</h1>
+  <table>
+    <!-- TODO 1: <thead> dengan <th scope="col">Hari</th> dst -->
+    <!-- TODO 2: <tbody> dengan baris isi -->
+  </table>
+</body>
+</html>`,
+    sampleCode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Jadwal Pelajaran</title>
+  <style>
+    table { border-collapse: collapse; border-radius: 12px; overflow: hidden; width: 100%; }
+    th { background: #38bdf8; color: #fff; padding: .5rem; }
+    td { border: 1px solid #e2e8f0; padding: .35rem .5rem; }
+    tr:hover { background: #e0f2fe; }
+  </style>
+</head>
+<body>
+  <h1>Jadwal Belajarku</h1>
+  <table>
+    <thead>
+      <tr><th scope="col">Hari</th><th scope="col">Jam</th><th scope="col">Mapel</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Senin</td><td>07.00</td><td>Matematika</td></tr>
+      <tr><td>Selasa</td><td>09.00</td><td>IPA</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>`,
+    preview: (
+      <table style={{ fontSize: ".68rem", borderCollapse: "collapse", maxWidth: 260, margin: "0 auto" }}>
+        <thead><tr style={{ background: "#38bdf8", color: "#fff" }}><th style={{ padding: ".2rem .5rem" }}>Hari</th><th>Jam</th><th>Mapel</th></tr></thead>
+        <tbody>
+          <tr><td style={{ padding: ".2rem .5rem", border: "1px solid #e2e8f0" }}>Senin</td><td style={{ border: "1px solid #e2e8f0" }}>07.00</td><td style={{ border: "1px solid #e2e8f0" }}>Matematika</td></tr>
+          <tr><td style={{ padding: ".2rem .5rem", border: "1px solid #e2e8f0" }}>Selasa</td><td style={{ border: "1px solid #e2e8f0" }}>09.00</td><td style={{ border: "1px solid #e2e8f0" }}>IPA</td></tr>
+        </tbody>
+      </table>
+    ),
   },
   {
     id: "kuis",
@@ -36,21 +153,90 @@ const PROJECTS = [
     need: 50,
     tag: "JavaScript",
     desc: "Kuis pilihan ganda dengan skor akhir — logika asli. Ikuti tahapan sampai tuntas.",
+    template: `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kuis Saya</title>
+</head>
+<body>
+  <h1>Kuis Seru</h1>
+  <p>Ibu kota Indonesia adalah?</p>
+  <button>Jakarta</button>
+  <button>Bandung</button>
+  <button>Surabaya</button>
+  <div id="skor"></div>
+
+  <script>
+    // TODO 1: ambil tombol & elemen skor (querySelector / getElementById)
+    // TODO 2: addEventListener('click', …) di tiap tombol
+    // TODO 3: if/else cek jawaban benar, tambah skor
+    // TODO 4: tulis skor akhir ke halaman (textContent)
+  </script>
+</body>
+</html>`,
+    sampleCode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kuis Saya</title>
+</head>
+<body>
+  <h1>Kuis Seru</h1>
+  <p>Ibu kota Indonesia adalah?</p>
+  <button>Jakarta</button>
+  <button>Bandung</button>
+  <button>Surabaya</button>
+  <div id="skor"></div>
+
+  <script>
+    let skor = 0;
+    const tombol = document.querySelectorAll("button");
+    const hasil = document.getElementById("skor");
+    tombol.forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        if (btn.textContent === "Jakarta") {
+          skor++;
+          hasil.textContent = "Skor kamu: " + skor;
+        } else {
+          hasil.textContent = "Salah! Skor kamu: " + skor;
+        }
+      });
+    });
+  </script>
+</body>
+</html>`,
+    preview: (
+      <div style={{ background: "#fff", border: "2px solid #e2e8f0", borderRadius: 16, padding: ".6rem .9rem", maxWidth: 260, margin: "0 auto" }}>
+        <div style={{ fontSize: ".68rem", color: "#64748b" }}>Pertanyaan 1/3</div>
+        <div style={{ fontWeight: 800, fontSize: ".78rem", color: "#0c4a6e", margin: ".15rem 0" }}>Ibu kota Indonesia?</div>
+        {["Jakarta", "Bandung", "Surabaya"].map((o) => <div key={o} style={{ border: "1.5px solid #e2e8f0", borderRadius: 8, padding: ".15rem .4rem", fontSize: ".68rem", margin: ".15rem 0", color: "#475569" }}>{o}</div>)}
+        <div style={{ fontSize: ".7rem", color: "#0369a1", fontWeight: 800, marginTop: ".3rem" }}>Skor kamu: 1</div>
+      </div>
+    ),
   },
 ];
+
+function CopyBtn({ text, label }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(text); } catch { /* fallback diam */ }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  };
+  return <button className="btn" style={{ fontSize: ".7rem" }} onClick={copy}>{copied ? "✅ Disalin!" : label}</button>;
+}
 
 export default function Proyek() {
   const { done } = useProgress(ALL_ORDERED.length);
   const [checked, setChecked] = useState(load);
   const [unlockAll, setUnlockAll] = useState(() => localStorage.getItem("htmlpedia-unlock-all") === "1");
-
   const [codes, setCodes] = useState(loadCode);
   const [feedback, setFeedback] = useState({});
 
   const doneCount = done.length;
   const saveChecked = (next) => { setChecked(next); try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* abaikan */ } };
   const saveCodes = (next) => { setCodes(next); try { localStorage.setItem(CODE_KEY, JSON.stringify(next)); } catch { /* abaikan */ } };
-
   const setCode = (id, v) => saveCodes({ ...codes, [id]: v });
 
   const runCheck = (projectId) => {
@@ -79,16 +265,23 @@ export default function Proyek() {
     }
   };
 
-
-
   return (
     <div className="panel">
       <div className="breadcrumb">🏠 Beranda › <b>Proyek Mini</b></div>
       <h2 style={{ marginTop: 0 }}><span className="title-underline">🏗️ Proyek Mini</span></h2>
-      <p style={{ fontSize: ".85rem", color: "#0369a1" }}>Buat kode kamu di <a href="https://codepen.io/" target="_blank" rel="noreferrer">CodePen</a> atau editor favoritmu → <b>tempel di sini</b> → sistem cek → centang otomatis → lanjut ke tahap berikutnya. 3 proyek, 5 tahap per proyek.</p>
+
+      {/* Cara main — sama untuk semua proyek */}
+      <div className="info" style={{ borderColor: "#bbf7d0", background: "#f0fdf4" }}>
+        <b style={{ color: "#15803d" }}>📖 Cara Main (4 Langkah)</b>
+        <ol style={{ margin: ".35rem 0 0", paddingLeft: "1.3rem", fontSize: ".8rem", lineHeight: 1.9, color: "#166534" }}>
+          {STEPS.map((s, i) => <li key={i}><b>{s.emoji} {s.title}</b> — {s.desc}</li>)}
+        </ol>
+      </div>
+
+      <p style={{ fontSize: ".82rem", color: "#0369a1" }}>3 proyek, 5 tahap per proyek. Sistem <b>auto-cek</b> kodemu — tahap tercentang otomatis kalau kodenya benar.</p>
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: ".6rem" }}>
-        <button className="btn" onClick={() => { const next = !unlockAll; localStorage.setItem("htmlpedia-unlock-all", next ? "1" : "0"); setUnlockAll(next); }}
-          style={{ fontSize: ".7rem", opacity: 0.85 }}>
+        <button className="btn" style={{ fontSize: ".7rem", opacity: 0.85 }}
+          onClick={() => { const next = !unlockAll; localStorage.setItem("htmlpedia-unlock-all", next ? "1" : "0"); setUnlockAll(next); }}>
           {unlockAll ? "🔒 Tutup Semua (kunci lagi)" : "🔓 Buka Semua (cek — sementara)"}
         </button>
       </div>
@@ -121,6 +314,19 @@ export default function Proyek() {
               <>
                 <p style={{ fontSize: ".85rem", color: "#334155", margin: ".5rem 0 .4rem" }}>{p.desc}</p>
 
+                {/* Target hasil (mockup) */}
+                <div style={{ background: "#f8fafc", border: "2px dashed #cbd5e1", borderRadius: 14, padding: ".5rem .7rem", marginBottom: ".6rem" }}>
+                  <div style={{ fontSize: ".72rem", fontWeight: 800, color: "#0369a1", marginBottom: ".3rem" }}>🎯 Target Hasil (contoh)</div>
+                  {p.preview}
+                </div>
+
+                {/* Starter template */}
+                <div style={{ marginBottom: ".6rem" }}>
+                  <div style={{ fontSize: ".72rem", fontWeight: 800, color: "#4f46e5", marginBottom: ".3rem" }}>📋 Starter Template (salin ke CodePen)</div>
+                  <pre className="code" style={{ margin: 0, fontSize: ".68rem", maxHeight: 150, overflow: "auto" }}>{p.template}</pre>
+                  <div style={{ marginTop: ".3rem" }}><CopyBtn text={p.template} label="📋 Salin Starter" /></div>
+                </div>
+
                 {/* Daftar tahap */}
                 {PROJECT_CHECKS[p.id].map((c, i) => {
                   const doneItem = passed.includes(i);
@@ -142,10 +348,10 @@ export default function Proyek() {
                   );
                 })}
 
-                {/* Area tempel kode — hanya untuk tahap yang sedang berjalan */}
+                {/* Area tempel kode — hanya tahap aktif */}
                 {!complete && (
                   <div style={{ marginTop: ".6rem" }}>
-                    <label style={{ fontSize: ".75rem", fontWeight: 800, color: "#0369a1" }}>📋 Tempel kode kamu di sini (HTML lengkap + CSS/JS inline):</label>
+                    <label style={{ fontSize: ".75rem", fontWeight: 800, color: "#0369a1" }}>📤 Tempel kode kamu di sini (HTML lengkap + CSS/JS inline):</label>
                     <textarea
                       value={codes[p.id] || ""}
                       onChange={(e) => setCode(p.id, e.target.value)}
@@ -153,7 +359,10 @@ export default function Proyek() {
                       placeholder={"<!DOCTYPE html>\n<html lang=\"id\">\n..."}
                       style={{ width: "100%", minHeight: 150, fontFamily: "Consolas, monospace", fontSize: ".8rem", border: "2px solid #bae6fd", borderRadius: 12, padding: ".6rem", background: "#0c4a6e", color: "#bae6fd", lineHeight: 1.6, marginTop: ".3rem" }}
                     />
-                    <button className="btn primary" style={{ marginTop: ".4rem" }} onClick={() => runCheck(p.id)}>🔍 Cek Kode — Tahap {currentStage + 1}</button>
+                    <div style={{ display: "flex", gap: ".4rem", marginTop: ".4rem", flexWrap: "wrap" }}>
+                      <button className="btn primary" onClick={() => runCheck(p.id)}>🔍 Cek Kode — Tahap {currentStage + 1}</button>
+                      <button className="btn" onClick={() => { setCode(p.id, p.sampleCode); setFeedback({ ...feedback, [p.id]: undefined }); }}>✨ Isi Contoh Kode</button>
+                    </div>
                     {feedback[p.id] && (
                       <div style={{ marginTop: ".4rem", padding: ".5rem .7rem", borderRadius: 12, fontSize: ".8rem", background: feedback[p.id].ok ? "#dcfce7" : "#fee2e2", color: feedback[p.id].ok ? "#15803d" : "#b91c1c", border: `2px solid ${feedback[p.id].ok ? "#86efac" : "#fca5a5"}` }}>
                         {feedback[p.id].message}
