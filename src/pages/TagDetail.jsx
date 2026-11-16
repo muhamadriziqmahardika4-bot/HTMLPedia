@@ -8,6 +8,7 @@ import DemoRenderer from "../components/DemoRenderer.jsx";
 import Playground from "../components/Playground.jsx";
 import TagBadge from "../components/TagBadge.jsx";
 import ConfettiButton from "../components/ConfettiButton.jsx";
+import TagQuiz from "../components/TagQuiz.jsx";
 
 export default function TagDetail() {
   const { slug } = useParams();
@@ -44,6 +45,7 @@ export default function TagDetail() {
         <ConfettiButton label="Tandai Selesai" doneLabel="✓ Selesai!" done={done} onToggle={() => toggle(entry.slug)} className="done-btn" />
       </div>
       {done && <div className="confetti" style={{ background: "#dcfce7" }}>🎉 Mantap! Tag {entry.tag} berhasil kamu taklukkan! 🎊</div>}
+      {done && <TagQuiz entry={entry} />}
       {entry.deprecated && <p className="info" style={{ borderColor: "#fde68a", background: "#fffbeb", color: "#92400e" }}>⚠️ Tag ini <b>deprecated</b> — tidak disarankan untuk kode baru. {entry.replacedBy ? <>Penggantinya: <code>{entry.replacedBy}</code>.</> : null}</p>}
 
       <div className="cols">
