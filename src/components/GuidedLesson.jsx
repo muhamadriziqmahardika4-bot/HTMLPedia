@@ -7,6 +7,7 @@ import { questionsForTag } from "../data/quizzes.js";
 import { CATEGORIES } from "../data/categories.js";
 import CodeBlock from "./CodeBlock.jsx";
 import DemoRenderer from "./DemoRenderer.jsx";
+import LivePlayground from "./LivePlayground.jsx";
 import { playCorrect, playWrong, playFinish } from "../lib/sounds.js";
 import { addMistake } from "../lib/mistakes.js";
 
@@ -82,17 +83,6 @@ function TypedText({ text, speed = 12, skip, onDone, className, style }) {
   );
 }
 
-function CodeLines({ code, baseDelay = 0 }) {
-  const lines = code.split("\n");
-  return (
-    <pre className="code" style={{ margin: ".3rem 0 0", whiteSpace: "pre-wrap" }}>
-      {lines.map((ln, i) => (
-        <div key={i} style={{ animation: "popIn .35s ease both", animationDelay: `${baseDelay + i * 90}ms` }}>{ln || " "}</div>
-      ))}
-    </pre>
-  );
-}
-
 export default function GuidedLesson({ entry }) {
   const navigate = useNavigate();
   const { toggle, isDone } = useProgress(ALL_ORDERED.length);
@@ -107,6 +97,8 @@ export default function GuidedLesson({ entry }) {
 
   const hasDemo = entry.demo !== "generic";
   const codeLineCount = entry.contohKode.split("\n").length;
+  const lang = entry.category === "css" ? "css" : entry.category === "javascript" ? "js" : "html";
+  const isVisibleHtml = /<(p|h[1-6]|table|form|input|button|img|ul|ol|li|details|dialog|div|span|a|pre|mark|video|audio|progress|meter|svg|canvas|figure|main|header|footer|section|article|aside|nav|blockquote)[\s>]/i.test(entry.contohKode);
 
   // Maju otomatis antar bagian baca (atribut → contoh → demo → selesai)
   useEffect(() => {
@@ -222,13 +214,15 @@ export default function GuidedLesson({ entry }) {
             </div>
           )}
 
-          {/* BAGIAN 4 — Contoh kode */}
+          {/* BAGIAN 4 — Contoh kode + hasil langsung (live) */}
           {readPhase >= 3 && (
-            <div className="info">
+            <div className="info" style={{ background: "#f0f9ff", borderColor: "#7dd3fc" }}>
               <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".2rem" }}>
-                <b style={{ color: "#0369a1" }}>💻 Contoh kode</b>{partBadge(4)}
+                <b style={{ color: "#0369a1" }}>💻 Contoh Kode — lihat hasilnya</b>{partBadge(4)}
               </div>
-              <CodeLines code={entry.contohKode} />
+              {isVisibleHtml || lang !== "html"
+                ? <LivePlayground initialCode={entry.contohKode} lang={lang} />
+                : <div style={{ fontSize: ".8rem", color: "#0369a1", background: "#e0f2fe", borderRadius: 12, padding: ".6rem .8rem", border: "2px dashed #7dd3fc" }}>🪞 Tag ini <b>tidak menampilkan apa-apa di layar</b> — kamu bisa baca bagian “Kapan &amp; di mana dipakai” di atas untuk tahu gunanya.</div>}
             </div>
           )}
 
