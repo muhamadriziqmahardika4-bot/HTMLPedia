@@ -28,6 +28,14 @@ export default function TagDetail() {
   const prev = ALL_ORDERED[idx - 1];
   const next = ALL_ORDERED[idx + 1];
   const done = isDone(entry.slug);
+  const videoQuery = encodeURIComponent(
+    (langOf(entry.category) === "css"
+      ? `belajar css ${entry.tag.replace(/[<>]/g, "")} tutorial indonesia`
+      : langOf(entry.category) === "js"
+      ? `belajar javascript ${entry.tag.replace(/[<>]/g, "")} tutorial indonesia`
+      : `belajar html tag ${entry.tag.replace(/[<>]/g, "")} tutorial indonesia`)
+  );
+  const videoUrl = `https://www.youtube.com/results?search_query=${videoQuery}`;
 
   return (
     <div className="panel">
@@ -42,6 +50,17 @@ export default function TagDetail() {
         <ConfettiButton label="Tandai Selesai" doneLabel="✓ Selesai!" done={done} onToggle={() => toggle(entry.slug)} className="done-btn" />
       </div>
       {entry.deprecated && <p className="info" style={{ borderColor: "#fde68a", background: "#fffbeb", color: "#92400e" }}>⚠️ Tag ini <b>deprecated</b> — tidak disarankan untuk kode baru. {entry.replacedBy ? <>Penggantinya: <code>{entry.replacedBy}</code>.</> : null}</p>}
+
+      <div style={{ display: "flex", justifyContent: "center", marginTop: ".6rem" }}>
+        <a
+          href={videoUrl}
+          target="_blank"
+          rel="noreferrer"
+          style={{ display: "inline-flex", alignItems: "center", gap: ".5rem", background: "#ef4444", color: "#fff", fontWeight: 800, fontSize: ".82rem", padding: ".5rem 1.2rem", borderRadius: 999, textDecoration: "none", boxShadow: "0 4px 0 #dc2626" }}
+        >
+          ▶ 📺 Cari video penjelasan {entry.tag} di YouTube
+        </a>
+      </div>
 
       {/* Alur belajar terpandu: Baca → Praktik → Kuis Mini → Selesai */}
       <GuidedLesson entry={entry} />
