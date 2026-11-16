@@ -14,6 +14,7 @@ import MediaDemo from "../demos/MediaDemo.jsx";
 import CanvasDraw from "../demos/CanvasDraw.jsx";
 import GenericDemo from "../demos/GenericDemo.jsx";
 import BaseDemo from "../demos/BaseDemo.jsx";
+import NonVisualDemo from "../demos/NonVisualDemo.jsx";
 
 const PRESETS = {
   "table-live": TableLive,
@@ -30,6 +31,7 @@ const PRESETS = {
   media: MediaDemo,
   "canvas-draw": CanvasDraw,
   "base-demo": BaseDemo,
+  nonvisual: NonVisualDemo,
 };
 
 export default function DemoRenderer({ demo, entry }) {

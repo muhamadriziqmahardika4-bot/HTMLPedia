@@ -36,7 +36,7 @@ export const TAGS = [
     related: ["head", "body", "doctype"],
     kapan: "Wajib ada di setiap halaman HTML — bungkus paling luar dari semua elemen.",
     output: "Menentukan bahasa halaman & struktur global; tidak terlihat visual.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "doctype",
@@ -62,7 +62,7 @@ export const TAGS = [
     related: ["title", "meta", "link", "style"],
     kapan: "Di dalam setiap dokumen HTML, sebelum <body>.",
     output: "Tidak tampil — berisi judul tab, meta, dan link CSS/favicon.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "title",
@@ -76,7 +76,7 @@ export const TAGS = [
     related: ["head", "meta"],
     kapan: "Di dalam <head> pada setiap halaman.",
     output: "Tampil di tab browser, bookmark, dan judul hasil pencarian Google.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "meta",
@@ -95,7 +95,7 @@ export const TAGS = [
     related: ["head", "title", "link"],
     kapan: "Di dalam <head> — untuk encoding, viewport, deskripsi pencarian.",
     output: "Tidak tampil — efeknya terlihat di tab, hasil Google, dan tampilan mobile.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "link",
@@ -114,7 +114,7 @@ export const TAGS = [
     related: ["head", "style", "meta"],
     kapan: "Di dalam <head> — memuat CSS, favicon, font eksternal.",
     output: "Tidak tampil — efeknya terlihat pada tampilan halaman (CSS termuat).",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "style",
@@ -128,7 +128,7 @@ export const TAGS = [
     related: ["link", "head"],
     kapan: "Di dalam <head> (atau body untuk kasus khusus).",
     output: "Tidak tampil — efeknya terlihat pada tampilan halaman.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "base",
@@ -159,7 +159,7 @@ export const TAGS = [
     related: ["head", "html"],
     kapan: "Di dalam <html>, setelah <head>.",
     output: "Semua yang tampil di halaman berada di dalamnya.",
-    demo: "generic",
+    demo: "nonvisual",
   },
 
   // ================= TEKS & HEADING =================
@@ -1395,7 +1395,7 @@ export const TAGS = [
     related: ["script"],
     kapan: "Di mana pun konten alternatif diperlukan.",
     output: "Tampil HANYA jika JavaScript dimatikan.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "script-meta",
@@ -1414,7 +1414,7 @@ export const TAGS = [
     related: ["noscript", "canvas"],
     kapan: "Di dalam <head> atau di akhir <body>.",
     output: "Tidak tampil — menjalankan logika JavaScript halaman.",
-    demo: "generic",
+    demo: "nonvisual",
   },
 
   // ================= SCRIPTING & EMBEDDED =================
@@ -1433,7 +1433,7 @@ export const TAGS = [
     related: ["noscript", "canvas", "script-meta"],
     kapan: "Di akhir <body> (atau dengan defer).",
     output: "Tidak tampil — efeknya terlihat lewat interaksi pengguna.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "template",
@@ -1447,7 +1447,7 @@ export const TAGS = [
     related: ["slot", "script"],
     kapan: "Saat membuat komponen berulang lewat JavaScript.",
     output: "Tidak tampil sama sekali sampai di-clone lewat JS.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "slot",
@@ -1461,7 +1461,7 @@ export const TAGS = [
     related: ["template"],
     kapan: "Di dalam Web Component (shadow DOM).",
     output: "Tidak tampil — jadi lubang isi komponen kustom.",
-    demo: "generic",
+    demo: "nonvisual",
   },
   {
     slug: "canvas",
