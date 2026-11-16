@@ -1,38 +1,9 @@
 import React, { useState } from "react";
-import { questionsForTag } from "../data/quizzes.js";
-import { CATEGORIES } from "../data/categories.js";
+import { questionsForEntry } from "../data/quizzes.js";
 import { playCorrect, playWrong } from "../lib/sounds.js";
 
-function shuffleDeterministic(arr, seed) {
-  const a = [...arr];
-  let h = 0;
-  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  for (let i = a.length - 1; i > 0; i--) {
-    h = (h * 1103515245 + 12345) >>> 0;
-    const j = h % (i + 1);
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function genericQuestions(entry) {
-  const others = CATEGORIES.filter((c) => c.id !== entry.category).slice(0, 2);
-  const options = shuffleDeterministic(
-    [CATEGORIES.find((c) => c.id === entry.category).name, ...others.map((c) => c.name)],
-    entry.slug
-  );
-  const answer = options.indexOf(CATEGORIES.find((c) => c.id === entry.category).name);
-  const levelOpts = ["Pemula", "Menengah", "Ahli"];
-  const levelAnswer = entry.level === "Menengah" ? 1 : 0;
-  return [
-    { q: `🏷️ Kategori tag ${entry.tag} adalah…`, options, answer },
-    { q: `📈 Tingkat kesulitan ${entry.tag} adalah…`, options: levelOpts, answer: levelAnswer },
-  ];
-}
-
 export default function TagQuiz({ entry }) {
-  const custom = questionsForTag(entry.slug);
-  const questions = (custom.length ? custom : genericQuestions(entry)).slice(0, 3);
+  const questions = questionsForEntry(entry);
   const [answers, setAnswers] = useState({});
   const answered = Object.keys(answers).length;
   const score = questions.filter((q, i) => answers[i] === q.answer).length;

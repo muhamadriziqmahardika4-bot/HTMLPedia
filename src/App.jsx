@@ -14,6 +14,7 @@ import BasicsDetail from "./pages/BasicsDetail.jsx";
 import TagIndex from "./pages/TagIndex.jsx";
 import TagDetail from "./pages/TagDetail.jsx";
 import Quiz from "./pages/Quiz.jsx";
+import Review from "./pages/Review.jsx";
 
 function Navbar() {
   const [bgmOn, setBgmOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
@@ -77,6 +78,7 @@ function AnimatedRoutes() {
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/kuis" element={<Quiz />} />
+          <Route path="/review" element={<Review />} />
           <Route path="/tag" element={<TagIndex />} />
           <Route path="/tag/:slug" element={<TagDetail />} />
           <Route path="/dasar" element={<Basics />} />

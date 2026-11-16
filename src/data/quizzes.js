@@ -174,6 +174,43 @@ export const TAG_QUIZZES = {
   ],
 };
 
+// Contoh import CATEGORIES untuk membangun soal generik
+import { CATEGORIES } from "./categories.js";
+
+function shuffleDeterministic(arr, seed) {
+  const a = [...arr];
+  let h = 0;
+  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  for (let i = a.length - 1; i > 0; i--) {
+    h = (h * 1103515245 + 12345) >>> 0;
+    const j = h % (i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function genericQuestions(entry) {
+  const others = CATEGORIES.filter((c) => c.id !== entry.category).slice(0, 2);
+  const options = shuffleDeterministic(
+    [CATEGORIES.find((c) => c.id === entry.category).name, ...others.map((c) => c.name)],
+    entry.slug
+  );
+  const answer = options.indexOf(CATEGORIES.find((c) => c.id === entry.category).name);
+  const levelOpts = ["Pemula", "Menengah", "Ahli"];
+  const levelAnswer = entry.level === "Menengah" ? 1 : 0;
+  return [
+    { q: `🏷️ Kategori tag ${entry.tag} adalah…`, options, answer },
+    { q: `📈 Tingkat kesulitan ${entry.tag} adalah…`, options: levelOpts, answer: levelAnswer },
+  ];
+}
+
+// Soal untuk satu entry — custom kalau ada, generik dari data tag kalau tidak
+export function questionsForEntry(entry) {
+  const custom = TAG_QUIZZES[entry.slug];
+  if (custom && custom.length >= 2) return custom.slice(0, 3);
+  return genericQuestions(entry).slice(0, 3);
+}
+
 export function questionsForTag(tagSlug) {
   return TAG_QUIZZES[tagSlug] || [];
 }
