@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-// Tombol musik mengambang — penting untuk HP/iOS, di mana autoplay bersuara diblokir.
-// Menekan tombol ini dianggap "interaksi pengguna", jadi audio bisa dihidupkan.
 export default function FloatingMusicButton() {
   const [on, setOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
 
@@ -11,12 +9,27 @@ export default function FloatingMusicButton() {
     return () => window.removeEventListener("bgm-change", h);
   }, []);
 
+  const postToFrame = (func) => {
+    const frame = document.getElementById("bgm-frame");
+    frame?.contentWindow?.postMessage(
+      JSON.stringify({ event: "command", func, args: "" }),
+      "*"
+    );
+  };
+
   const toggle = () => {
     const next = !on;
     localStorage.setItem("htmlpedia-bgm", next ? "on" : "off");
     window.dispatchEvent(new CustomEvent("bgm-change", { detail: next }));
-    // Trigger pointer event supaya BgmPlayer bisa unMute
-    window.dispatchEvent(new PointerEvent("pointerdown"));
+    if (next) {
+      // iOS/Safari: perintah ini dikirim langsung dari gesture (klik)
+      setTimeout(() => {
+        postToFrame("unMute");
+        postToFrame("playVideo");
+      }, 200);
+    } else {
+      postToFrame("pauseVideo");
+    }
   };
 
   return (

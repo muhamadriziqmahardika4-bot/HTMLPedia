@@ -325,3 +325,11 @@ html { scroll-behavior: smooth; }
 .music-fab:active { transform: scale(.92); }
 @media (min-width: 768px) { .music-fab { width: 46px; height: 46px; font-size: 1.25rem; bottom: 1.5rem; right: 1.5rem; } }
 
+
+@media (max-width: 480px) {
+  .splash-wrap { min-height: auto; padding: .5rem; }
+  .splash-wrap .panel { padding: 1.2rem .8rem 1.6rem; min-height: auto; width: 100%; }
+  .splash-wrap .panel h1 { font-size: 1.35rem; }
+  .cubby-bubble { position: static; transform: none; margin: 0 auto .6rem; width: 140px; font-size: .65rem; right: auto; }
+}
+
