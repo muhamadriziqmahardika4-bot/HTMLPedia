@@ -94,8 +94,7 @@ export default function App() {
   const [stage, setStage] = useState("splash");   // splash → intro → app
   const navigate = useNavigate();
 
-  const start = () => setStage("app");                 // MULAI → langsung ke Beranda
-  const babDasar = () => setStage("intro");            // BAB DASAR → onboarding dulu
+  const start = () => setStage("intro");                 // MULAI → penjelasan singkat dulu
 
   const introDone = (target) => {
     setStage("app");
@@ -117,7 +116,7 @@ export default function App() {
       {stage === "splash" && (
         <motion.div key="splash" exit={{ opacity: 0, transition: { duration: 0.22, ease: "easeOut" } }}>
           <div className="app splash-screen">
-            <Splash onStart={start} onBabDasar={babDasar} />
+            <Splash onStart={start} />
           </div>
         </motion.div>
       )}
