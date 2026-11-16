@@ -58,9 +58,9 @@ function CubbyBubble() {
   return <div className="cubby-bubble" style={{ opacity: visible ? 1 : 0 }}>{CUBBY_PHRASES[idx]}</div>;
 }
 
-export default function Splash({ onStart, leaving }) {
+export default function Splash({ onStart }) {
   return (
-    <div className={`splash-screen ${leaving ? "leaving" : ""}`}>
+    <div className="splash-screen">
       {/* Awan di LUAR box: membingkai box di 4 sudut */}
       <Cloud fixed top="17%" left="6%" size={120} delay="-1s" opacity={0.95} />
       <Cloud fixed top="18%" right="5%" size={80} delay="-3.5s" duration="7s" opacity={0.85} />
@@ -80,7 +80,7 @@ export default function Splash({ onStart, leaving }) {
       </svg>
 
       <div className="splash-wrap">
-        <div className={`panel ${leaving ? "panel-leaving" : ""}`} style={{ textAlign: "center", padding: "2.2rem 2rem 2.6rem", margin: "0 auto", width: "min(1020px, 100%)", minHeight: 540, display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+        <div className="panel" style={{ textAlign: "center", padding: "2.2rem 2rem 2.6rem", margin: "0 auto", width: "min(1020px, 100%)", minHeight: 540, display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", overflow: "hidden" }}>
           {/* Gelombang di dasar box */}
           <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: "absolute", bottom: -2, left: 0, width: "100%", height: 80, zIndex: 0 }} aria-hidden="true">
             <path fill="#e0f2fe" d="M0,48 C120,80 240,10 360,40 C480,70 600,20 720,45 C840,70 960,15 1080,42 C1200,68 1320,30 1440,50 L1440,90 L0,90 Z" />

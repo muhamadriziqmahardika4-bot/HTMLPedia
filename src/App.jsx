@@ -95,13 +95,9 @@ function AnimatedRoutes() {
 
 export default function App() {
   const [stage, setStage] = useState("splash");   // splash → intro → app
-  const [leaving, setLeaving] = useState(false);
   const navigate = useNavigate();
 
-  const start = () => {
-    setLeaving(true);
-    setTimeout(() => setStage("intro"), 1100);
-  };
+  const start = () => setStage("intro");
 
   const introDone = (target) => {
     const s = getBgmState();
@@ -119,7 +115,7 @@ export default function App() {
         <motion.div key="splash" exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -140, scale: 0.92, filter: "blur(6px)", transition: { duration: 0.5, ease: [0.65, 0, 0.35, 1] } }}>
           <div className="app splash-screen">
             <FloatingShapes />
-            <Splash onStart={start} leaving={leaving} />
+            <Splash onStart={start} />
           </div>
         </motion.div>
       )}
@@ -130,7 +126,7 @@ export default function App() {
           animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, scale: 1 }}
           exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -140, filter: "blur(6px)", transition: { duration: 0.45, ease: [0.65, 0, 0.35, 1] } }}
           transition={{ type: "spring", stiffness: 210, damping: 26 }}
-          className="app" style={{ padding: 0, maxWidth: "none" }}
+          className="intro-root"
         >
           <CandySweep key="intro-sweep" />
           <IntroBasics onDone={introDone} />

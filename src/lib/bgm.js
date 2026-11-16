@@ -122,12 +122,12 @@ export function startBgm(trackIndex = 0) {
   try {
     const a = audio();
     if (a.state === "suspended") a.resume();
-    currentTrack = trackIndex;
+    currentTrack = Math.max(0, Math.min(TRACKS.length - 1, Number(trackIndex) || 0));
     step = 0;
     const track = TRACKS[currentTrack];
-    const filter = a.createBiquadFilter();
-    // filter dibuat sekali di audio(); cukup set dari sini
-    fadeTo(track.gain, 1.2);
+    // ganti track SELALU langsung: matikan timer lama, mainkan chord pertama sekarang
+    if (timer) { clearTimeout(timer); timer = null; }
+    fadeTo(track.gain, 1.0);
     if (!timer) loop();
     localStorage.setItem(KEY, String(currentTrack));
   } catch {

@@ -84,6 +84,7 @@ body {
 @media (max-width: 720px) { .cubby-bubble { width: 105px; font-size: .58rem; right: 105%; } }
 
 /* ---- Wrapper splash: box vertikal center ---- */
+.intro-root { zoom: 1 !important; max-width: none !important; padding: 0 !important; }
 .splash-wrap { min-height: 76vh; display: flex; align-items: center; justify-content: center; }
 
 /* ---- Transisi splash → beranda: piece melayang satu per satu (staggered) ---- */
