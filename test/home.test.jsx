@@ -10,10 +10,10 @@ beforeEach(() => localStorage.clear());
 describe("Home", () => {
   it("menampilkan headline utama", () => {
     render(<MemoryRouter><Home /></MemoryRouter>);
-    expect(screen.getByText(/Raih & Buat Web Kamu Sendiri/)).toBeTruthy();
+    expect(screen.getByText(/Rancang & Bangun Web Kamu Sendiri/)).toBeTruthy();
   });
 
-  it("menampilkan semua 9 kartu kategori", () => {
+  it("menampilkan semua kategori", () => {
     render(<MemoryRouter><Home /></MemoryRouter>);
     for (const c of CATEGORIES) {
       expect(screen.getByText(c.name)).toBeTruthy();
