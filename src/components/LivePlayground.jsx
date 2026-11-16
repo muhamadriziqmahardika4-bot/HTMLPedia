@@ -25,7 +25,7 @@ export default function LivePlayground({ initialCode, lang = "html" }) {
           aria-label="Editor kode live"
           style={{ width: "100%", minHeight: 150, fontFamily: "Consolas, monospace", fontSize: ".72rem", border: "2px solid #38bdf8", borderRadius: 10, padding: ".5rem", background: "#082f49", color: "#bae6fd", lineHeight: 1.55, resize: "vertical" }}
         />
-        <iframe title="Hasil live" sandbox="" srcDoc={srcDoc} style={{ width: "100%", minHeight: 150, border: "2px solid #5eead4", borderRadius: 10, background: "#fff" }} />
+        <iframe title="Hasil live" sandbox="allow-scripts" srcDoc={srcDoc} style={{ width: "100%", minHeight: 150, border: "2px solid #5eead4", borderRadius: 10, background: "#fff" }} />
       </div>
     </div>
   );

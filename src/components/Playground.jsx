@@ -21,7 +21,7 @@ export default function Playground({ initialCode }) {
         spellCheck={false}
         aria-label="Editor HTML"
       />
-      <iframe title="Hasil render" sandbox="" srcDoc={srcDoc} />
+      <iframe title="Hasil render" sandbox="allow-scripts" srcDoc={srcDoc} />
     </div>
   );
 }

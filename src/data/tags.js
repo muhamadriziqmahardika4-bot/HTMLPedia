@@ -842,9 +842,11 @@ export const TAGS = [
       { name: "width", desc: "Lebar iframe" },
       { name: "height", desc: "Tinggi iframe" },
     ],
-    contohKode: '<iframe src="https://www.google.com/maps/embed?pb=..." title="Peta lokasi" sandbox="allow-scripts allow-same-origin" width="400" height="300"></iframe>',
+    contohKode: '<iframe src="https://www.google.com/maps/embed?pb=..." title="Peta lokasi" sandbox="allow-scripts" width="400" height="300"></iframe>',
     related: ["embed", "object"],
     demo: "iframe-sandbox",
+    kapan: "Di bagian halaman yang perlu menampilkan konten dari situs lain (peta, video YouTube, widget).",
+    output: "Iframe tampil sebagai halaman lain di dalam halamanmu — konten di dalamnya TIDAK bisa mengakses halaman utama (berkat sandbox).",
   },
   {
     slug: "embed",

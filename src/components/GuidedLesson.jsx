@@ -272,7 +272,7 @@ export default function GuidedLesson({ entry }) {
               <div style={{ marginTop: ".5rem", background: "#dcfce7", border: "2px solid #86efac", color: "#15803d", borderRadius: 12, padding: ".5rem .7rem", fontSize: ".82rem", animation: "popIn .3s ease both" }}>
                 ✅ Benar! Kodemu lolos. Ini contoh hasil yang benar 👇
               </div>
-              <iframe title="Hasil praktik" sandbox="" srcDoc={entry.contohKode} style={{ width: "100%", minHeight: 120, border: "2px dashed #5eead4", borderRadius: 12, background: "#fff", marginTop: ".4rem" }} />
+              <iframe title="Hasil praktik" sandbox="allow-scripts" srcDoc={entry.contohKode} style={{ width: "100%", minHeight: 120, border: "2px dashed #5eead4", borderRadius: 12, background: "#fff", marginTop: ".4rem" }} />
               <div style={{ marginTop: ".5rem" }}>
                 <button className="btn primary" onClick={() => { setStage(2); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Selanjutnya ➡️ — Kuis Mini</button>
               </div>
