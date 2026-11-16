@@ -8,17 +8,94 @@ import { CATEGORIES } from "../data/categories.js";
 import CodeBlock from "./CodeBlock.jsx";
 import DemoRenderer from "./DemoRenderer.jsx";
 import LivePlayground from "./LivePlayground.jsx";
+import BedahKode from "./BedahKode.jsx";
 import { playCorrect, playWrong, playFinish } from "../lib/sounds.js";
 import { addMistake } from "../lib/mistakes.js";
 
 /* ---------- Tantangan praktik per tag kunci ---------- */
 const CHALLENGES = {
+  // ===== HTML =====
   table: { instruction: "Buat tabel 2 kolom (Nama & Nilai) dengan 1 baris data: kamu dan nilai 100.", must: ["<table", "<tr", "<th", "<td", "100"] },
+  thead: { instruction: "Buat tabel dengan <thead> berisi 2 kolom (Nama, Nilai) dan 2 baris data.", must: ["<table", "<thead", "<th", "<td"] },
+  caption: { instruction: "Buat tabel dengan <caption>Daftar Nilai Semester</caption> di atasnya.", must: ["<table", "<caption", "Daftar Nilai"] },
+  colgroup: { instruction: "Buat tabel dengan <colgroup> berisi 2 kolom, kolom pertama lebar 40%.", must: ["<colgroup", "<col", "width"] },
+  tr: { instruction: "Buat tabel 2 baris: header Nama|Nilai, isi Mahardika|100.", must: ["<table", "<tr", "<th", "<td"] },
+  td: { instruction: "Buat tabel 3 kolom (Nama, Mapel, Nilai) dengan 2 baris data.", must: ["<table", "<td", "Mapel"] },
   a: { instruction: 'Buat link ke https://contoh.com dengan teks "Klik di sini".', must: ["<a", "href", "contoh.com"] },
   img: { instruction: 'Tampilkan gambar "foto.jpg" dengan alt "Foto aku".', must: ["<img", "src", "alt", "foto"] },
+  figure: { instruction: "Tampilkan gambar dengan <figcaption> di dalamnya yang berisi keterangan.", must: ["<figure", "<img", "<figcaption"] },
+  video: { instruction: "Tampilkan video dengan atribut controls.", must: ["<video", "controls"] },
+  audio: { instruction: "Tampilkan audio dengan atribut controls.", must: ["<audio", "controls"] },
   form: { instruction: "Buat form berisi 1 input nama (required) dan tombol submit.", must: ["<form", "<input", "required", "<button"] },
   input: { instruction: 'Buat input email dengan placeholder "nama@email.com" dan required.', must: ["<input", 'type="email"', "placeholder", "required"] },
+  textarea: { instruction: 'Buat <textarea> dengan placeholder "Tulis pesanmu..." dan maxlength=100.', must: ["<textarea", "placeholder", "maxlength"] },
+  select: { instruction: "Buat <select> berisi 3 pilihan: Jakarta, Bandung, Surabaya.", must: ["<select", "<option", "Jakarta", "Bandung"] },
+  option: { instruction: "Buat <select> dengan 3 <option>: Merah, Hijau, Biru.", must: ["<select", "<option", "Merah", "Hijau"] },
+  label: { instruction: 'Buat <label for="email"> dengan <input id="email"> di bawahnya.', must: ["<label", "for=", "id=", "<input"] },
+  button: { instruction: 'Buat tombol submit "Kirim" dan tombol type="button" dengan teks "Batal".', must: ["<button", 'type="button"', "Kirim", "Batal"] },
+  fieldset: { instruction: 'Buat <fieldset> dengan <legend>Data Diri</legend> dan 1 input nama.', must: ["<fieldset", "<legend", "Data Diri", "<input"] },
   ul: { instruction: "Buat daftar 2 item: Nasi dan Rendang.", must: ["<ul", "<li", "Nasi", "Rendang"] },
+  ol: { instruction: "Buat daftar bernomor 3 langkah membuat kopi (panaskan air, masukkan bubuk, tuang).", must: ["<ol", "<li", "air", "bubuk"] },
+  dl: { instruction: "Buat kamus 2 istilah: HTML (bahasa markup) dan CSS (bahasa tampilan).", must: ["<dl", "<dt", "<dd", "HTML", "CSS"] },
+  li: { instruction: "Buat daftar 3 buah: Apel, Jeruk, Mangga dengan <ul> dan <li>.", must: ["<ul", "<li", "Apel", "Jeruk"] },
+  h1: { instruction: "Buat <h1> berisi nama kamu, lalu <h2> berisi tagline kota kamu.", must: ["<h1", "<h2"] },
+  p: { instruction: "Buat 2 paragraf — satu paragraf berisi teks <strong>sangat penting</strong>.", must: ["<p", "<strong"] },
+  strong: { instruction: "Buat paragraf dengan teks yang DITEKANKAN sebagai sangat penting.", must: ["<p", "<strong"] },
+  em: { instruction: "Buat paragraf dengan teks <em>sangat</em> untuk penekanan.", must: ["<p", "<em"] },
+  code: { instruction: "Tampilkan kode JavaScript const nama = 'Budi' di dalam <code>.", must: ["<code", "const"] },
+  pre: { instruction: "Tampilkan baris-baris kode multi-baris di dalam <pre>.", must: ["<pre", "const"] },
+  blockquote: { instruction: "Tampilkan kutipan panjang dari tokoh terkenal di dalam <blockquote>.", must: ["<blockquote"] },
+  q: { instruction: 'Tampilkan kutipan singkat dari ibumu: "jangan lupa makan".', must: ["<q", "makan"] },
+  mark: { instruction: "Sorot kata penting di paragraf dengan <mark>.", must: ["<p", "<mark"] },
+  hr: { instruction: "Buat garis pemisah dengan <hr> di antara 2 bagian konten.", must: ["<hr", "<p"] },
+  br: { instruction: "Buat alamat dengan 2 baris berbeda (pakai <br>).", must: ["<br"] },
+  small: { instruction: "Buat catatan hak cipta di bagian bawah halaman dengan <small>.", must: ["<small"] },
+  sub: { instruction: "Tulis rumus air H2O dengan angka 2 sebagai <sub>.", must: ["<sub", "H"] },
+  sup: { instruction: "Tulis luas persegi dengan cm² (angka 2 sebagai <sup>).", must: ["<sup", "cm"] },
+  abbr: { instruction: 'Buat singkatan <abbr title="HyperText Markup Language">HTML</abbr>.', must: ["<abbr", "title", "HTML"] },
+  cite: { instruction: "Sebutkan judul buku atau artikel dengan <cite>.", must: ["<cite"] },
+  time: { instruction: 'Tulis tanggal hari ini dengan <time datetime="2026-11-17">.', must: ["<time", "datetime"] },
+  del: { instruction: "Teks harga direvisi: harga lama dicoret dengan <del>, harga baru digarisbawahi dengan <ins>.", must: ["<del", "<ins"] },
+  ins: { instruction: "Harga baru di bawahnya ditandai <ins>Rp99.000</ins>.", must: ["<ins", "Rp99.000"] },
+  kbd: { instruction: "Tulis kombinasi keyboard Ctrl + S dengan <kbd>.", must: ["<kbd", "Ctrl"] },
+  title: { instruction: "Buat <title> untuk halaman dengan judul 'Halamanku'.", must: ["<title", "Halamanku"] },
+  meta: { instruction: "Buat <meta charset='UTF-8'> dan <meta viewport> untuk halaman.", must: ["<meta", "charset", "viewport"] },
+  link: { instruction: "Buat <link> ke file style.css dengan rel='stylesheet'.", must: ["<link", "stylesheet", "style.css"] },
+  script: { instruction: "Buat <script> yang menulis console.log('Halo').", must: ["<script", "console.log"] },
+  div: { instruction: "Buat <div class='kartu'> berisi <h2> Judul dan <p> paragraf.", must: ["<div", "class=", "<h2", "<p"] },
+  span: { instruction: "Buat paragraf dengan satu kata di dalam <span> berwarna.", must: ["<span", "<p"] },
+  header: { instruction: "Buat <header> berisi <h1> judul dan <nav> dengan 2 link.", must: ["<header", "<h1", "<nav", "<a"] },
+  main: { instruction: "Buat <main> berisi <section> dengan <h2> 'Tentang' dan <p> isi.", must: ["<main", "<section", "<h2", "<p"] },
+  section: { instruction: "Buat <section> dengan <h2> 'Bahan-bahan' dan <p> isi.", must: ["<section", "<h2", "<p"] },
+  article: { instruction: "Buat <article> dengan <h2> judul dan <p> isi artikel.", must: ["<article", "<h2", "<p"] },
+  aside: { instruction: "Buat <aside> berisi <h3> 'Resep Terkait' dengan <p> isi.", must: ["<aside", "<h3", "<p"] },
+  footer: { instruction: "Buat <footer> berisi hak cipta kamu dengan <p> dan <small>.", must: ["<footer", "<small", "<p"] },
+
+  // ===== CSS =====
+  "css-color": { instruction: "Buat <h1> berwarna #e11d48 dan <p> berwarna abu-abu.", must: ["color", "e11d48"] },
+  "css-background": { instruction: "Buat <body> bergradasi dari atas ke bawah (linear-gradient).", must: ["background", "gradient"] },
+  "css-font-family": { instruction: "Buat <h1> memakai 'Courier New' monospace dan <p> memakai Georgia.", must: ["font-family", "courier", "georgia"] },
+  "css-font-size": { instruction: "Buat <h1> berukuran 2rem dan <p> berukuran .8rem.", must: ["font-size", "2rem"] },
+  "css-margin": { instruction: "Buat <div> di tengah dengan margin auto.", must: ["margin", "auto"] },
+  "css-padding": { instruction: "Buat <div class='kartu'> dengan padding 2rem.", must: ["padding", "2rem"] },
+  "css-border": { instruction: "Buat <div class='kartu'> dengan border 4px pink dan sudut membulat.", must: ["border", "radius"] },
+  "css-display-flex": { instruction: "Buat <ul> menjadi flex horizontal dengan gap 1rem.", must: ["display: flex", "gap"] },
+  "css-display-grid": { instruction: "Buat <ul> menjadi grid 3 kolom dengan 1fr masing-masing.", must: ["display: grid", "1fr"] },
+  "css-position": { instruction: "Buat <div> dengan position: relative dan child dengan position: absolute.", must: ["position: relative", "position: absolute"] },
+  "css-z-index": { instruction: "Buat 2 elemen overlapping: elemen atas ber-z-index lebih besar.", must: ["z-index"] },
+  "css-hover": { instruction: "Buat <button> berubah warna saat disorot mouse (:hover).", must: [":hover", "background"] },
+  "css-media-queries": { instruction: "Buat <h1> berubah warna di layar minimal 250px (media query).", must: ["@media", "min-width"] },
+  "css-box-sizing": { instruction: "Buat <div class='kartu'> dengan width: 180px dan box-sizing: border-box.", must: ["box-sizing", "border-box"] },
+
+  // ===== JavaScript =====
+  "js-const-let": { instruction: "Simpan nama kamu di const dan umur di let, tampilkan ke #out.", must: ["const", "let", "out"] },
+  "js-function": { instruction: "Buat fungsi sapa(nama) yang menampilkan 'Halo nama!' ke #out.", must: ["function", "out"] },
+  "js-if-else": { instruction: "Cek nilai >= 70, tampilkan 'LULUS' atau 'GAGAL' ke #out.", must: ["if", "else", "out"] },
+  "js-for-loop": { instruction: "Loop array [Apel, Jeruk, Mangga] dan tampilkan ke #out sebagai list.", must: ["for", "of"] },
+  "js-addEventListener": { instruction: "Buat tombol 'Klik!' yang mengubah #out menjadi 'Diklik!' saat diklik.", must: ["addEventListener", "click", "out"] },
+  "js-array-map": { instruction: "Kalikan setiap angka di array [1,2,3] dengan 2, tampilkan ke #out.", must: [".map", "out"] },
+  "js-array-filter": { instruction: "Saring nilai >= 70 dari [80,60,90,40], tampilkan ke #out.", must: [".filter", "out"] },
+  "js-async-await": { instruction: "Buat async function yang menulis 'Selesai' ke #out setelah 1 detik.", must: ["async", "await", "out"] },
   progress: { instruction: 'Buat progress bar dengan value="70" max="100".', must: ["<progress", 'value="70"', 'max="100"'] },
   details: { instruction: "Buat details dengan summary 'Pertanyaan' dan isi jawaban.", must: ["<details", "<summary", "Pertanyaan"] },
 };
@@ -100,15 +177,16 @@ export default function GuidedLesson({ entry }) {
   const lang = entry.category === "css" ? "css" : entry.category === "javascript" ? "js" : "html";
   const isVisibleHtml = /<(p|h[1-6]|table|form|input|button|img|ul|ol|li|details|dialog|div|span|a|pre|mark|video|audio|progress|meter|svg|canvas|figure|main|header|footer|section|article|aside|nav|blockquote)[\s>]/i.test(entry.contohKode);
 
-  // Maju otomatis antar bagian baca (atribut → contoh → demo → selesai)
+  // Maju otomatis antar bagian baca (atribut → contoh → bedah → demo → selesai)
   useEffect(() => {
     let t;
     if (readPhase === 2) t = setTimeout(() => setReadPhase(3), 750);
     else if (readPhase === 3) t = setTimeout(() => setReadPhase(hasDemo ? 4 : 5), codeLineCount * 90 + 500);
-    else if (readPhase === 4) t = setTimeout(() => setReadPhase(5), 800);
+    else if (readPhase === 4) t = setTimeout(() => setReadPhase(5), 900);
+    else if (readPhase === 5 && hasDemo) t = setTimeout(() => setReadPhase(6), 800);
     return () => clearTimeout(t);
   }, [readPhase, hasDemo, codeLineCount]);
-  const readDone = readPhase >= 5;
+  const readDone = hasDemo ? readPhase >= 6 : readPhase >= 5;
 
   const questions = useMemo(() => {
     const custom = questionsForTag(entry.slug);
@@ -157,7 +235,7 @@ export default function GuidedLesson({ entry }) {
 
   const partBadge = (n) => (
     <span style={{ fontSize: ".62rem", fontWeight: 800, letterSpacing: ".08em", background: "#e0f2fe", color: "#0369a1", borderRadius: 6, padding: ".15rem .4rem" }}>
-      BAGIAN {n}/{hasDemo ? 5 : 4}
+      BAGIAN {n}/{hasDemo ? 6 : 5}
     </span>
   );
 
@@ -226,11 +304,21 @@ export default function GuidedLesson({ entry }) {
             </div>
           )}
 
-          {/* BAGIAN 5 — Lihat langsung (demo) */}
-          {readPhase >= 4 && hasDemo && (
+          {/* BAGIAN 5 — Bedah kode: baris per baris */}
+          {readPhase >= 4 && (
+            <div style={{ animation: "popIn .5s ease both" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".2rem" }}>
+                <b style={{ color: "#4338ca" }}>🔬 Bedah Kode</b>{partBadge(5)}
+              </div>
+              <BedahKode code={entry.contohKode} lang={lang} />
+            </div>
+          )}
+
+          {/* BAGIAN 6 — Lihat langsung (demo) */}
+          {readPhase >= 5 && hasDemo && (
             <div style={{ animation: "popIn .5s ease both", marginTop: ".6rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".2rem" }}>
-                <b style={{ color: "#0f766e" }}>🎬 Lihat langsung</b>{partBadge(5)}
+                <b style={{ color: "#0f766e" }}>🎬 Lihat langsung</b>{partBadge(6)}
               </div>
               <DemoRenderer demo={entry.demo} entry={entry} />
             </div>
