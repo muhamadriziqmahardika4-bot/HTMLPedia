@@ -18,6 +18,7 @@ import TagDetail from "./pages/TagDetail.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Review from "./pages/Review.jsx";
 import Kesalahan from "./pages/Kesalahan.jsx";
+import Proyek from "./pages/Proyek.jsx";
 
 function Navbar({ bgmOn, onToggleBgm }) {
   return (
@@ -76,6 +77,7 @@ function AnimatedRoutes() {
           <Route path="/kuis" element={<Quiz />} />
           <Route path="/review" element={<Review />} />
           <Route path="/kesalahan" element={<Kesalahan />} />
+          <Route path="/proyek" element={<Proyek />} />
           <Route path="/tag" element={<TagIndex />} />
           <Route path="/tag/:slug" element={<TagDetail />} />
           <Route path="/dasar" element={<Basics />} />
