@@ -10,15 +10,31 @@ export function isFullHtml(code) {
 function wrapTableFragment(code) {
   // Fragment tabel (<thead>/<tr>/dst. tanpa <table>) tidak akan dirender browser —
   // bungkus dalam <table> agar tayang sebagai tabel.
-  if (/<(thead|tbody|tfoot|tr|th|td|caption|col\b|colgroup)[\s>/i.test(code) && !/<table[\s>]/i.test(code)) {
-    return `<table border="1">${code}</table>`;
+  if (/<(thead|tbody|tfoot|tr|th|td|caption|col\b|colgroup)[\s>]/i.test(code) && !/<table[\s>]/i.test(code)) {
+    code = `<table border="1">${code}</table>`;
+  }
+  return code;
+}
+
+function wrapHtmlFragments(code) {
+  // Fragment list item <li> tanpa <ul>/<ol> → bungkus jadi <ul>
+  if (/<li[\s>]/i.test(code) && !/<(ul|ol)[\s>]/i.test(code)) {
+    code = `<ul>${code}</ul>`;
+  }
+  // Fragment definisi <dt>/<dd> tanpa <dl> → bungkus jadi <dl>
+  if (/<(dt|dd)[\s>]/i.test(code) && !/<dl[\s>]/i.test(code)) {
+    code = `<dl>${code}</dl>`;
+  }
+  // Fragment <option>/<optgroup> tanpa <select> → bungkus jadi <select>
+  if (/<(option|optgroup)[\s>]/i.test(code) && !/<select[\s>]/i.test(code)) {
+    code = `<select>${code}</select>`;
   }
   return code;
 }
 
 export function wrapPreview(code, lang) {
   if (lang === "html") {
-    const body = wrapTableFragment(code);
+    const body = wrapHtmlFragments(wrapTableFragment(code));
     if (isFullHtml(code)) return code;
     return `<!DOCTYPE html>
 <html lang="id">
@@ -32,7 +48,21 @@ ${body}
 </html>`;
   }
 
+  const looksLikeHtml = (c) => /^\s*<|<\/(style|script)>/i.test(c);
+  const skeleton = (body) => `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <style>body{font-family:sans-serif;padding:1rem}</style>
+</head>
+<body>
+${body}
+</body>
+</html>`;
+
   if (lang === "css") {
+    // CSS dicampur dengan markup sendiri → tampilkan apa adanya (tanpa elemen contoh lain)
+    if (looksLikeHtml(code)) return skeleton(code);
     return `<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -62,7 +92,8 @@ ${code}
 </html>`;
   }
 
-  // JavaScript
+  // JavaScript — contoh mandiri dengan markup sendiri → tampilkan apa adanya
+  if (looksLikeHtml(code)) return skeleton(code);
   return `<!DOCTYPE html>
 <html lang="id">
 <head>

@@ -15,7 +15,13 @@ export const CSS_TAGS = [
       { name: "gap", desc: "Jarak antar item flex" },
       { name: "flex-wrap", desc: "wrap = pindah baris kalau penuh" },
     ],
-    contohKode: `ul {
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>flexbox</title>
+<style>
+ul {
   display: flex;
   gap: 1rem;
   list-style: none;
@@ -23,10 +29,21 @@ export const CSS_TAGS = [
 }
 ul li {
   background: #e0f2fe;
-  padding: .5rem 1rem;
+  padding: .5rem 1.2rem;
   border-radius: 10px;
-  border: 2px solid #7dd3fc;
-}`,
+  border: 2px solid #38bdf8;
+}
+</style>
+</head>
+<body>
+<ul>
+  <li>🍎 Apel</li>
+  <li>🍊 Jeruk</li>
+  <li>🍇 Anggur</li>
+  <li>🍌 Pisang</li>
+</ul>
+</body>
+</html>`,
     related: ["css-display-grid", "css-position", "css-gap"],
     demo: "generic",
   },
@@ -44,7 +61,13 @@ ul li {
       { name: "gap", desc: "Jarak antar sel grid" },
       { name: "grid-area", desc: "Nama area untuk penempatan eksplisit" },
     ],
-    contohKode: `ul {
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>grid</title>
+<style>
+ul {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: .6rem;
@@ -53,11 +76,20 @@ ul li {
 }
 ul li {
   background: #ede9fe;
-  padding: .7rem;
+  padding: .8rem;
   text-align: center;
-  border-radius: 10px;
-  border: 2px solid #c4b5fd;
-}`,
+  border-radius: 12px;
+  border: 2px solid #a78bfa;
+}
+</style>
+</head>
+<body>
+<ul>
+  <li>🍎</li><li>🍊</li><li>🍇</li>
+  <li>🍌</li><li>🍓</li><li>🍉</li>
+</ul>
+</body>
+</html>`,
     related: ["css-display-flex", "css-gap"],
     demo: "generic",
   },
@@ -73,7 +105,13 @@ ul li {
       { name: "row-gap", desc: "Jarak vertikal antar item" },
       { name: "column-gap", desc: "Jarak horizontal antar item" },
     ],
-    contohKode: `ul {
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>gap</title>
+<style>
+ul {
   display: flex;
   gap: 2.5rem;
   list-style: none;
@@ -84,7 +122,17 @@ ul li {
   padding: .6rem 1.2rem;
   border-radius: 8px;
   border: 2px solid #fde047;
-}`,
+}
+</style>
+</head>
+<body>
+<ul>
+  <li>🍎 Apel</li>
+  <li>🍊 Jeruk</li>
+  <li>🍇 Anggur</li>
+</ul>
+</body>
+</html>`,
     related: ["css-display-flex", "css-display-grid"],
     demo: "generic",
   },
@@ -102,17 +150,32 @@ ul li {
       { name: "fixed", desc: "Menempel di viewport, tidak ikut scroll" },
       { name: "sticky", desc: "Ikut scroll sampai batas tertentu, lalu menempel" },
     ],
-    contohKode: `.kartu { position: relative; padding-top: 1.4rem; }
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>position</title>
+<style>
+.kartu { position: relative; padding-top: 1.6rem; border: 2px solid #7dd3fc; border-radius: 16px; }
 .kartu h2 {
   position: absolute;
-  top: -12px;
-  left: 12px;
+  top: -14px;
+  left: 14px;
   background: #38bdf8;
   color: #fff;
-  padding: .1rem .7rem;
+  padding: .15rem .8rem;
   border-radius: 8px;
   margin: 0;
-}`,
+}
+</style>
+</head>
+<body>
+<div class="kartu">
+  <h2>Kartu</h2>
+  <p>Label biru melayang di tepi atas kartu.</p>
+</div>
+</body>
+</html>`,
     related: ["css-z-index", "css-display-flex"],
     demo: "generic",
   },
@@ -128,18 +191,33 @@ ul li {
       { name: "auto", desc: "Tidak membuat stacking context baru" },
       { name: "angka", desc: "Semakin besar, semakin di depan" },
     ],
-    contohKode: `.kartu { position: relative; z-index: 1; background: #f0f9ff; }
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>z-index</title>
+<style>
+.kartu { position: relative; z-index: 1; background: #f0f9ff; padding: 1.2rem; border-radius: 16px; }
 .kartu h2 {
   position: absolute;
-  top: -12px;
-  right: -12px;
+  top: -14px;
+  right: -14px;
   z-index: 5;
   background: #f472b6;
   color: #fff;
-  padding: .15rem .7rem;
+  padding: .15rem .8rem;
   border-radius: 99px;
   margin: 0;
-}`,
+}
+</style>
+</head>
+<body>
+<div class="kartu">
+  <h2>NEW</h2>
+  <p>Badge pink berada di ATAS kartu (z-index lebih besar).</p>
+</div>
+</body>
+</html>`,
     related: ["css-position"],
     demo: "generic",
   },
@@ -155,13 +233,25 @@ ul li {
       { name: "content-box", desc: "width/height hanya isi (bawaan)" },
       { name: "border-box", desc: "width/height termasuk padding & border" },
     ],
-    contohKode: `.kartu {
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>box-sizing</title>
+<style>
+.kartu {
   width: 180px;
   padding: 20px;
   border: 6px solid #38bdf8;
-  box-sizing: border-box;   /* lebar tetap 180px */
+  box-sizing: border-box;   /* lebar tetap 180px termasuk padding & border */
   background: #f0f9ff;
-}`,
+}
+</style>
+</head>
+<body>
+<div class="kartu">Kotak 180px (lebar tetap, termasuk isi & bingkai)</div>
+</body>
+</html>`,
     related: ["css-padding", "css-margin"],
     demo: "generic",
   },
@@ -178,8 +268,21 @@ ul li {
       { name: "margin-top / right / bottom / left", desc: "Jarak per sisi" },
       { name: "margin: 0 auto", desc: "Hilangkan margin vertikal, tengah horizontal" },
     ],
-    contohKode: `.judul { margin-bottom: 2rem; color: #7c3aed; }
-.kartu { margin: 2rem auto; max-width: 280px; text-align: center; }`,
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>margin</title>
+<style>
+.kartu { margin: 2rem auto; max-width: 280px; text-align: center; background: #f0f9ff; border: 2px solid #7dd3fc; border-radius: 16px; padding: 1rem; }
+.judul { margin-bottom: 2rem; color: #7c3aed; }
+</style>
+</head>
+<body>
+<h2 class="judul">Judul dengan margin bawah 2rem</h2>
+<div class="kartu">Kartu di tengah (margin: auto)</div>
+</body>
+</html>`,
     related: ["css-padding", "css-gap"],
     demo: "generic",
   },
@@ -195,8 +298,22 @@ ul li {
       { name: "padding", desc: "Shorthand 1-4 nilai" },
       { name: "padding-top / right / bottom / left", desc: "Per sisi" },
     ],
-    contohKode: `.kartu { padding: 2rem; }
-.tombol { padding: .9rem 2rem; font-size: 1rem; }`,
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>padding</title>
+<style>
+.kartu { padding: 2rem; background: #fdf2f8; border: 3px solid #f472b6; border-radius: 16px; }
+.tombol { padding: .9rem 2rem; font-size: 1rem; border: none; border-radius: 999px; background: #fbbf24; }
+</style>
+</head>
+<body>
+<div class="kartu">Isi kartu dengan padding 2rem — sangat lega</div>
+<br>
+<button class="tombol">Tombol Besar</button>
+</body>
+</html>`,
     related: ["css-margin", "css-box-sizing"],
     demo: "generic",
   },
@@ -214,8 +331,21 @@ ul li {
       { name: "hsl", desc: "hsl(199, 93%, 60%) — mudah diputar hue-nya" },
       { name: "currentColor", desc: "Mengikuti warna teks induk" },
     ],
-    contohKode: `.judul { color: #e11d48; }
-.contoh { color: #0ea5e9; }`,
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>color</title>
+<style>
+.judul { color: #e11d48; }
+.contoh { color: #0ea5e9; }
+</style>
+</head>
+<body>
+<h1 class="judul">Teks berwarna merah muda</h1>
+<p class="contoh">Paragraf berwarna biru muda</p>
+</body>
+</html>`,
     related: ["css-background", "css-border"],
     demo: "generic",
   },
@@ -233,8 +363,21 @@ ul li {
       { name: "background-size", desc: "cover / contain / auto" },
       { name: "background-repeat", desc: "no-repeat untuk gambar latar" },
     ],
-    contohKode: `body { background: linear-gradient(160deg, #fff7ed 0%, #fdf4ff 55%, #eff6ff 100%); }
-.kartu { background: linear-gradient(135deg, #fda4af, #f472b6); color: #fff; padding: 1rem; border: none; }`,
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>background</title>
+<style>
+body { background: linear-gradient(160deg, #fff7ed 0%, #fdf4ff 55%, #eff6ff 100%); }
+.kartu { background: linear-gradient(135deg, #fda4af, #f472b6); color: #fff; padding: 1.2rem; border-radius: 16px; }
+</style>
+</head>
+<body>
+<div class="kartu">Kartu dengan gradasi pink</div>
+<p>Latar halaman berubah, kartu ikut gradasi!</p>
+</body>
+</html>`,
     related: ["css-color", "css-border"],
     demo: "generic",
   },
@@ -251,8 +394,22 @@ ul li {
       { name: "border-radius", desc: "radius sudut; 50% = lingkaran" },
       { name: "border-style", desc: "solid, dashed, dotted, double, none" },
     ],
-    contohKode: `.kartu { border: 4px solid #f472b6; border-radius: 20px; background: #fdf2f8; }
-.tombol { border: 3px solid #0ea5e9; border-radius: 999px; background: #fff; color: #0ea5e9; }`,
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>border</title>
+<style>
+.kartu { border: 4px solid #f472b6; border-radius: 20px; background: #fdf2f8; padding: 1.2rem; }
+.tombol { border: 3px solid #0ea5e9; border-radius: 999px; background: #fff; color: #0ea5e9; padding: .5rem 1.2rem; }
+</style>
+</head>
+<body>
+<div class="kartu">Kotak berbingkai pink + sudut membulat</div>
+<br>
+<button class="tombol">Tombol</button>
+</body>
+</html>`,
     related: ["css-box-sizing", "css-background"],
     demo: "generic",
   },
@@ -269,8 +426,21 @@ ul li {
       { name: "web font", desc: "Google Fonts lewat <link> atau @import" },
       { name: "system font stack", desc: "\"Segoe UI\", system-ui, sans-serif" },
     ],
-    contohKode: `body { font-family: Georgia, serif; }
-.judul { font-family: 'Courier New', monospace; letter-spacing: 2px; }`,
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>font-family</title>
+<style>
+body { font-family: Georgia, serif; }
+.judul { font-family: 'Courier New', monospace; letter-spacing: 2px; }
+</style>
+</head>
+<body>
+<h1 class="judul">Courier New</h1>
+<p>Paragraf ini memakai Georgia serif bawaan sistem.</p>
+</body>
+</html>`,
     related: ["css-font-size", "css-color"],
     demo: "generic",
   },
@@ -288,8 +458,21 @@ ul li {
       { name: "px", desc: "Ukuran tetap" },
       { name: "clamp(min, fluid, max)", desc: "Responsif: clamp(1rem, 5vw, 2rem)" },
     ],
-    contohKode: `.judul { font-size: 2rem; }
-.contoh { font-size: .75rem; color: #64748b; }`,
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>font-size</title>
+<style>
+.judul { font-size: 2rem; }
+.contoh { font-size: .75rem; color: #64748b; }
+</style>
+</head>
+<body>
+<h1 class="judul">Judul 2rem</h1>
+<p class="contoh">Paragraf kecil 0.75rem — cocok untuk catatan kaki.</p>
+</body>
+</html>`,
     related: ["css-font-family"],
     demo: "generic",
   },
@@ -307,11 +490,27 @@ ul li {
       { name: ":active", desc: "Saat ditekan/diklik" },
       { name: "transition", desc: "animasi perubahan yang halus" },
     ],
-    contohKode: `button.tombol:hover { background: #0ea5e9; color: #fff; transform: scale(1.08); }
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>hover</title>
+<style>
+button.tombol:hover { background: #0ea5e9; color: #fff; transform: scale(1.08); }
 .kartu:hover { background: #fef3c7; border-color: #f59e0b; }
-table tr:hover { background: #e0f2fe; }
 .judul { transition: color .3s; }
-.judul:hover { color: #f472b6; }`,
+.judul:hover { color: #f472b6; }
+.kartu { border: 3px solid #cbd5e1; border-radius: 16px; padding: 1rem; transition: all .2s; }
+.tombol { padding: .6rem 1.2rem; border: none; border-radius: 8px; background: #fbbf24; }
+</style>
+</head>
+<body>
+<h2 class="judul">Arahkan mouse ke elemen ini!</h2>
+<div class="kartu">Kartu berubah warna saat disorot</div>
+<br>
+<button class="tombol">Tombol berubah saat hover</button>
+</body>
+</html>`,
     related: ["css-position", "css-border"],
     demo: "generic",
   },
@@ -328,13 +527,28 @@ table tr:hover { background: #e0f2fe; }
       { name: "prefers-color-scheme", desc: "dark / light sesuai sistem" },
       { name: "prefers-reduced-motion", desc: "Hormati pengguna yang tidak suka animasi" },
     ],
-    contohKode: `@media (min-width: 250px) {
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>media queries</title>
+<style>
+.judul { color: #64748b; }
+.kartu { background: #f1f5f9; border-radius: 16px; padding: 1rem; }
+@media (min-width: 250px) {
   h1.judul { color: #16a34a; }
-  .kartu { background: #dcfce7; border-color: #4ade80; }
+  .kartu { background: #dcfce7; border: 2px solid #4ade80; }
 }
 @media (min-width: 600px) {
   .judul { letter-spacing: 3px; }
-}`,
+}
+</style>
+</head>
+<body>
+<h1 class="judul">Warna berubah di layar kecil</h1>
+<div class="kartu">Di layar lebar ≥250px: hijau &amp; teks hijau</div>
+</body>
+</html>`,
     related: ["css-display-grid", "css-font-size"],
     demo: "generic",
   },
