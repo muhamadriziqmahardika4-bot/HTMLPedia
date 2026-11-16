@@ -161,11 +161,13 @@ export default function GuidedLesson({ entry }) {
 
   return (
     <div>
-      {/* Stepper */}
+      {/* Stepper — tetap diam, konten di bawahnya yang berganti dengan fade halus */}
       <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", alignItems: "center", marginBottom: ".8rem", borderBottom: "2px dashed var(--border)", paddingBottom: ".6rem" }}>
         {[0, 1, 2, 3].map(stepDot)}
       </div>
 
+      {/* Konten langkah: standar — fade + sedikit naik */}
+      <div key={stage} style={{ animation: "stepFade .35s ease both" }}>
       {/* ===== LANGKAH 1: BACA & PAHAMI (per bagian, ber-efek mengetik) ===== */}
       {stage === 0 && (
         <section>
@@ -311,6 +313,7 @@ export default function GuidedLesson({ entry }) {
           </button>
         </section>
       )}
+      </div>
     </div>
   );
 }

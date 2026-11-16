@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatingShapes from "./components/FloatingShapes.jsx";
-import CandySweep from "./components/CandySweep.jsx";
 import Splash from "./pages/Splash.jsx";
 import IntroBasics from "./pages/IntroBasics.jsx";
 import BgmPlayer from "./components/BgmPlayer.jsx";
@@ -68,13 +67,12 @@ function AnimatedRoutes() {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait" initial={false}>
-      <CandySweep key={`sweep-${location.pathname}`} />
       <motion.main
         key={location.pathname}
-        initial={{ opacity: 0, x: 90, scale: 0.97, filter: "blur(5px)" }}
-        animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-        exit={{ opacity: 0, x: -70, scale: 0.97, filter: "blur(5px)" }}
-        transition={{ type: "spring", stiffness: 260, damping: 30 }}
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
       >
         <Routes location={location}>
           <Route path="/" element={<Home />} />
@@ -116,7 +114,7 @@ export default function App() {
       <FloatingShapes />
       <AnimatePresence mode="wait" initial={false}>
       {stage === "splash" && (
-        <motion.div key="splash" exit={{ opacity: 0, scale: 0.94, filter: "blur(6px)", transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } }}>
+        <motion.div key="splash" exit={{ opacity: 0, transition: { duration: 0.22, ease: "easeOut" } }}>
           <div className="app splash-screen">
             <Splash onStart={start} />
           </div>
@@ -125,22 +123,21 @@ export default function App() {
 
       {stage === "intro" && (
         <motion.div key="intro"
-          initial={{ opacity: 0, x: 130, scale: 0.96, filter: "blur(5px)" }}
-          animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-          exit={{ opacity: 0, x: -120, scale: 0.96, filter: "blur(5px)", transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] } }}
-          transition={{ type: "spring", stiffness: 260, damping: 30 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.22, ease: "easeOut" } }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
           className="intro-root"
         >
-          <CandySweep key="intro-sweep" />
           <IntroBasics onDone={introDone} />
         </motion.div>
       )}
 
       {stage === "app" && (
         <motion.div key="app"
-          initial={{ opacity: 0, x: 130, scale: 0.96, filter: "blur(5px)" }}
-          animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-          transition={{ type: "spring", stiffness: 260, damping: 30 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
           className="app app-root"
         >
           <Navbar />
