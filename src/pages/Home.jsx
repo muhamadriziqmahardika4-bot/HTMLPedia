@@ -62,16 +62,6 @@ export default function Home() {
             }}>
             📓 Buku Kesalahan ({mistakesCount()})
           </button>
-          <button
-            onClick={() => navigate("/proyek")}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: ".5rem",
-              background: "linear-gradient(135deg,#86efac,#22c55e)", border: "none",
-              color: "#14532d", fontWeight: 800, fontSize: ".85rem", padding: ".55rem 1.3rem",
-              borderRadius: 999, cursor: "pointer", boxShadow: "0 4px 0 #16a34a",
-            }}>
-            🏗️ Proyek Mini — bangun yang nyata ✨
-          </button>
         </div>
 
         {/* Streak harian */}

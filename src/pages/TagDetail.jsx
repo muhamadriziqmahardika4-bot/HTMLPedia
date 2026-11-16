@@ -45,25 +45,39 @@ export default function TagDetail() {
       </div>
       {entry.deprecated && <p className="info" style={{ borderColor: "#fde68a", background: "#fffbeb", color: "#92400e" }}>⚠️ Tag ini <b>deprecated</b> — tidak disarankan untuk kode baru. {entry.replacedBy ? <>Penggantinya: <code>{entry.replacedBy}</code>.</> : null}</p>}
 
-      <div style={{ display: "flex", justifyContent: "center", marginTop: ".6rem" }}>
+      {/* Alur belajar terpandu: Baca → Praktik → Kuis Mini → Selesai */}
+      <GuidedLesson entry={entry} />
+
+      <div style={{ display: "flex", justifyContent: "space-between", gap: ".5rem", marginTop: "1.1rem", fontSize: ".78rem", flexWrap: "wrap", alignItems: "center", borderTop: "2px dashed var(--border)", paddingTop: ".7rem" }}>
+        <span>{prev && <Link to={`/tag/${prev.slug}`}>← {prev.tag}</Link>}</span>
         <a
           href={video.url}
           target="_blank"
           rel="noreferrer"
           title={video.label}
-          style={{ display: "inline-flex", alignItems: "center", gap: ".5rem", background: "#ef4444", color: "#fff", fontWeight: 800, fontSize: ".78rem", padding: ".5rem 1.2rem", borderRadius: 999, textDecoration: "none", boxShadow: "0 4px 0 #dc2626", maxWidth: "100%" }}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: ".3rem",
+            background: "#fee2e2",
+            border: "2px solid #fca5a5",
+            color: "#b91c1c",
+            padding: ".22rem .6rem",
+            borderRadius: 999,
+            fontSize: ".68rem",
+            fontWeight: 800,
+            textDecoration: "none",
+          }}
         >
-          ▶ 📺 {video.label}
+          ▶ 📺 Video tutorial
         </a>
-      </div>
-
-      {/* Alur belajar terpandu: Baca → Praktik → Kuis Mini → Selesai */}
-      <GuidedLesson entry={entry} />
-
-      <div style={{ display: "flex", justifyContent: "space-between", gap: ".5rem", marginTop: "1.1rem", fontSize: ".78rem", flexWrap: "wrap", borderTop: "2px dashed var(--border)", paddingTop: ".7rem" }}>
-        <span>{prev && <Link to={`/tag/${prev.slug}`}>← {prev.tag}</Link>}</span>
-        <span>Tag terkait: {entry.related.map((r) => <Link key={r} to={`/tag/${r}`} style={{ margin: "0 .3rem" }}>{`<${r}>`}</Link>)}</span>
         <span>{next && <Link to={`/tag/${next.slug}`}>{next.tag} →</Link>}</span>
+      </div>
+      <div style={{ fontSize: ".7rem", color: "#64748b", marginTop: ".4rem", textAlign: "center" }}>
+        {video.label}
+      </div>
+      <div style={{ fontSize: ".78rem", color: "#0369a1", marginTop: ".3rem", textAlign: "center" }}>
+        Tag terkait: {entry.related.map((r) => <Link key={r} to={`/tag/${r}`} style={{ margin: "0 .3rem" }}>{`<${r}>`}</Link>)}
       </div>
     </div>
   );
