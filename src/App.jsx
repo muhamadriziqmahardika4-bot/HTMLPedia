@@ -5,7 +5,7 @@ import FloatingShapes from "./components/FloatingShapes.jsx";
 import CandySweep from "./components/CandySweep.jsx";
 import Splash from "./pages/Splash.jsx";
 import IntroBasics from "./pages/IntroBasics.jsx";
-import { startBgm, stopBgm, bgmEnabled } from "./lib/bgm.js";
+import { startBgm, stopBgm, getBgmState, TRACKS } from "./lib/bgm.js";
 import { playClick } from "./lib/sounds.js";
 import Home from "./pages/Home.jsx";
 import Resources from "./pages/Resources.jsx";
@@ -17,7 +17,7 @@ import TagDetail from "./pages/TagDetail.jsx";
 import Quiz from "./pages/Quiz.jsx";
 
 function Navbar() {
-  const [bgm, setBgm] = useState(() => bgmEnabled());
+  const [bgmState, setBgmState] = useState(() => getBgmState());
   return (
     <nav className="nav">
       <Link to="/" className="logo" style={{ textDecoration: "none" }} onClick={playClick}>🍡 HTMLpedia</Link>
@@ -32,15 +32,23 @@ function Navbar() {
         <NavLink to="/kuis" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Kuis</NavLink>
         <NavLink to="/sumber" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📺 Sumber</NavLink>
         <NavLink to="/tentang" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👨‍💻 Tentang</NavLink>
-        <button
-          className="pill"
-          aria-pressed={bgm}
-          title={bgm ? "Matikan musik belajar" : "Nyalakan musik belajar"}
-          onClick={() => { const next = bgm ? (stopBgm(), false) : (startBgm(), true); setBgm(Boolean(next)); }}
-          style={{ fontSize: ".85rem" }}
+        <select
+          aria-label="Pilih musik belajar"
+          value={bgmState.enabled ? String(bgmState.track) : "off"}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === "off") { stopBgm(); setBgmState({ enabled: false, track: 0 }); }
+            else { const idx = Number(v); startBgm(idx); setBgmState({ enabled: true, track: idx }); }
+          }}
+          style={{
+            fontSize: ".78rem", fontWeight: 800, color: "#0369a1", background: "#fff",
+            border: "2px solid var(--border)", borderRadius: 999, padding: ".3rem .7rem",
+            cursor: "pointer", fontFamily: "inherit",
+          }}
         >
-          {bgm ? "🎵 Musik: On" : "🔇 Musik: Off"}
-        </button>
+          <option value="off">🔇 Musik: Off</option>
+          {TRACKS.map((t, i) => <option key={i} value={String(i)}>{t.name}</option>)}
+        </select>
       </div>
     </nav>
   );
@@ -95,14 +103,10 @@ export default function App() {
     setTimeout(() => setStage("intro"), 1100);
   };
 
-  const babDasar = () => {
-    startBgm();
-    setStage("app");
-    setTimeout(() => navigate("/dasar"), 80);
-  };
-
   const introDone = (target) => {
-    startBgm();           // musik belajar menyala begitu masuk aplikasi
+    const s = getBgmState();
+    // Mulai musik otomatis hanya jika belum pernah dimatikan
+    if (localStorage.getItem("htmlpedia-bgm") !== "off") startBgm(s.track ?? 0);
     setStage("app");
     if (target === "dasar") setTimeout(() => navigate("/dasar"), 60);
   };
@@ -115,7 +119,7 @@ export default function App() {
         <motion.div key="splash" exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -140, scale: 0.92, filter: "blur(6px)", transition: { duration: 0.5, ease: [0.65, 0, 0.35, 1] } }}>
           <div className="app splash-screen">
             <FloatingShapes />
-            <Splash onStart={start} onBabDasar={babDasar} leaving={leaving} />
+            <Splash onStart={start} leaving={leaving} />
           </div>
         </motion.div>
       )}

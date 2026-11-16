@@ -64,6 +64,15 @@ const SLIDES = [
 
 
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 24, scale: 0.92, filter: "blur(6px)" },
+  show: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { type: "spring", stiffness: 260, damping: 22 } },
+};
+
 /* Dekorasi latar: bentuk-bentuk pastel melayang */
 const DECO = [
   { type: "ring", style: { width: 90, height: 90, top: "14%", left: "6%", borderColor: "rgba(244,114,182,.35)" } },
@@ -124,58 +133,50 @@ export default function IntroBasics({ onDone }) {
         {!isChoice ? (
           <motion.div
             key={step}
-            initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 150, rotate: 1.5 }}
-            animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, rotate: 0 }}
+            variants={container}
+            initial="hidden"
+            animate="show"
             exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -130, rotate: -1.5 }}
             transition={{ type: "spring", stiffness: 220, damping: 24 }}
-            style={{ position: "relative", width: "min(720px, 100%)", zIndex: 2, marginTop: "4.5rem" }}
+            style={{ position: "relative", width: "min(720px, 100%)", zIndex: 2 }}
           >
-            {/* Cubby DI LUAR box, duduk di atasnya */}
-            <motion.div
-              initial={{ opacity: 0, y: -30, scale: 0.7 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.15 }}
-              style={{ position: "absolute", top: -64, left: "50%", transform: "translateX(-50%)", zIndex: 5, display: "flex", alignItems: "center", gap: ".6rem" }}
-            >
-              <Cubby size={120} />
-              <div className="cubby-bubble" style={{ position: "static", transform: "none", width: 132, fontSize: ".62rem" }}>{current.cubby}</div>
-            </motion.div>
+            {/* Box besar & ditengahkan, Cubby di dalam */}
+            <div style={{ background: "#ffffff", borderRadius: 30, border: "3px solid rgba(226,232,240,.9)", padding: "1.4rem 1.6rem", boxShadow: "0 26px 60px rgba(2,132,199,.25)", display: "flex", gap: "1.1rem", alignItems: "center", flexWrap: "wrap" }}>
+              {/* Cubby + bubble */}
+              <motion.div initial={{ opacity: 0, x: -40, scale: 0.8 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
+                style={{ position: "relative", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: ".3rem" }}>
+                <div className="cubby-bubble" style={{ position: "static", transform: "none", width: 118, fontSize: ".6rem", marginBottom: "-.2rem" }}>{current.cubby}</div>
+                <Cubby size={120} />
+              </motion.div>
 
-            {/* Box diperbesar & ditengahkan */}
-            <div style={{ background: "#ffffff", borderRadius: 30, border: "3px solid rgba(226,232,240,.9)", padding: "2.4rem 2rem 1.6rem", boxShadow: "0 26px 60px rgba(2,132,199,.25)", textAlign: "center" }}>
-              <span className="badge" style={{ display: "inline-block", background: "#f0f9ff", color: "#0369a1", border: "2px solid #bae6fd" }}>📖 DASAR {step + 1} / {SLIDES.length}</span>
-              <div style={{ fontSize: "3.4rem", margin: ".3rem 0 .1rem" }}>{current.emoji}</div>
-              <h1 style={{ margin: ".1rem 0 .1rem", fontSize: "1.8rem", color: "#0c4a6e" }}>{current.title}</h1>
-              <p style={{ color: "#0369a1", fontWeight: 800, margin: ".15rem 0 .7rem", fontSize: ".95rem" }}>“{current.analogi}”</p>
-              <p style={{ color: "#334155", lineHeight: 1.75, margin: "0 auto", fontSize: ".97rem", maxWidth: 520 }}>{current.text}</p>
+              {/* Teks */}
+              <div style={{ flex: "1 1 260px", textAlign: "left" }}>
+                <span className="badge" style={{ display: "inline-block", background: "#f0f9ff", color: "#0369a1", border: "2px solid #bae6fd" }}>📖 DASAR {step + 1} / {SLIDES.length}</span>
+                <div style={{ fontSize: "2rem", margin: ".15rem 0" }}>{current.emoji}</div>
+                <h1 style={{ margin: ".1rem 0 .1rem", fontSize: "1.55rem", color: "#0c4a6e" }}>{current.title}</h1>
+                <p style={{ color: "#0369a1", fontWeight: 800, margin: ".1rem 0 .6rem", fontSize: ".9rem" }}>“{current.analogi}”</p>
+                <p style={{ color: "#334155", lineHeight: 1.7, margin: 0, fontSize: ".92rem" }}>{current.text}</p>
 
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1.2rem", gap: ".5rem", flexWrap: "wrap" }}>
-                <button className="btn" onClick={skipAll}>⏭️ Lewati Dasar</button>
-                <button className="done-btn" onClick={next}>{step === SLIDES.length - 1 ? "Selesai ➡️" : "Lanjut ➡️"}</button>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: ".9rem", gap: ".5rem", flexWrap: "wrap" }}>
+                  <button className="btn" onClick={skipAll}>⏭️ Lewati Dasar</button>
+                  <button className="done-btn" onClick={next}>{step === SLIDES.length - 1 ? "Selesai ➡️" : "Lanjut ➡️"}</button>
+                </div>
               </div>
             </div>
           </motion.div>
         ) : (
           <motion.div
             key="choice"
-            initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 150 }}
-            animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0 }}
+            variants={container}
+            initial="hidden"
+            animate="show"
             exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.25 } }}
             transition={{ type: "spring", stiffness: 220, damping: 24 }}
-            style={{ position: "relative", width: "min(720px, 100%)", zIndex: 2, marginTop: "5rem" }}
+            style={{ position: "relative", zIndex: 2, width: "min(720px, 100%)" }}
           >
-            {/* Cubby duduk di atas box pilihan */}
-            <motion.div
-              initial={{ opacity: 0, y: -40, scale: 0.6, rotate: -6 }}
-              animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 280, damping: 16, delay: 0.15 }}
-              style={{ position: "absolute", top: -72, left: "50%", transform: "translateX(-50%)", zIndex: 5 }}
-            >
-              <Cubby size={140} />
-            </motion.div>
-
-            <div style={{ background: "#fff", borderRadius: 30, border: "3px solid rgba(226,232,240,.9)", padding: "2.5rem 2rem 1.6rem", boxShadow: "0 26px 60px rgba(2,132,199,.28)", textAlign: "center" }}>
-              <h1 style={{ margin: ".2rem 0 .2rem", fontSize: "1.6rem", color: "#0c4a6e" }}>Kamu sudah paham dasarnya! 🎉</h1>
+            <div style={{ background: "#fff", borderRadius: 30, border: "3px solid rgba(226,232,240,.9)", padding: "1.6rem 1.8rem", boxShadow: "0 26px 60px rgba(2,132,199,.28)", textAlign: "center" }}>
+              <motion.div variants={item} style={{ display: "flex", justifyContent: "center", marginBottom: ".1rem" }}><Cubby size={150} /></motion.div>
+              <motion.h1 variants={item} style={{ margin: ".2rem 0 .2rem", fontSize: "1.5rem", color: "#0c4a6e" }}>Kamu sudah paham dasarnya! 🎉</motion.h1>
               <p style={{ color: "#64748b", margin: "0 0 .9rem" }}>Domain, hosting, file, browser, editor, deploy — checklist kamu lengkap. Mau ke mana sekarang?</p>
               <div style={{ display: "flex", gap: ".7rem", justifyContent: "center", flexWrap: "wrap", marginBottom: ".7rem" }}>
                 <button className="done-btn" style={{ fontSize: "1.05rem", padding: ".8rem 1.5rem" }} onClick={() => { celebrate(); onDone("home"); }}>🏠 Ke Beranda</button>

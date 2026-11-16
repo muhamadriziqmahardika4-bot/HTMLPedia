@@ -29,6 +29,16 @@ export default function Home() {
         </form>
         <div className="meta">🍬 {ALL_ENTRIES.length} materi HTML · CSS · JS &nbsp;•&nbsp; filter per kategori &nbsp;•&nbsp; demo hidup</div>
         <ProgressBar done={count} total={total} label />
+        <button
+          onClick={() => navigate("/dasar")}
+          style={{
+            marginTop: ".9rem", display: "inline-flex", alignItems: "center", gap: ".5rem",
+            background: "linear-gradient(135deg,#fda4af,#f472b6)", border: "none",
+            color: "#fff", fontWeight: 800, fontSize: ".85rem", padding: ".55rem 1.3rem",
+            borderRadius: 999, cursor: "pointer", boxShadow: "0 4px 0 #ec4899",
+          }}>
+          📚 Bab Dasar — domain, hosting &amp; dasar-dasar web ➡️
+        </button>
       </header>
 
       <div style={{ textAlign: "center", margin: "1.6rem 0 0" }}><span className="sticker">100% GRATIS · TANPA DAFTAR ✨</span></div>
