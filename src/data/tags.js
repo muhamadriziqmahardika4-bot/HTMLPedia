@@ -1607,10 +1607,13 @@ export const TAGS = [
       { name: "async", desc: "Eksekusi secepat mungkin (urutan tidak terjaga)" },
       { name: "type", desc: "module untuk ES modules" },
     ],
-    contohKode: '<script src="app.js" defer></script>',
+    contohKode: `<h1 id="judul">Halo!</h1>
+<script>
+  document.getElementById("judul").textContent = "Halo, Mahardika! 🎉";
+</script>`,
     related: ["noscript", "canvas"],
     kapan: "Di dalam <head> atau di akhir <body>.",
-    output: "Tidak tampil — menjalankan logika JavaScript halaman.",
+    output: "Teks \"Halo!\" berubah menjadi \"Halo, Mahardika! 🎉\" saat halaman dirender.",
     demo: "nonvisual",
   },
 
@@ -1621,15 +1624,23 @@ export const TAGS = [
     name: "Skrip (lihat juga metadata)",
     category: "scripting",
     level: "Pemula",
-    summary: "Tempat utama menulis/memuat JavaScript. Halaman ini membahas dari sisi scripting: cara menulis logika, contoh modul, dan pola aman. Untuk urusan head, lihat entri di kategori Metadata & Head.",
+    summary: "Tempat utama menulis/memuat JavaScript. Contoh di bawah memakai script inline (langsung di tulisan halaman). Halaman ini membahas pola dasar; untuk urusan head, lihat entri di kategori Metadata & Head.",
     atribut: [
-      { name: "src", desc: "Alamat file .js" },
+      { name: "src", desc: "Alamat file .js — file JavaScript eksternal" },
       { name: "type", desc: "module / importmap / speculationrules" },
     ],
-    contohKode: '<script type="module">\n  import { jalan } from "./app.js";\n  jalan();\n</script>',
+    contohKode: `<button class="btn">Klik aku!</button>
+<div id="out">Belum diklik</div>
+<script>
+  const tombol = document.querySelector(".btn");
+  const out = document.getElementById("out");
+  tombol.addEventListener("click", function () {
+    out.textContent = "Tombol diklik! 🎉";
+  });
+</script>`,
     related: ["noscript", "canvas", "script-meta"],
-    kapan: "Di akhir <body> (atau dengan defer).",
-    output: "Tidak tampil — efeknya terlihat lewat interaksi pengguna.",
+    kapan: "Di akhir <body> (atau dengan defer) — setelah HTML selesai dirender.",
+    output: "Efeknya terlihat lewat interaksi pengguna — klik tombol → teks berubah.",
     analogi: "Script itu otak yang membuat halamanmu bisa berpikir & merespons — klik, geser, berubah sendiri.",
     demo: "nonvisual",
   },
