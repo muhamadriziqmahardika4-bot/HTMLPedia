@@ -26,7 +26,7 @@ function Navbar() {
   };
   return (
     <nav className="nav">
-      <Link to="/" className="logo" style={{ textDecoration: "none" }} onClick={playClick}>🍡 HTMLpedia</Link>
+      <Link to="/" className="logo text-shimmer" style={{ textDecoration: "none" }} onClick={playClick}>🍡 HTMLpedia</Link>
       <div className="nav-pills">
         <NavLink to="/" end onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Beranda</NavLink>
         <NavLink to="/tag" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Tag</NavLink>

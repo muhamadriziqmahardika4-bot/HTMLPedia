@@ -6,7 +6,7 @@ export default function Basics() {
   return (
     <div className="panel">
       <div className="breadcrumb">🏠 Beranda › <b>Dasar-Dasar HTML</b></div>
-      <h2 style={{ marginTop: 0 }}>🌱 Dasar-Dasar HTML</h2>
+      <h2 style={{ marginTop: 0 }}><span className="title-underline">🌱 Dasar-Dasar HTML</span></h2>
       <p style={{ fontSize: ".85rem", color: "#0369a1" }}>12 materi penting sebelum mulai menulis tag — dibaca berurutan lebih baik.</p>
       <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))" }}>
         {BASICS.map((b) => (

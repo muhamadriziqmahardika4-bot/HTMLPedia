@@ -39,7 +39,7 @@ export default function Quiz() {
   return (
     <div className="panel">
       <div className="breadcrumb">🏠 Beranda › <b>Kuis</b>{topic ? ` › ${topic}` : ""}{mode ? ` › ${modeName(mode)}` : ""}{mode ? ` › Kuis ${stage}` : ""}</div>
-      <h2 style={{ marginTop: 0 }}>🧠 Kuis — Mau tes apa hari ini?</h2>
+      <h2 style={{ marginTop: 0 }}><span className="title-underline">🧠 Kuis — Mau tes apa hari ini?</span></h2>
       {best && Object.keys(best).length > 0 && (
         <p style={{ fontSize: ".72rem", color: "#0369a1", marginTop: "-.4rem" }}>
           🏆 Rekor stage terbaikmu: {Object.entries(best).map(([k, v]) => `${k.replace(":", " · ")} → Kuis ${v}`).join(" • ")}

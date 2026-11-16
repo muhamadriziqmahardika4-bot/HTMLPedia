@@ -31,7 +31,7 @@ export default function TagIndex() {
   return (
     <div className="panel">
       <div className="breadcrumb">🏠 Beranda › <b>Semua Tag</b>{kategori ? ` › ${CATEGORIES.find((c) => c.id === kategori)?.name}` : ""}</div>
-      <h2 style={{ marginTop: 0 }}>📚 Semua Materi ({filtered.length})</h2>
+      <h2 style={{ marginTop: 0 }}><span className="title-underline">📚 Semua Materi ({filtered.length})</span></h2>
 
       <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", alignItems: "center", marginBottom: ".8rem" }}>
         <div style={{ flex: "1 1 240px" }}>

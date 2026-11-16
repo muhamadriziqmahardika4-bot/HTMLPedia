@@ -106,8 +106,8 @@ export default function Splash({ onStart }) {
                 <CubbyBubble />
               </div>
               <div style={{ textAlign: "left" }}>
-                <span className="badge" style={{ marginBottom: ".4rem" }}>✨ SELAMAT DATANG DI ✨</span>
-                <h1 style={{ fontSize: "clamp(1.9rem, 6.5vw, 2.7rem)", fontWeight: 900, margin: 0, background: "linear-gradient(90deg,#0ea5e9,#6366f1,#22d3ee)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>HTMLpedia</h1>
+                <span className="badge badge-glow" style={{ marginBottom: ".4rem" }}>✨ SELAMAT DATANG DI ✨</span>
+                <h1 style={{ fontSize: "clamp(1.9rem, 6.5vw, 2.7rem)", fontWeight: 900, margin: 0 }} className="text-shimmer text-glow">HTMLpedia</h1>
                 <p style={{ color: "#0369a1", fontWeight: 700, margin: 0 }}>Ensiklopedia Interaktif Tag HTML</p>
               </div>
             </div>

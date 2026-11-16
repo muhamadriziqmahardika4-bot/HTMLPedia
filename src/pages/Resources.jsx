@@ -50,7 +50,7 @@ export default function Resources() {
   return (
     <div className="panel">
       <div className="breadcrumb">🏠 Beranda › <b>Sumber Belajar</b></div>
-      <h2 style={{ marginTop: 0 }}>📺 Belajar dari yang Terbaik</h2>
+      <h2 style={{ marginTop: 0 }}><span className="title-underline">📺 Belajar dari yang Terbaik</span></h2>
       <p style={{ fontSize: ".85rem", color: "#0369a1" }}>Kurasi channel YouTube (Indonesia &amp; US) dari pemula sampai profesional. Klik kartu untuk membuka di YouTube.</p>
 
       <Reveal delay={0}><p className="section-title">🇮🇩 Channel Indonesia</p></Reveal>
