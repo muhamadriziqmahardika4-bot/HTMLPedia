@@ -332,8 +332,10 @@ html { scroll-behavior: smooth; }
   .splash-wrap .panel { padding: 1.4rem .9rem 1.8rem; min-height: auto; width: 100%; box-shadow: 0 10px 0 rgba(125,211,252,.35); }
   .splash-wrap .panel h1 { font-size: 1.35rem; }
   .cubby-bubble { position: static; transform: none; margin: 0 auto .6rem; width: 150px; font-size: .65rem; right: auto; }
-  .splash-screen .shape.ring, .splash-screen .shape.dot { display: block !important; opacity: .18 !important; }
-  .splash-screen .cloud { display: block !important; opacity: .22 !important; }
+  .splash-screen .shape.ring, .splash-screen .shape.dot { display: block !important; opacity: .38 !important; }
+  .splash-screen .cloud { display: block !important; opacity: .45 !important; }
   .splash-screen .cloud:nth-child(n+5) { display: none !important; }
+  .splash-screen .shape.plus { display: block !important; opacity: .45 !important; font-size: 1.4rem !important; }
+  .splash-screen .sparkle { display: block !important; opacity: .55 !important; }
 }
 
