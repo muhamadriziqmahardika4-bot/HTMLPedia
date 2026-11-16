@@ -66,7 +66,6 @@ body {
 .card { background: #fff; border: 2px solid var(--border); border-radius: 18px; padding: .8rem; font-size: .78rem; cursor: pointer; text-align: left; box-shadow: 0 4px 0 var(--border); transition: transform .18s, box-shadow .18s; font-family: inherit; }
 .card:hover { transform: translateY(-4px); box-shadow: 0 8px 0 var(--border); }
 .card:active { transform: scale(.95); }
- 60% { transform: rotate(-1deg) translateY(-5px); } }
 .card:nth-child(odd) { transform: rotate(-.6deg); }
 .card:nth-child(even) { transform: rotate(.6deg); }
 .card:nth-child(odd):hover, .card:nth-child(even):hover { transform: translateY(-4px); }
