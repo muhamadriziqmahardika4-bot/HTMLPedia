@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const RESOURCES = [
-  { flag: "🇮🇩", name: "Web Programming UNPAS — Sandhika Galih", desc: "Pemula → mahir. HTML, CSS, JavaScript, roadmap jelas, penjelasan runtut", url: "https://www.youtube.com/@WebProgrammingUNPAS", tags: ["HTML", "CSS", "JS"] },
-  { flag: "🇮🇩", name: "Dicoding", desc: "Channel resmi Dicoding — materi terstruktur + kelas gratis", url: "https://www.youtube.com/@Dicoding", tags: ["HTML", "CSS", "JS"] },
+  { flag: "🇮🇩", name: "Web Programming UNPAS — Sandhika Galih", desc: "Pemula → mahir. HTML, CSS, JavaScript, roadmap jelas, penjelasan runtut", url: "https://www.youtube.com/channel/UCkXmLjEr95LVtGuIm3l2dPg", tags: ["HTML", "CSS", "JS"] },
+  { flag: "🇮🇩", name: "Dicoding", desc: "Channel resmi Dicoding — materi terstruktur + kelas gratis", url: "https://www.youtube.com/@DicodingIndonesia", tags: ["HTML", "CSS", "JS"] },
   { flag: "🇮🇩", name: "Programmer Zaman Now", desc: "Eko Kurniawan — sudut pandang industri, serius & mendalam", url: "https://www.youtube.com/@ProgrammerZamanNow", tags: ["JS", "Backend"] },
   { flag: "🇮🇩", name: "Sekolah Koding", desc: "Pelopor edukasi coding Indonesia, dasar sampai menengah", url: "https://www.youtube.com/@SekolahKoding", tags: ["HTML", "JS"] },
   { flag: "🇮🇩", name: "Kelas Terbuka", desc: "Gaya santai & humoris, cocok untuk pemula total", url: "https://www.youtube.com/@KelasTerbuka", tags: ["HTML", "CSS"] },
   { flag: "🇺🇸", name: "freeCodeCamp", desc: "Kursus lengkap 4–10 jam gratis — standar emas belajar gratis", url: "https://www.youtube.com/@freecodecamp", tags: ["HTML", "CSS", "JS"] },
   { flag: "🇺🇸", name: "Traversy Media", desc: "Brad Traversy — crash course berbasis proyek, sangat praktis", url: "https://www.youtube.com/@TraversyMedia", tags: ["HTML", "CSS", "JS"] },
-  { flag: "🇺🇸", name: "The Net Ninja", desc: "Tutorial bertahap & rapi, dari dasar sampai framework", url: "https://www.youtube.com/@thenetninja", tags: ["JS", "React"] },
+  { flag: "🇺🇸", name: "The Net Ninja", desc: "Tutorial bertahap & rapi, dari dasar sampai framework", url: "https://www.youtube.com/@NetNinja", tags: ["JS", "React"] },
   { flag: "🇺🇸", name: "Kevin Powell", desc: "Spesialis CSS — layout, responsive, dan desain web modern", url: "https://www.youtube.com/@KevinPowell", tags: ["CSS"] },
   { flag: "🇺🇸", name: "Programming with Mosh", desc: "Penjelasan jernih & sabar, sangat ramah untuk pemula", url: "https://www.youtube.com/@programmingwithmosh", tags: ["JS"] },
   { flag: "🇺🇸", name: "Fireship", desc: "Konsep padat dalam ±100 detik — untuk memperluas wawasan cepat", url: "https://www.youtube.com/@Fireship", tags: ["JS", "Web"] },

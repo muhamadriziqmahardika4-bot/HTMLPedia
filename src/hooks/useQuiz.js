@@ -13,6 +13,7 @@ function readStored() {
   }
 }
 
+// Menyimpan stage terjauh yang dicapai per "topik:mode" (angka stage, mulai dari 1).
 export function useQuiz() {
   const [best, setBest] = useState(readStored);
 
@@ -24,14 +25,14 @@ export function useQuiz() {
     }
   }, [best]);
 
-  const saveResult = useCallback((topic, mode, score) => {
+  const saveStage = useCallback((topic, mode, stage) => {
     const key = `${topic}:${mode}`;
     setBest((prev) => {
       const current = typeof prev[key] === "number" ? prev[key] : 0;
-      if (score <= current) return prev;
-      return { ...prev, [key]: score };
+      if (stage <= current) return prev;
+      return { ...prev, [key]: stage };
     });
   }, []);
 
-  return { best, saveResult };
+  return { best, saveStage };
 }

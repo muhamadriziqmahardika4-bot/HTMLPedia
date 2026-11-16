@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { questionsForTag } from "../data/quizzes.js";
 import { CATEGORIES } from "../data/categories.js";
+import { playCorrect, playWrong } from "../lib/sounds.js";
 
 function shuffleDeterministic(arr, seed) {
   const a = [...arr];
@@ -50,7 +51,7 @@ export default function TagQuiz({ entry }) {
               if (j === item.answer) cls += " correct";
               else if (j === chosen) cls += " wrong";
             }
-            return <button key={j} className={cls} style={{ fontSize: ".8rem", padding: ".45rem .7rem" }} onClick={() => setAnswers({ ...answers, [i]: j })}>{opt}</button>;
+            return <button key={j} className={cls} style={{ fontSize: ".8rem", padding: ".45rem .7rem" }} onClick={() => { if (answers[i] !== undefined) return; (j === item.answer ? playCorrect : playWrong)(); setAnswers({ ...answers, [i]: j }); }}>{opt}</button>;
           })}
         </div>
       ))}

@@ -34,6 +34,8 @@ export const TAGS = [
     ],
     contohKode: '<html lang="id">\n  <head>...</head>\n  <body>...</body>\n</html>',
     related: ["head", "body", "doctype"],
+    kapan: "Wajib ada di setiap halaman HTML — bungkus paling luar dari semua elemen.",
+    output: "Menentukan bahasa halaman & struktur global; tidak terlihat visual.",
     demo: "generic",
   },
   {
@@ -58,6 +60,8 @@ export const TAGS = [
     atribut: [{ name: "(tidak ada atribut umum)", desc: "head hanya menampung metadata" }],
     contohKode: '<head>\n  <meta charset="UTF-8">\n  <title>Profil Aku</title>\n</head>',
     related: ["title", "meta", "link", "style"],
+    kapan: "Di dalam setiap dokumen HTML, sebelum <body>.",
+    output: "Tidak tampil — berisi judul tab, meta, dan link CSS/favicon.",
     demo: "generic",
   },
   {
@@ -70,6 +74,8 @@ export const TAGS = [
     atribut: [{ name: "(tidak ada atribut)", desc: "Isinya hanya teks judul" }],
     contohKode: "<title>Resep Nasi Goreng Kampung — Masakku</title>",
     related: ["head", "meta"],
+    kapan: "Di dalam <head> pada setiap halaman.",
+    output: "Tampil di tab browser, bookmark, dan judul hasil pencarian Google.",
     demo: "generic",
   },
   {
@@ -87,6 +93,8 @@ export const TAGS = [
     ],
     contohKode: '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<meta name="description" content="Belajar HTML gratis">',
     related: ["head", "title", "link"],
+    kapan: "Di dalam <head> — untuk encoding, viewport, deskripsi pencarian.",
+    output: "Tidak tampil — efeknya terlihat di tab, hasil Google, dan tampilan mobile.",
     demo: "generic",
   },
   {
@@ -104,6 +112,8 @@ export const TAGS = [
     ],
     contohKode: '<link rel="stylesheet" href="style.css">\n<link rel="icon" href="favicon.ico">',
     related: ["head", "style", "meta"],
+    kapan: "Di dalam <head> — memuat CSS, favicon, font eksternal.",
+    output: "Tidak tampil — efeknya terlihat pada tampilan halaman (CSS termuat).",
     demo: "generic",
   },
   {
@@ -116,6 +126,8 @@ export const TAGS = [
     atribut: [{ name: "media", desc: "Media target CSS ini, misal print" }],
     contohKode: "<style>\n  body { background: #f0f9ff; }\n</style>",
     related: ["link", "head"],
+    kapan: "Di dalam <head> (atau body untuk kasus khusus).",
+    output: "Tidak tampil — efeknya terlihat pada tampilan halaman.",
     demo: "generic",
   },
   {
@@ -131,6 +143,8 @@ export const TAGS = [
     ],
     contohKode: '<base href="https://contoh.com/blog/">',
     related: ["head", "a"],
+    kapan: "Di dalam <head>, hanya bila semua URL relatif harus diubah basisnya.",
+    output: "Tidak tampil — memengaruhi semua link relatif di halaman.",
     demo: "generic",
   },
   {
@@ -143,6 +157,8 @@ export const TAGS = [
     atribut: [{ name: "(tidak ada atribut umum)", desc: "body hanya menampung konten tampil" }],
     contohKode: "<body>\n  <h1>Halo Dunia</h1>\n</body>",
     related: ["head", "html"],
+    kapan: "Di dalam <html>, setelah <head>.",
+    output: "Semua yang tampil di halaman berada di dalamnya.",
     demo: "generic",
   },
 
@@ -1377,6 +1393,8 @@ export const TAGS = [
     atribut: [{ name: "(global)", desc: "Atribut global berlaku" }],
     contohKode: "<noscript><p>Aktifkan JavaScript untuk pengalaman terbaik.</p></noscript>",
     related: ["script"],
+    kapan: "Di mana pun konten alternatif diperlukan.",
+    output: "Tampil HANYA jika JavaScript dimatikan.",
     demo: "generic",
   },
   {
@@ -1394,6 +1412,8 @@ export const TAGS = [
     ],
     contohKode: '<script src="app.js" defer></script>',
     related: ["noscript", "canvas"],
+    kapan: "Di dalam <head> atau di akhir <body>.",
+    output: "Tidak tampil — menjalankan logika JavaScript halaman.",
     demo: "generic",
   },
 
@@ -1411,6 +1431,8 @@ export const TAGS = [
     ],
     contohKode: '<script type="module">\n  import { jalan } from "./app.js";\n  jalan();\n</script>',
     related: ["noscript", "canvas", "script-meta"],
+    kapan: "Di akhir <body> (atau dengan defer).",
+    output: "Tidak tampil — efeknya terlihat lewat interaksi pengguna.",
     demo: "generic",
   },
   {
@@ -1423,6 +1445,8 @@ export const TAGS = [
     atribut: [{ name: "(global)", desc: "Atribut global berlaku" }],
     contohKode: "<template id=\"kartu\">\n  <div class=\"kartu\"><h3></h3></div>\n</template>",
     related: ["slot", "script"],
+    kapan: "Saat membuat komponen berulang lewat JavaScript.",
+    output: "Tidak tampil sama sekali sampai di-clone lewat JS.",
     demo: "generic",
   },
   {
@@ -1435,6 +1459,8 @@ export const TAGS = [
     atribut: [{ name: "name", desc: "Nama slot — diisi lewat atribut slot pada child" }],
     contohKode: "<slot name=\"judul\">Judul default</slot>",
     related: ["template"],
+    kapan: "Di dalam Web Component (shadow DOM).",
+    output: "Tidak tampil — jadi lubang isi komponen kustom.",
     demo: "generic",
   },
   {
