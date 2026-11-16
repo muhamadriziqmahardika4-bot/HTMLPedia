@@ -1,14 +1,11 @@
 import React from "react";
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { TAGS } from "../data/tags.js";
 import { CATEGORIES } from "../data/categories.js";
 import { useProgress } from "../hooks/useProgress.js";
-import CodeBlock from "../components/CodeBlock.jsx";
-import DemoRenderer from "../components/DemoRenderer.jsx";
-import Playground from "../components/Playground.jsx";
 import TagBadge from "../components/TagBadge.jsx";
 import ConfettiButton from "../components/ConfettiButton.jsx";
-import TagQuiz from "../components/TagQuiz.jsx";
+import GuidedLesson from "../components/GuidedLesson.jsx";
 
 export default function TagDetail() {
   const { slug } = useParams();
@@ -44,27 +41,12 @@ export default function TagDetail() {
         </div>
         <ConfettiButton label="Tandai Selesai" doneLabel="✓ Selesai!" done={done} onToggle={() => toggle(entry.slug)} className="done-btn" />
       </div>
-      {done && <div className="confetti" style={{ background: "#dcfce7" }}>🎉 Mantap! Tag {entry.tag} berhasil kamu taklukkan! 🎊</div>}
-      <TagQuiz entry={entry} />
       {entry.deprecated && <p className="info" style={{ borderColor: "#fde68a", background: "#fffbeb", color: "#92400e" }}>⚠️ Tag ini <b>deprecated</b> — tidak disarankan untuk kode baru. {entry.replacedBy ? <>Penggantinya: <code>{entry.replacedBy}</code>.</> : null}</p>}
 
-      <div className="cols">
-        <div>
-          <div className="info"><b>📖 Apa itu?</b><br />{entry.summary}</div>
-          <div className="info" style={{ borderColor: "#c7d2fe", background: "#eef2ff" }}>
-            <b>🧩 Atribut penting</b><br />
-            {entry.atribut.map((a) => <div key={a.name}><code>{a.name}</code> — {a.desc}</div>)}
-          </div>
-          <CodeBlock code={entry.contohKode} label="Contoh kode" />
-        </div>
+      {/* Alur belajar terpandu: Baca → Praktik → Kuis Mini → Selesai */}
+      <GuidedLesson entry={entry} />
 
-        <div>
-          <DemoRenderer demo={entry.demo} entry={entry} />
-          <Playground initialCode={entry.contohKode} />
-        </div>
-      </div>
-
-      <div style={{ display: "flex", justifyContent: "space-between", gap: ".5rem", marginTop: ".9rem", fontSize: ".78rem", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", gap: ".5rem", marginTop: "1.1rem", fontSize: ".78rem", flexWrap: "wrap", borderTop: "2px dashed var(--border)", paddingTop: ".7rem" }}>
         <span>{prev && <Link to={`/tag/${prev.slug}`}>← {prev.tag}</Link>}</span>
         <span>Tag terkait: {entry.related.map((r) => <Link key={r} to={`/tag/${r}`} style={{ margin: "0 .3rem" }}>{`<${r}>`}</Link>)}</span>
         <span>{next && <Link to={`/tag/${next.slug}`}>{next.tag} →</Link>}</span>
