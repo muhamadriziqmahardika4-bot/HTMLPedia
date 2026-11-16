@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { TAGS } from "../data/tags.js";
+import { ALL_ENTRIES, findEntry } from "../data/all.js";
 import { CATEGORIES } from "../data/categories.js";
 import { useProgress } from "../hooks/useProgress.js";
 import TagBadge from "../components/TagBadge.jsx";
@@ -9,8 +9,8 @@ import GuidedLesson from "../components/GuidedLesson.jsx";
 
 export default function TagDetail() {
   const { slug } = useParams();
-  const idx = TAGS.findIndex((t) => t.slug === slug);
-  const { isDone, toggle } = useProgress(TAGS.length);
+  const idx = ALL_ENTRIES.findIndex((t) => t.slug === slug);
+  const { isDone, toggle } = useProgress(ALL_ENTRIES.length);
 
   if (idx === -1) {
     return (
@@ -23,10 +23,10 @@ export default function TagDetail() {
     );
   }
 
-  const entry = TAGS[idx];
+  const entry = ALL_ENTRIES[idx];
   const kategori = CATEGORIES.find((c) => c.id === entry.category);
-  const prev = TAGS[idx - 1];
-  const next = TAGS[idx + 1];
+  const prev = ALL_ENTRIES[idx - 1];
+  const next = ALL_ENTRIES[idx + 1];
   const done = isDone(entry.slug);
 
   return (

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import FloatingShapes from "./components/FloatingShapes.jsx";
 import Splash from "./pages/Splash.jsx";
 import Home from "./pages/Home.jsx";
@@ -38,6 +39,33 @@ function NotFound() {
   );
 }
 
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.main
+        key={location.pathname}
+        initial={{ opacity: 0, x: 64, filter: "blur(6px)" }}
+        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+        exit={{ opacity: 0, x: -48, filter: "blur(6px)" }}
+        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/kuis" element={<Quiz />} />
+          <Route path="/tag" element={<TagIndex />} />
+          <Route path="/tag/:slug" element={<TagDetail />} />
+          <Route path="/dasar" element={<Basics />} />
+          <Route path="/dasar/:slug" element={<BasicsDetail />} />
+          <Route path="/sumber" element={<Resources />} />
+          <Route path="/tentang" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </motion.main>
+    </AnimatePresence>
+  );
+}
+
 export default function App() {
   const [started, setStarted] = useState(false);
   const [leaving, setLeaving] = useState(false);
@@ -59,19 +87,9 @@ export default function App() {
   return (
     <>
       <FloatingShapes />
-      <div className="app home-enter">
+      <div className="app">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/kuis" element={<Quiz />} />
-          <Route path="/tag" element={<TagIndex />} />
-          <Route path="/tag/:slug" element={<TagDetail />} />
-          <Route path="/dasar" element={<Basics />} />
-          <Route path="/dasar/:slug" element={<BasicsDetail />} />
-          <Route path="/sumber" element={<Resources />} />
-          <Route path="/tentang" element={<About />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AnimatedRoutes />
       </div>
     </>
   );

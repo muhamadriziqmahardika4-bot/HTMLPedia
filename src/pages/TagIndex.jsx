@@ -1,8 +1,10 @@
 import React from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { TAGS } from "../data/tags.js";
 import { CATEGORIES } from "../data/categories.js";
-import SearchBar from "../components/SearchBar.jsx";
+import SearchSuggest from "../components/SearchSuggest.jsx";
+import { ALL_ENTRIES } from "../data/all.js";
+
+const SHOW_ALL = new Set(["tag", "semua", "all"]);
 
 export default function TagIndex() {
   const [params, setParams] = useSearchParams();
@@ -10,8 +12,10 @@ export default function TagIndex() {
   const kategori = params.get("kategori") || "";
   const navigate = useNavigate();
 
-  const filtered = TAGS.filter((t) => {
+  const showAll = SHOW_ALL.has(q.trim().toLowerCase());
+  const filtered = ALL_ENTRIES.filter((t) => {
     if (kategori && t.category !== kategori) return false;
+    if (showAll) return true;
     if (!q.trim()) return true;
     const s = `${t.slug} ${t.tag} ${t.name} ${t.summary}`.toLowerCase();
     return s.includes(q.trim().toLowerCase());
@@ -27,11 +31,11 @@ export default function TagIndex() {
   return (
     <div className="panel">
       <div className="breadcrumb">🏠 Beranda › <b>Semua Tag</b>{kategori ? ` › ${CATEGORIES.find((c) => c.id === kategori)?.name}` : ""}</div>
-      <h2 style={{ marginTop: 0 }}>📚 Semua Tag HTML ({filtered.length})</h2>
+      <h2 style={{ marginTop: 0 }}>📚 Semua Materi ({filtered.length})</h2>
 
       <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", alignItems: "center", marginBottom: ".8rem" }}>
         <div style={{ flex: "1 1 240px" }}>
-          <SearchBar value={q} onChange={(v) => setParam("q", v)} />
+          <SearchSuggest value={q} onChange={(v) => setParam("q", v)} onPick={(entry) => navigate(`/tag/${entry.slug}`)} />
         </div>
         <select className="search" style={{ width: "auto" }} value={kategori} onChange={(e) => setParam("kategori", e.target.value)} aria-label="Filter kategori">
           <option value="">Semua kategori</option>

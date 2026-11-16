@@ -9,4 +9,6 @@ export const CATEGORIES = [
   { id: "metadata", name: "Metadata & Head", emoji: "🏷️", desc: "title · meta · link", color: "#be185d", border: "#fbcfe8" },
   { id: "scripting", name: "Scripting & Embedded", emoji: "⚡", desc: "script · canvas · svg", color: "#b45309", border: "#fde68a" },
   { id: "interaktif", name: "Elemen Interaktif", emoji: "🎮", desc: "details · dialog · progress", color: "#15803d", border: "#bbf7d0" },
+  { id: "css", name: "CSS — Gaya & Layout", emoji: "🎨", desc: "flex · grid · position", color: "#4338ca", border: "#c7d2fe" },
+  { id: "javascript", name: "JavaScript — Logika", emoji: "⚡", desc: "DOM · fungsi · async", color: "#b45309", border: "#fde68a" },
 ];
