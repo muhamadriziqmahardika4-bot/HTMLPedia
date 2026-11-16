@@ -6,6 +6,7 @@ import { useProgress } from "../hooks/useProgress.js";
 import TagBadge from "../components/TagBadge.jsx";
 import ConfettiButton from "../components/ConfettiButton.jsx";
 import GuidedLesson from "../components/GuidedLesson.jsx";
+import { videoFor } from "../data/videos.js";
 
 export default function TagDetail() {
   const { slug } = useParams();
@@ -28,14 +29,7 @@ export default function TagDetail() {
   const prev = ALL_ORDERED[idx - 1];
   const next = ALL_ORDERED[idx + 1];
   const done = isDone(entry.slug);
-  const videoQuery = encodeURIComponent(
-    (langOf(entry.category) === "css"
-      ? `belajar css ${entry.tag.replace(/[<>]/g, "")} tutorial indonesia`
-      : langOf(entry.category) === "js"
-      ? `belajar javascript ${entry.tag.replace(/[<>]/g, "")} tutorial indonesia`
-      : `belajar html tag ${entry.tag.replace(/[<>]/g, "")} tutorial indonesia`)
-  );
-  const videoUrl = `https://www.youtube.com/results?search_query=${videoQuery}`;
+  const video = videoFor(entry);
 
   return (
     <div className="panel">
@@ -53,12 +47,13 @@ export default function TagDetail() {
 
       <div style={{ display: "flex", justifyContent: "center", marginTop: ".6rem" }}>
         <a
-          href={videoUrl}
+          href={video.url}
           target="_blank"
           rel="noreferrer"
-          style={{ display: "inline-flex", alignItems: "center", gap: ".5rem", background: "#ef4444", color: "#fff", fontWeight: 800, fontSize: ".82rem", padding: ".5rem 1.2rem", borderRadius: 999, textDecoration: "none", boxShadow: "0 4px 0 #dc2626" }}
+          title={video.label}
+          style={{ display: "inline-flex", alignItems: "center", gap: ".5rem", background: "#ef4444", color: "#fff", fontWeight: 800, fontSize: ".78rem", padding: ".5rem 1.2rem", borderRadius: 999, textDecoration: "none", boxShadow: "0 4px 0 #dc2626", maxWidth: "100%" }}
         >
-          ▶ 📺 Cari video penjelasan {entry.tag} di YouTube
+          ▶ 📺 {video.label}
         </a>
       </div>
 
