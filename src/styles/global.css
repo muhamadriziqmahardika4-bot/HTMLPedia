@@ -280,3 +280,13 @@ html { scroll-behavior: smooth; }
 
 @media (max-width: 820px) { .live-cols { grid-template-columns: 1fr !important; } }
 
+
+/* ---- Scroll-driven reveal global (browser modern) ---- */
+@supports (animation-timeline: view()) {
+  .info, .code, .demo-box, .panel > .section-title, .progress-wrap, .sticker, .grid > .card, .quiz-opt, .res-card, .breadcrumb, .tag-header {
+    animation: revealIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 55%;
+  }
+}
+
