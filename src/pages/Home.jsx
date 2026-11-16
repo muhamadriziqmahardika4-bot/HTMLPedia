@@ -6,6 +6,8 @@ import ProgressBar from "../components/ProgressBar.jsx";
 import SearchSuggest from "../components/SearchSuggest.jsx";
 import CategoryCard from "../components/CategoryCard.jsx";
 import { ALL_ENTRIES } from "../data/all.js";
+import { getStreak } from "../lib/streak.js";
+import { mistakesCount } from "../lib/mistakes.js";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -50,7 +52,37 @@ export default function Home() {
             }}>
             ⚡ Review Kilat — tes ingatanmu 🧠
           </button>
+          <button
+            onClick={() => navigate("/kesalahan")}
+            style={{
+              display: "inline-flex", alignItems: "center", gap: ".5rem",
+              background: "linear-gradient(135deg,#fca5a5,#ef4444)", border: "none",
+              color: "#fff", fontWeight: 800, fontSize: ".85rem", padding: ".55rem 1.3rem",
+              borderRadius: 999, cursor: "pointer", boxShadow: "0 4px 0 #dc2626",
+            }}>
+            📓 Buku Kesalahan ({mistakesCount()})
+          </button>
+          <button
+            onClick={() => navigate("/proyek")}
+            style={{
+              display: "inline-flex", alignItems: "center", gap: ".5rem",
+              background: "linear-gradient(135deg,#86efac,#22c55e)", border: "none",
+              color: "#14532d", fontWeight: 800, fontSize: ".85rem", padding: ".55rem 1.3rem",
+              borderRadius: 999, cursor: "pointer", boxShadow: "0 4px 0 #16a34a",
+            }}>
+            🏗️ Proyek Mini — bangun yang nyata ✨
+          </button>
         </div>
+
+        {/* Streak harian */}
+        {(() => {
+          const s = getStreak();
+          return (
+            <div style={{ marginTop: ".7rem", fontSize: ".8rem", fontWeight: 800, color: "#c2410c", display: "inline-flex", alignItems: "center", gap: ".4rem", background: "#ffedd5", border: "2px solid #fdba74", borderRadius: 999, padding: ".3rem .9rem" }}>
+              🔥 Streak: {s.current} hari berturut-turut {s.best > s.current ? `· rekor ${s.best}` : ""}{s.activeToday ? " · hari ini ✓" : " · belajar hari ini biar streak-mu aman!"}
+            </div>
+          );
+        })()}
       </header>
 
       <div style={{ textAlign: "center", margin: "1.6rem 0 0" }}><span className="sticker">100% GRATIS · TANPA DAFTAR ✨</span></div>

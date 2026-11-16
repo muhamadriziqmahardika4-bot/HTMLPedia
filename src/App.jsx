@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatingShapes from "./components/FloatingShapes.jsx";
+import KesalahanCount from "./components/KesalahanCount.jsx";
 import Splash from "./pages/Splash.jsx";
 import IntroBasics from "./pages/IntroBasics.jsx";
 import BgmPlayer from "./components/BgmPlayer.jsx";
@@ -15,6 +16,8 @@ import TagIndex from "./pages/TagIndex.jsx";
 import TagDetail from "./pages/TagDetail.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Review from "./pages/Review.jsx";
+import Kesalahan from "./pages/Kesalahan.jsx";
+import Proyek from "./pages/Proyek.jsx";
 
 function Navbar() {
   const [bgmOn, setBgmOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
@@ -37,6 +40,7 @@ function Navbar() {
           📚 Bab Dasar
         </NavLink>
         <NavLink to="/kuis" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Kuis</NavLink>
+        <NavLink to="/kesalahan" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📓 Kesalahan<KesalahanCount /></NavLink>
         <NavLink to="/sumber" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📺 Sumber</NavLink>
         <NavLink to="/tentang" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👨‍💻 Tentang</NavLink>
         <button
@@ -79,6 +83,8 @@ function AnimatedRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/kuis" element={<Quiz />} />
           <Route path="/review" element={<Review />} />
+          <Route path="/kesalahan" element={<Kesalahan />} />
+          <Route path="/proyek" element={<Proyek />} />
           <Route path="/tag" element={<TagIndex />} />
           <Route path="/tag/:slug" element={<TagDetail />} />
           <Route path="/dasar" element={<Basics />} />

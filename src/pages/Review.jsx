@@ -6,6 +6,7 @@ import { questionsForEntry } from "../data/quizzes.js";
 import { useProgress } from "../hooks/useProgress.js";
 import Cubby from "../components/Cubby.jsx";
 import { playCorrect, playWrong, playFinish } from "../lib/sounds.js";
+import { addMistake } from "../lib/mistakes.js";
 
 const MIN_TAGS = 5;
 const QUESTIONS_PER_TAG = 1;
@@ -87,7 +88,7 @@ export default function Review() {
               if (j === item.answer) cls += " correct";
               else if (j === chosen) cls += " wrong";
             }
-            return <button key={j} className={cls} onClick={() => { if (answers[i] !== undefined) return; (j === item.answer ? playCorrect : playWrong)(); setAnswers({ ...answers, [i]: j }); }}>{opt}</button>;
+            return <button key={j} className={cls} onClick={() => { if (answers[i] !== undefined) return; const ok = j === item.answer; (ok ? playCorrect : playWrong)(); if (!ok) addMistake({ q: item.q, options: item.options, answer: item.answer, picked: j, source: "review", tag: item.entry.tag }); setAnswers({ ...answers, [i]: j }); }}>{opt}</button>;
           })}
         </div>
       ))}

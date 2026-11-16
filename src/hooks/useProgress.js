@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { recordActiveToday } from "../lib/streak.js";
 
 const KEY = "htmlpedia-progress";
 
@@ -25,7 +26,11 @@ export function useProgress(total = 0) {
   }, [done]);
 
   const toggle = useCallback((slug) => {
-    setDone((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
+    setDone((prev) => {
+      const adding = !prev.includes(slug);
+      if (adding) recordActiveToday();   // catat hari aktif untuk streak
+      return adding ? [...prev, slug] : prev.filter((s) => s !== slug);
+    });
   }, []);
 
   const isDone = useCallback((slug) => done.includes(slug), [done]);

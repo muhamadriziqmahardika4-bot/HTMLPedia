@@ -3,6 +3,7 @@ import confetti from "canvas-confetti";
 import { QUIZZES, MODES, pickStageQuestions } from "../data/quizzes.js";
 import { useQuiz } from "../hooks/useQuiz.js";
 import { playCorrect, playWrong, playFinish } from "../lib/sounds.js";
+import { addMistake } from "../lib/mistakes.js";
 
 export default function Quiz() {
   const [topic, setTopic] = useState(null);
@@ -87,7 +88,7 @@ export default function Quiz() {
               if (j === item.answer) cls += " correct";
               else if (j === chosen) cls += " wrong";
             }
-            return <button key={j} className={cls} onClick={() => { if (answers[i] !== undefined) return; (j === item.answer ? playCorrect : playWrong)(); setAnswers({ ...answers, [i]: j }); }}>{opt}</button>;
+            return <button key={j} className={cls} onClick={() => { if (answers[i] !== undefined) return; const ok = j === item.answer; (ok ? playCorrect : playWrong)(); if (!ok) addMistake({ q: item.q, options: item.options, answer: item.answer, picked: j, source: "kuis" }); setAnswers({ ...answers, [i]: j }); }}>{opt}</button>;
           })}
         </div>
       ))}

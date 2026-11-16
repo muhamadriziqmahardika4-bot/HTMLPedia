@@ -8,6 +8,7 @@ import { CATEGORIES } from "../data/categories.js";
 import CodeBlock from "./CodeBlock.jsx";
 import DemoRenderer from "./DemoRenderer.jsx";
 import { playCorrect, playWrong, playFinish } from "../lib/sounds.js";
+import { addMistake } from "../lib/mistakes.js";
 
 /* ---------- Tantangan praktik per tag kunci ---------- */
 const CHALLENGES = {
@@ -301,7 +302,7 @@ export default function GuidedLesson({ entry }) {
                   else if (j === chosen) cls += " wrong";
                 }
                 return (
-                  <button key={j} className={cls} onClick={() => { if (answers[i] !== undefined) return; (j === item.answer ? playCorrect : playWrong)(); setAnswers({ ...answers, [i]: j }); }}>
+                  <button key={j} className={cls} onClick={() => { if (answers[i] !== undefined) return; const ok = j === item.answer; (ok ? playCorrect : playWrong)(); if (!ok) addMistake({ q: item.q, options: item.options, answer: item.answer, picked: j, source: "kuis-mini", tag: entry.tag }); setAnswers({ ...answers, [i]: j }); }}>
                     {opt}
                   </button>
                 );

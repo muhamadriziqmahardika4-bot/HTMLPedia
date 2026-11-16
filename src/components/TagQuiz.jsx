@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { questionsForEntry } from "../data/quizzes.js";
 import { playCorrect, playWrong } from "../lib/sounds.js";
+import { addMistake } from "../lib/mistakes.js";
 
 export default function TagQuiz({ entry }) {
   const questions = questionsForEntry(entry);
@@ -22,7 +23,7 @@ export default function TagQuiz({ entry }) {
               if (j === item.answer) cls += " correct";
               else if (j === chosen) cls += " wrong";
             }
-            return <button key={j} className={cls} style={{ fontSize: ".8rem", padding: ".45rem .7rem" }} onClick={() => { if (answers[i] !== undefined) return; (j === item.answer ? playCorrect : playWrong)(); setAnswers({ ...answers, [i]: j }); }}>{opt}</button>;
+            return <button key={j} className={cls} style={{ fontSize: ".8rem", padding: ".45rem .7rem" }} onClick={() => { if (answers[i] !== undefined) return; const ok = j === item.answer; (ok ? playCorrect : playWrong)(); if (!ok) addMistake({ q: item.q, options: item.options, answer: item.answer, picked: j, source: "kuis-mini", tag: entry.tag }); setAnswers({ ...answers, [i]: j }); }}>{opt}</button>;
           })}
         </div>
       ))}
