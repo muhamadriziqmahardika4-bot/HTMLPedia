@@ -6,6 +6,7 @@ import { useProgress } from "../hooks/useProgress.js";
 import { questionsForTag } from "../data/quizzes.js";
 import { CATEGORIES } from "../data/categories.js";
 import CodeBlock from "./CodeBlock.jsx";
+import DemoRenderer from "./DemoRenderer.jsx";
 import { playCorrect, playWrong, playFinish } from "../lib/sounds.js";
 
 /* ---------- Tantangan praktik per tag kunci ---------- */
@@ -139,6 +140,17 @@ export default function GuidedLesson({ entry }) {
                 <b>💻 Contoh kode</b>
                 <CodeBlock code={entry.contohKode} />
               </div>
+              {entry.kapan && (
+                <div className="info" style={{ borderColor: "#fde68a", background: "#fffbeb", animation: "popIn .52s ease both" }}>
+                  <b>⏰ Kapan &amp; di mana dipakai</b><br />{entry.kapan}
+                  <div style={{ marginTop: ".35rem" }}><b>🖼️ Contoh hasil / output</b><br />{entry.output}</div>
+                </div>
+              )}
+              {entry.demo !== "generic" && (
+                <div style={{ animation: "popIn .55s ease both", marginTop: ".6rem" }}>
+                  <DemoRenderer demo={entry.demo} entry={entry} />
+                </div>
+              )}
             </>
           )}
           <div style={{ display: "flex", gap: ".5rem", marginTop: ".6rem" }}>

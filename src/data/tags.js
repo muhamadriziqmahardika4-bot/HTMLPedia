@@ -145,7 +145,7 @@ export const TAGS = [
     related: ["head", "a"],
     kapan: "Di dalam <head>, hanya bila semua URL relatif harus diubah basisnya.",
     output: "Tidak tampil — memengaruhi semua link relatif di halaman.",
-    demo: "generic",
+    demo: "base-demo",
   },
   {
     slug: "body",
