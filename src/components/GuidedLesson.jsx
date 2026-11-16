@@ -97,14 +97,28 @@ export default function GuidedLesson({ entry }) {
   const quizDone = answeredCount === questions.length;
   const quizScore = questions.filter((q, i) => answers[i] === q.answer).length;
 
-  const markDoneAndNext = () => {
-    toggle(entry.slug);
-    confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 }, colors: ["#38bdf8", "#818cf8", "#22d3ee", "#fde68a", "#fbcfe8"] });
+  const idx = TAGS.findIndex((t) => t.slug === entry.slug);
+  const next = TAGS[idx + 1];
+  const advanceRef = useRef(false);
+
+  // Kuis mini selesai → otomatis tandai selesai + konfeti + auto-lanjut ke tag berikutnya
+  useEffect(() => {
+    if (!quizDone || advanceRef.current) return;
+    advanceRef.current = true;
+    if (!done) toggle(entry.slug);
     playFinish(true);
-    const idx = TAGS.findIndex((t) => t.slug === entry.slug);
-    const next = TAGS[idx + 1];
-    setTimeout(() => navigate(next ? `/tag/${next.slug}` : "/tag"), 900);
-  };
+    confetti({ particleCount: 130, spread: 85, origin: { y: 0.6 }, colors: ["#38bdf8", "#818cf8", "#22d3ee", "#fde68a", "#fbcfe8"] });
+    setStage(3);
+  }, [quizDone]);
+
+  // Di layar selesai, hitung mundur lalu pindah ke latihan berikutnya
+  useEffect(() => {
+    if (stage !== 3) return;
+    const t = setTimeout(() => navigate(next ? `/tag/${next.slug}` : "/tag"), 3400);
+    return () => clearTimeout(t);
+  }, [stage]);
+
+  const goNext = () => navigate(next ? `/tag/${next.slug}` : "/tag");
 
   const stepDot = (i) => (
     <div key={i} style={{ display: "flex", alignItems: "center", gap: ".35rem", opacity: stage >= i ? 1 : 0.45 }}>
@@ -223,22 +237,23 @@ export default function GuidedLesson({ entry }) {
           {quizDone && (
             <div style={{ animation: "popIn .4s ease both" }}>
               <p style={{ fontWeight: 800, color: quizScore === questions.length ? "#15803d" : "#b45309" }}>
-                Skor: {quizScore}/{questions.length} {quizScore === questions.length ? "— SEMPURNA! 🎉" : "— lumayan! Kamu tetap boleh lanjut."}
+                Skor: {quizScore}/{questions.length} {quizScore === questions.length ? "— SEMPURNA! 🎉" : "— lumayan! 🎊"} Menyiapkan latihan berikutnya…
               </p>
-              <button className="btn primary" onClick={() => setStage(3)}>Selanjutnya ➡️</button>
             </div>
           )}
         </section>
       )}
 
-      {/* ===== LANGKAH 4: SELESAI ===== */}
+      {/* ===== LANGKAH 4: SELESAI (auto-lanjut) ===== */}
       {stage === 3 && (
         <section style={{ textAlign: "center", padding: "1rem 0" }}>
-          <div style={{ fontSize: "3.5rem", animation: "popIn .5s ease both" }}>{done ? "🏆" : "🎉"}</div>
-          <h3 style={{ margin: ".3rem 0" }}>{done ? "Tag ini sudah kamu kuasai!" : "Selamat, kamu menyelesaikan materi ini!"}</h3>
-          <p style={{ color: "#64748b", fontSize: ".9rem" }}>Tandai selesai untuk menyimpan progresmu, lalu lanjut ke tag berikutnya.</p>
-          <button className="btn primary" style={{ fontSize: "1rem", padding: ".7rem 1.6rem" }} onClick={markDoneAndNext}>
-            ✅ {done ? "Lanjut" : "Tandai Selesai & Lanjut"} ke Tag Berikutnya ➡️
+          <div style={{ fontSize: "3.5rem", animation: "popIn .5s ease both" }}>🏆</div>
+          <h3 style={{ margin: ".3rem 0" }}>Mantap! Tag {entry.tag} selesai 🎉</h3>
+          <p style={{ color: "#64748b", fontSize: ".9rem" }}>
+            {next ? <>Progresmu tersimpan. Lanjut otomatis ke <b>{next.tag}</b>…</> : "Semua tag sudah kamu selesaikan — kamu luar biasa!"}
+          </p>
+          <button className="btn primary" style={{ fontSize: "1rem", padding: ".7rem 1.6rem" }} onClick={goNext}>
+            {next ? `➡️ Lanjut sekarang ke ${next.tag}` : "📚 Kembali ke Daftar Tag"}
           </button>
         </section>
       )}
