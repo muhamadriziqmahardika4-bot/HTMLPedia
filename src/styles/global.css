@@ -328,9 +328,12 @@ html { scroll-behavior: smooth; }
 
 
 @media (max-width: 480px) {
-  .splash-wrap { min-height: auto; padding: .5rem; }
-  .splash-wrap .panel { padding: 1.2rem .8rem 1.6rem; min-height: auto; width: 100%; }
+  .splash-wrap { min-height: auto; padding: .5rem; background-image: radial-gradient(circle at 10% 15%, rgba(244,114,182,.18) 0%, transparent 40%), radial-gradient(circle at 90% 85%, rgba(56,189,248,.16) 0%, transparent 42%), radial-gradient(circle at 85% 20%, rgba(134,239,172,.14) 0%, transparent 38%); }
+  .splash-wrap .panel { padding: 1.4rem .9rem 1.8rem; min-height: auto; width: 100%; box-shadow: 0 10px 0 rgba(125,211,252,.35); }
   .splash-wrap .panel h1 { font-size: 1.35rem; }
-  .cubby-bubble { position: static; transform: none; margin: 0 auto .6rem; width: 140px; font-size: .65rem; right: auto; }
+  .cubby-bubble { position: static; transform: none; margin: 0 auto .6rem; width: 150px; font-size: .65rem; right: auto; }
+  .splash-screen .shape.ring, .splash-screen .shape.dot { display: block !important; opacity: .18 !important; }
+  .splash-screen .cloud { display: block !important; opacity: .22 !important; }
+  .splash-screen .cloud:nth-child(n+5) { display: none !important; }
 }
 
