@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { CATEGORIES } from "../data/categories.js";
 import SearchSuggest from "../components/SearchSuggest.jsx";
-import { ALL_ENTRIES, langOf, LANG_META } from "../data/all.js";
+import { ALL_ENTRIES, langOf, LANG_META, learningIndex } from "../data/all.js";
 
 const SHOW_ALL = new Set(["tag", "semua", "all"]);
 
@@ -19,7 +19,7 @@ export default function TagIndex() {
     if (!q.trim()) return true;
     const s = `${t.slug} ${t.tag} ${t.name} ${t.summary}`.toLowerCase();
     return s.includes(q.trim().toLowerCase());
-  }).sort((a, b) => a.slug.localeCompare(b.slug));
+  }).sort((a, b) => learningIndex(a) - learningIndex(b));
 
   const setParam = (key, value) => {
     const next = new URLSearchParams(params);

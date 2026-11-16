@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import confetti from "canvas-confetti";
-import { ALL_ENTRIES } from "../data/all.js";
+import { ALL_ORDERED } from "../data/all.js";
 import { useProgress } from "../hooks/useProgress.js";
 import { questionsForTag } from "../data/quizzes.js";
 import { CATEGORIES } from "../data/categories.js";
@@ -76,7 +76,7 @@ function CodeLines({ code, baseDelay = 0 }) {
 
 export default function GuidedLesson({ entry }) {
   const navigate = useNavigate();
-  const { toggle, isDone } = useProgress(ALL_ENTRIES.length);
+  const { toggle, isDone } = useProgress(ALL_ORDERED.length);
   const done = isDone(entry.slug);
 
   const [stage, setStage] = useState(0);
@@ -123,8 +123,8 @@ export default function GuidedLesson({ entry }) {
   const quizDone = answeredCount === questions.length;
   const quizScore = questions.filter((q, i) => answers[i] === q.answer).length;
 
-  const idx = ALL_ENTRIES.findIndex((t) => t.slug === entry.slug);
-  const next = ALL_ENTRIES[idx + 1];
+  const idx = ALL_ORDERED.findIndex((t) => t.slug === entry.slug);
+  const next = ALL_ORDERED[idx + 1];
   const advanceRef = useRef(false);
 
   useEffect(() => {
