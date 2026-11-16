@@ -24,7 +24,11 @@ function Navbar() {
       <div className="nav-pills">
         <NavLink to="/" end onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Beranda</NavLink>
         <NavLink to="/tag" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Tag</NavLink>
-        <NavLink to="/dasar" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Dasar</NavLink>
+        <NavLink to="/dasar" onClick={playClick}
+          className="pill"
+          style={{ background: "linear-gradient(135deg,#fda4af,#f472b6)", border: "none", color: "#fff", boxShadow: "0 4px 0 #ec4899", fontWeight: 800 }}>
+          📚 Bab Dasar
+        </NavLink>
         <NavLink to="/kuis" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Kuis</NavLink>
         <NavLink to="/sumber" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📺 Sumber</NavLink>
         <NavLink to="/tentang" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👨‍💻 Tentang</NavLink>
@@ -91,36 +95,56 @@ export default function App() {
     setTimeout(() => setStage("intro"), 1100);
   };
 
+  const babDasar = () => {
+    startBgm();
+    setStage("app");
+    setTimeout(() => navigate("/dasar"), 80);
+  };
+
   const introDone = (target) => {
     startBgm();           // musik belajar menyala begitu masuk aplikasi
     setStage("app");
     if (target === "dasar") setTimeout(() => navigate("/dasar"), 60);
   };
 
-  if (stage === "splash") {
-    return (
-      <div className="app splash-screen">
-        <FloatingShapes />
-        <Splash onStart={start} leaving={leaving} />
-      </div>
-    );
-  }
-
-  if (stage === "intro") {
-    return (
-      <div className="app" style={{ padding: 0, maxWidth: "none" }}>
-        <IntroBasics onDone={introDone} />
-      </div>
-    );
-  }
-
   return (
     <>
       <FloatingShapes />
-      <div className="app">
-        <Navbar />
-        <AnimatedRoutes />
-      </div>
+      <AnimatePresence mode="wait" initial={false}>
+      {stage === "splash" && (
+        <motion.div key="splash" exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -140, scale: 0.92, filter: "blur(6px)", transition: { duration: 0.5, ease: [0.65, 0, 0.35, 1] } }}>
+          <div className="app splash-screen">
+            <FloatingShapes />
+            <Splash onStart={start} onBabDasar={babDasar} leaving={leaving} />
+          </div>
+        </motion.div>
+      )}
+
+      {stage === "intro" && (
+        <motion.div key="intro"
+          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 160, scale: 0.94 }}
+          animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, scale: 1 }}
+          exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -140, filter: "blur(6px)", transition: { duration: 0.45, ease: [0.65, 0, 0.35, 1] } }}
+          transition={{ type: "spring", stiffness: 210, damping: 26 }}
+          className="app" style={{ padding: 0, maxWidth: "none" }}
+        >
+          <CandySweep key="intro-sweep" />
+          <IntroBasics onDone={introDone} />
+        </motion.div>
+      )}
+
+      {stage === "app" && (
+        <motion.div key="app"
+          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 160, scale: 0.94 }}
+          animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 210, damping: 26 }}
+          className="app app-root"
+        >
+          <Navbar />
+          <AnimatedRoutes />
+        </motion.div>
+      )}
+    </AnimatePresence>
     </>
   );
 }

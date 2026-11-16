@@ -62,14 +62,7 @@ const SLIDES = [
   },
 ];
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
-};
-const item = {
-  hidden: { opacity: 0, y: 26, scale: 0.92, filter: "blur(6px)" },
-  show: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { type: "spring", stiffness: 260, damping: 22 } },
-};
+
 
 /* Dekorasi latar: bentuk-bentuk pastel melayang */
 const DECO = [
@@ -131,57 +124,70 @@ export default function IntroBasics({ onDone }) {
         {!isChoice ? (
           <motion.div
             key={step}
-            variants={container}
-            initial="hidden"
-            animate="show"
-            exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -140, rotate: -2, transition: { type: "spring", stiffness: 240, damping: 28 } }}
-            style={{
-              position: "relative", zIndex: 2, maxWidth: 680, width: "100%", background: "#ffffff", borderRadius: 28,
-              border: "3px solid rgba(226,232,240,.9)", padding: "1.4rem 1.6rem", boxShadow: "0 22px 50px rgba(2,132,199,.22)",
-              clipPath: "inset(0 0% 0 0)", display: "flex", gap: "1.1rem", alignItems: "center", flexWrap: "wrap",
-            }}
+            initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 150, rotate: 1.5 }}
+            animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, rotate: 0 }}
+            exit={{ opacity: 0, clipPath: "inset(0 0 0 100%)", x: -130, rotate: -1.5 }}
+            transition={{ type: "spring", stiffness: 220, damping: 24 }}
+            style={{ position: "relative", width: "min(720px, 100%)", zIndex: 2, marginTop: "4.5rem" }}
           >
-            {/* Speech bubble + Cubby */}
-            <motion.div variants={item} style={{ position: "relative", flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: ".3rem" }}>
-              <div className="cubby-bubble" style={{ position: "static", transform: "none", width: 118, fontSize: ".62rem", marginBottom: "-.2rem" }}>{current.cubby}</div>
-              <Cubby size={118} />
+            {/* Cubby DI LUAR box, duduk di atasnya */}
+            <motion.div
+              initial={{ opacity: 0, y: -30, scale: 0.7 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.15 }}
+              style={{ position: "absolute", top: -64, left: "50%", transform: "translateX(-50%)", zIndex: 5, display: "flex", alignItems: "center", gap: ".6rem" }}
+            >
+              <Cubby size={120} />
+              <div className="cubby-bubble" style={{ position: "static", transform: "none", width: 132, fontSize: ".62rem" }}>{current.cubby}</div>
             </motion.div>
 
-            {/* Teks */}
-            <div style={{ flex: "1 1 260px", textAlign: "left" }}>
-              <motion.span variants={item} className="badge" style={{ display: "inline-block", background: "#f0f9ff", color: "#0369a1", border: "2px solid #bae6fd" }}>📖 DASAR {step + 1} / {SLIDES.length}</motion.span>
-              <motion.h1 variants={item} style={{ margin: ".35rem 0 .1rem", fontSize: "1.65rem", color: "#0c4a6e" }}>{current.title}</motion.h1>
-              <motion.p variants={item} style={{ color: "#0369a1", fontWeight: 800, margin: ".1rem 0 .6rem", fontSize: ".9rem" }}>“{current.analogi}”</motion.p>
-              <motion.p variants={item} style={{ color: "#334155", lineHeight: 1.7, margin: 0, fontSize: ".92rem" }}>{current.text}</motion.p>
+            {/* Box diperbesar & ditengahkan */}
+            <div style={{ background: "#ffffff", borderRadius: 30, border: "3px solid rgba(226,232,240,.9)", padding: "2.4rem 2rem 1.6rem", boxShadow: "0 26px 60px rgba(2,132,199,.25)", textAlign: "center" }}>
+              <span className="badge" style={{ display: "inline-block", background: "#f0f9ff", color: "#0369a1", border: "2px solid #bae6fd" }}>📖 DASAR {step + 1} / {SLIDES.length}</span>
+              <div style={{ fontSize: "3.4rem", margin: ".3rem 0 .1rem" }}>{current.emoji}</div>
+              <h1 style={{ margin: ".1rem 0 .1rem", fontSize: "1.8rem", color: "#0c4a6e" }}>{current.title}</h1>
+              <p style={{ color: "#0369a1", fontWeight: 800, margin: ".15rem 0 .7rem", fontSize: ".95rem" }}>“{current.analogi}”</p>
+              <p style={{ color: "#334155", lineHeight: 1.75, margin: "0 auto", fontSize: ".97rem", maxWidth: 520 }}>{current.text}</p>
 
-              <motion.div variants={item} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1rem", gap: ".5rem", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1.2rem", gap: ".5rem", flexWrap: "wrap" }}>
                 <button className="btn" onClick={skipAll}>⏭️ Lewati Dasar</button>
                 <button className="done-btn" onClick={next}>{step === SLIDES.length - 1 ? "Selesai ➡️" : "Lanjut ➡️"}</button>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         ) : (
           <motion.div
             key="choice"
-            variants={container}
-            initial="hidden"
-            animate="show"
-            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.25 } }}
-            style={{ position: "relative", zIndex: 2, maxWidth: 620, width: "100%", background: "#fff", borderRadius: 28, border: "3px solid rgba(226,232,240,.9)", padding: "1.5rem 1.8rem", boxShadow: "0 22px 50px rgba(2,132,199,.25)", textAlign: "center" }}
+            initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 150 }}
+            animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0 }}
+            exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.25 } }}
+            transition={{ type: "spring", stiffness: 220, damping: 24 }}
+            style={{ position: "relative", width: "min(720px, 100%)", zIndex: 2, marginTop: "5rem" }}
           >
-            <motion.div variants={item} style={{ display: "flex", justifyContent: "center", marginBottom: ".2rem" }}><Cubby size={150} /></motion.div>
-            <motion.h1 variants={item} style={{ margin: ".2rem 0 .2rem", fontSize: "1.55rem", color: "#0c4a6e" }}>Kamu sudah paham dasarnya! 🎉</motion.h1>
-            <motion.p variants={item} style={{ color: "#64748b", margin: "0 0 1rem" }}>Domain, hosting, file, browser, editor, deploy — checklist kamu lengkap. Mau ke mana sekarang?</motion.p>
-            <motion.div variants={item} style={{ display: "flex", gap: ".7rem", justifyContent: "center", flexWrap: "wrap", marginBottom: ".6rem" }}>
-              <button className="done-btn" onClick={() => { celebrate(); onDone("home"); }}>🏠 Ke Beranda</button>
-              <button className="pill active" onClick={() => { celebrate(); onDone("dasar"); }}>📚 Pelajari Bab Dasar</button>
+            {/* Cubby duduk di atas box pilihan */}
+            <motion.div
+              initial={{ opacity: 0, y: -40, scale: 0.6, rotate: -6 }}
+              animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 280, damping: 16, delay: 0.15 }}
+              style={{ position: "absolute", top: -72, left: "50%", transform: "translateX(-50%)", zIndex: 5 }}
+            >
+              <Cubby size={140} />
             </motion.div>
-            <motion.div variants={item} style={{ display: "flex", gap: ".4rem", justifyContent: "center", flexWrap: "wrap" }}>
-              {["🏷️ Domain", "🏠 Hosting", "📁 File", "🌍 Browser", "✏️ Editor", "🚀 Deploy"].map((t) => (
-                <span key={t} style={{ fontSize: ".65rem", background: "#e0f2fe", color: "#0369a1", borderRadius: 99, padding: ".25rem .6rem", fontWeight: 800 }}>✓ {t}</span>
-              ))}
-            </motion.div>
-            <motion.p variants={item} style={{ fontSize: ".68rem", color: "#94a3b8", marginTop: ".8rem" }}>Bab dasar bisa dibuka kapan pun lewat menu “Dasar”.</motion.p>
+
+            <div style={{ background: "#fff", borderRadius: 30, border: "3px solid rgba(226,232,240,.9)", padding: "2.5rem 2rem 1.6rem", boxShadow: "0 26px 60px rgba(2,132,199,.28)", textAlign: "center" }}>
+              <h1 style={{ margin: ".2rem 0 .2rem", fontSize: "1.6rem", color: "#0c4a6e" }}>Kamu sudah paham dasarnya! 🎉</h1>
+              <p style={{ color: "#64748b", margin: "0 0 .9rem" }}>Domain, hosting, file, browser, editor, deploy — checklist kamu lengkap. Mau ke mana sekarang?</p>
+              <div style={{ display: "flex", gap: ".7rem", justifyContent: "center", flexWrap: "wrap", marginBottom: ".7rem" }}>
+                <button className="done-btn" style={{ fontSize: "1.05rem", padding: ".8rem 1.5rem" }} onClick={() => { celebrate(); onDone("home"); }}>🏠 Ke Beranda</button>
+                <button className="pill active" style={{ fontSize: "1.05rem", padding: ".8rem 1.5rem", textDecoration: "none" }} onClick={() => { celebrate(); onDone("dasar"); }}>📚 Pelajari Bab Dasar</button>
+              </div>
+              <div style={{ display: "flex", gap: ".4rem", justifyContent: "center", flexWrap: "wrap" }}>
+                {["🏷️ Domain", "🏠 Hosting", "📁 File", "🌍 Browser", "✏️ Editor", "🚀 Deploy"].map((t) => (
+                  <span key={t} style={{ fontSize: ".65rem", background: "#e0f2fe", color: "#0369a1", borderRadius: 99, padding: ".28rem .65rem", fontWeight: 800 }}>✓ {t}</span>
+                ))}
+              </div>
+              <p style={{ fontSize: ".68rem", color: "#94a3b8", marginTop: ".8rem" }}>Bab dasar bisa dibuka kapan pun lewat menu “Dasar”.</p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
