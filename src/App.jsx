@@ -19,15 +19,7 @@ import Quiz from "./pages/Quiz.jsx";
 import Review from "./pages/Review.jsx";
 import Kesalahan from "./pages/Kesalahan.jsx";
 
-function Navbar() {
-  const [bgmOn, setBgmOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
-  const toggleBgm = () => {
-    const next = !bgmOn;
-    localStorage.setItem("htmlpedia-bgm", next ? "on" : "off");
-    setBgmOn(next);
-    window.dispatchEvent(new CustomEvent("bgm-change", { detail: next }));
-    playClick();
-  };
+function Navbar({ bgmOn, onToggleBgm }) {
   return (
     <nav className="nav">
       <Link to="/" className="logo text-shimmer" style={{ textDecoration: "none" }} onClick={playClick}>🍡 HTMLpedia</Link>
@@ -47,7 +39,7 @@ function Navbar() {
           className="pill"
           aria-pressed={bgmOn}
           title={bgmOn ? "Matikan musik" : "Nyalakan musik"}
-          onClick={toggleBgm}
+          onClick={() => { onToggleBgm(); playClick(); }}
           style={{ fontSize: ".85rem" }}
         >
           {bgmOn ? "🎵 Musik: On" : "🔇 Musik: Off"}
@@ -109,16 +101,17 @@ export default function App() {
   };
 
   const [bgmOn, setBgmOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
-  React.useEffect(() => {
-    const h = (e) => setBgmOn(Boolean(e.detail));
-    window.addEventListener("bgm-change", h);
-    return () => window.removeEventListener("bgm-change", h);
-  }, []);
+
+  const toggleBgm = () => {
+    const next = !bgmOn;
+    localStorage.setItem("htmlpedia-bgm", next ? "on" : "off");
+    setBgmOn(next);
+  };
 
   return (
     <>
       {bgmOn && <BgmPlayer />}
-      <FloatingMusicButton />
+      <FloatingMusicButton bgmOn={bgmOn} onToggleBgm={toggleBgm} />
       <FloatingShapes />
       <AnimatePresence mode="wait" initial={false}>
       {stage === "splash" && (
@@ -148,7 +141,7 @@ export default function App() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="app app-root"
         >
-          <Navbar />
+          <Navbar bgmOn={bgmOn} onToggleBgm={toggleBgm} />
           <AnimatedRoutes />
         </motion.div>
       )}

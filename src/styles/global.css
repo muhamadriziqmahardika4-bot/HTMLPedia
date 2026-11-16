@@ -311,6 +311,7 @@ html { scroll-behavior: smooth; }
   .section-title { font-size: .7rem; margin: 1.2rem 0 .5rem; }
   .marquee-inner { font-size: .7rem; }
   .res-grid { grid-template-columns: 1fr; }
+  .shape, .cloud, .cloud-fixed, .sparkle, .float-tag, .cross, .squiggle, .dots-line, .ring, .rrect, .plus { display: none !important; }
 }
 @media (max-width: 380px) {
   .nav-pills { gap: .22rem; }
