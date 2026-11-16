@@ -7,6 +7,8 @@ import Resources from "./pages/Resources.jsx";
 import About from "./pages/About.jsx";
 import Basics from "./pages/Basics.jsx";
 import BasicsDetail from "./pages/BasicsDetail.jsx";
+import TagIndex from "./pages/TagIndex.jsx";
+import TagDetail from "./pages/TagDetail.jsx";
 
 function Navbar() {
   return (
@@ -60,6 +62,8 @@ export default function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/tag" element={<TagIndex />} />
+          <Route path="/tag/:slug" element={<TagDetail />} />
           <Route path="/dasar" element={<Basics />} />
           <Route path="/dasar/:slug" element={<BasicsDetail />} />
           <Route path="/sumber" element={<Resources />} />

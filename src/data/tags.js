@@ -876,7 +876,7 @@ export const TAGS = [
   {
     slug: "table",
     tag: "<table>",
-    name: "Tabel data",
+    name: "Membuat Tabel Data",
     category: "list-tabel",
     level: "Pemula",
     summary: "Menampilkan data baris & kolom — daftar nilai, jadwal, harga. Jangan dipakai hanya untuk mengatur layout (itu tugas CSS grid/flexbox). Untuk tabel yang mudah dibaca, pakai <thead>, <tbody>, dan <th> dengan scope yang benar.",
