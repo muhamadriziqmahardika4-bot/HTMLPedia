@@ -25,15 +25,12 @@ function tokensOf(code) {
   return code.toLowerCase();
 }
 
-// Cek generik: semua token wajib ada di kode pengguna (case-insensitive)
 function checkGeneric(code, entry) {
   const c = tokensOf(code);
   const ch = CHALLENGES[entry.slug];
   if (ch) return ch.must.every((t) => c.includes(t.toLowerCase()));
-  // generik: harus mengandung nama tag + minimal struktur balasan tag
   const tagName = entry.slug.toLowerCase();
   if (!c.includes(`<${tagName}`)) return false;
-  // butuh minimal 8 karakter & tidak kosong
   return code.trim().length >= 8;
 }
 
@@ -43,19 +40,65 @@ function instructionFor(entry) {
 
 const STEP_LABELS = ["📖 Baca", "⌨️ Praktik", "⚡ Kuis Mini", "🎉 Selesai"];
 
+/* ---------- Bagian ber-efek mengetik ---------- */
+function TypedText({ text, speed = 12, skip, onDone, className, style }) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (skip) { setCount(text.length); onDone?.(); return; }
+    setCount(0);
+    const iv = setInterval(() => {
+      setCount((c) => {
+        if (c >= text.length) { clearInterval(iv); onDone?.(); return c; }
+        return c + 2;
+      });
+    }, speed);
+    return () => clearInterval(iv);
+  }, [text, skip]); // eslint-disable-line
+  const done = count >= text.length;
+  return (
+    <div className={className} style={style}>
+      {text.slice(0, count)}
+      {!done && <span aria-hidden="true" style={{ animation: "blink 1s infinite" }}>▌</span>}
+    </div>
+  );
+}
+
+function CodeLines({ code, baseDelay = 0 }) {
+  const lines = code.split("\n");
+  return (
+    <pre className="code" style={{ margin: ".3rem 0 0", whiteSpace: "pre-wrap" }}>
+      {lines.map((ln, i) => (
+        <div key={i} style={{ animation: "popIn .35s ease both", animationDelay: `${baseDelay + i * 90}ms` }}>{ln || " "}</div>
+      ))}
+    </pre>
+  );
+}
+
 export default function GuidedLesson({ entry }) {
   const navigate = useNavigate();
   const { toggle, isDone } = useProgress(TAGS.length);
   const done = isDone(entry.slug);
 
-  const [stage, setStage] = useState(0);          // 0 baca, 1 praktik, 2 kuis, 3 selesai
-  const [typed, setTyped] = useState(0);          // jumlah karakter penjelasan yang tampil
-  const [typingDone, setTypingDone] = useState(false);
+  const [stage, setStage] = useState(0);
+  const [readPhase, setReadPhase] = useState(0);   // 0 analogi, 1 apaitu, 2 atribut, 3 contoh, 4 demo
+  const [skipAll, setSkipAll] = useState(false);
   const [code, setCode] = useState("<!-- ketik kodemu di sini -->\n");
-  const [practiceState, setPracticeState] = useState("idle"); // idle | wrong | ok
+  const [practiceState, setPracticeState] = useState("idle");
   const [answers, setAnswers] = useState({});
 
-  const summary = entry.summary;
+  const hasDemo = entry.demo !== "generic";
+  const codeLineCount = entry.contohKode.split("\n").length;
+
+  // Maju otomatis antar bagian baca (atribut → contoh → demo → selesai)
+  useEffect(() => {
+    let t;
+    if (readPhase === 2) t = setTimeout(() => setReadPhase(3), 750);
+    else if (readPhase === 3) t = setTimeout(() => setReadPhase(hasDemo ? 4 : 5), codeLineCount * 90 + 500);
+    else if (readPhase === 4) t = setTimeout(() => setReadPhase(5), 800);
+    return () => clearTimeout(t);
+  }, [readPhase, hasDemo, codeLineCount]);
+  const readDone = readPhase >= 5;
+
   const questions = useMemo(() => {
     const custom = questionsForTag(entry.slug);
     if (custom.length) return custom.slice(0, 3);
@@ -70,29 +113,12 @@ export default function GuidedLesson({ entry }) {
     ];
   }, [entry]);
 
-  /* ===== Efek mengetik penjelasan ===== */
-  useEffect(() => {
-    setTyped(0);
-    setTypingDone(false);
-    const interval = setInterval(() => {
-      setTyped((t) => {
-        if (t >= summary.length) { clearInterval(interval); setTypingDone(true); return t; }
-        return t + 2;
-      });
-    }, 12);
-    return () => clearInterval(interval);
-  }, [summary]);
-
-  const skipTyping = () => { setTyped(summary.length); setTypingDone(true); };
-
-  /* ===== Praktik ===== */
   const checkCode = () => {
     const ok = checkGeneric(code, entry);
     setPracticeState(ok ? "ok" : "wrong");
     if (ok) playCorrect(); else playWrong();
   };
 
-  /* ===== Kuis mini ===== */
   const answeredCount = Object.keys(answers).length;
   const quizDone = answeredCount === questions.length;
   const quizScore = questions.filter((q, i) => answers[i] === q.answer).length;
@@ -101,7 +127,6 @@ export default function GuidedLesson({ entry }) {
   const next = TAGS[idx + 1];
   const advanceRef = useRef(false);
 
-  // Kuis mini selesai → otomatis tandai selesai + konfeti + auto-lanjut ke tag berikutnya
   useEffect(() => {
     if (!quizDone || advanceRef.current) return;
     advanceRef.current = true;
@@ -111,7 +136,6 @@ export default function GuidedLesson({ entry }) {
     setStage(3);
   }, [quizDone]);
 
-  // Di layar selesai, hitung mundur lalu pindah ke latihan berikutnya
   useEffect(() => {
     if (stage !== 3) return;
     const t = setTimeout(() => navigate(next ? `/tag/${next.slug}` : "/tag"), 3400);
@@ -119,6 +143,12 @@ export default function GuidedLesson({ entry }) {
   }, [stage]);
 
   const goNext = () => navigate(next ? `/tag/${next.slug}` : "/tag");
+
+  const partBadge = (n) => (
+    <span style={{ fontSize: ".62rem", fontWeight: 800, letterSpacing: ".08em", background: "#e0f2fe", color: "#0369a1", borderRadius: 6, padding: ".15rem .4rem" }}>
+      BAGIAN {n}/{hasDemo ? 5 : 4}
+    </span>
+  );
 
   const stepDot = (i) => (
     <div key={i} style={{ display: "flex", alignItems: "center", gap: ".35rem", opacity: stage >= i ? 1 : 0.45 }}>
@@ -136,40 +166,64 @@ export default function GuidedLesson({ entry }) {
         {[0, 1, 2, 3].map(stepDot)}
       </div>
 
-      {/* ===== LANGKAH 1: BACA & PAHAMI ===== */}
+      {/* ===== LANGKAH 1: BACA & PAHAMI (per bagian, ber-efek mengetik) ===== */}
       {stage === 0 && (
         <section>
           <p className="section-title">📖 Langkah 1 — Baca &amp; Pahami</p>
-          <div className="info" style={{ minHeight: 70, fontSize: ".95rem", lineHeight: 1.7 }}>
-            {summary.slice(0, typed)}
-            {!typingDone && <span aria-hidden="true" style={{ animation: "blink 1s infinite" }}>▌</span>}
+
+          {/* BAGIAN 1 — Kenalan dulu (analogi) */}
+          <div className="info" style={{ borderColor: "#bbf7d0", background: "#f0fdf4" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".2rem" }}>
+              <b style={{ color: "#15803d" }}>🌱 Kenalan dulu (analogi)</b>{partBadge(1)}
+            </div>
+            <TypedText text={entry.analogi || "Tag ini bagian dari kerangka HTML."} skip={skipAll} onDone={() => setReadPhase((p) => (p === 0 ? 1 : p))} style={{ fontSize: ".92rem", lineHeight: 1.6, minHeight: "1.5em" }} />
           </div>
-          {typingDone && (
-            <>
-              <div className="info" style={{ borderColor: "#c7d2fe", background: "#eef2ff", animation: "popIn .4s ease both" }}>
-                <b>🧩 Atribut penting</b><br />
-                {entry.atribut.map((a) => <div key={a.name}><code>{a.name}</code> — {a.desc}</div>)}
+
+          {/* BAGIAN 2 — Apa itu sebenarnya? */}
+          {readPhase >= 1 && (
+            <div className="info">
+              <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".2rem" }}>
+                <b style={{ color: "#0e7490" }}>📖 Apa itu sebenarnya?</b>{partBadge(2)}
               </div>
-              <div className="info" style={{ animation: "popIn .5s ease both" }}>
-                <b>💻 Contoh kode</b>
-                <CodeBlock code={entry.contohKode} />
-              </div>
-              {entry.kapan && (
-                <div className="info" style={{ borderColor: "#fde68a", background: "#fffbeb", animation: "popIn .52s ease both" }}>
-                  <b>⏰ Kapan &amp; di mana dipakai</b><br />{entry.kapan}
-                  <div style={{ marginTop: ".35rem" }}><b>🖼️ Contoh hasil / output</b><br />{entry.output}</div>
-                </div>
-              )}
-              {entry.demo !== "generic" && (
-                <div style={{ animation: "popIn .55s ease both", marginTop: ".6rem" }}>
-                  <DemoRenderer demo={entry.demo} entry={entry} />
-                </div>
-              )}
-            </>
+              <TypedText text={entry.summary} skip={skipAll} onDone={() => setReadPhase((p) => (p === 1 ? 2 : p))} style={{ fontSize: ".92rem", lineHeight: 1.7, minHeight: "1.5em" }} />
+            </div>
           )}
-          <div style={{ display: "flex", gap: ".5rem", marginTop: ".6rem" }}>
-            {!typingDone && <button className="btn" onClick={skipTyping}>⏭️ Lewati</button>}
-            {typingDone && <button className="btn primary" onClick={() => { setStage(1); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Selanjutnya ➡️</button>}
+
+          {/* BAGIAN 3 — Atribut penting */}
+          {readPhase >= 2 && (
+            <div className="info" style={{ borderColor: "#c7d2fe", background: "#eef2ff" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".2rem" }}>
+                <b style={{ color: "#4338ca" }}>🧩 Atribut penting</b>{partBadge(3)}
+              </div>
+              {entry.atribut.map((a, i) => (
+                <div key={a.name} style={{ animation: "popIn .4s ease both", animationDelay: `${i * 110}ms` }}><code>{a.name}</code> — {a.desc}</div>
+              ))}
+            </div>
+          )}
+
+          {/* BAGIAN 4 — Contoh kode */}
+          {readPhase >= 3 && (
+            <div className="info">
+              <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".2rem" }}>
+                <b style={{ color: "#0369a1" }}>💻 Contoh kode</b>{partBadge(4)}
+              </div>
+              <CodeLines code={entry.contohKode} />
+            </div>
+          )}
+
+          {/* BAGIAN 5 — Lihat langsung (demo) */}
+          {readPhase >= 4 && hasDemo && (
+            <div style={{ animation: "popIn .5s ease both", marginTop: ".6rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".2rem" }}>
+                <b style={{ color: "#0f766e" }}>🎬 Lihat langsung</b>{partBadge(5)}
+              </div>
+              <DemoRenderer demo={entry.demo} entry={entry} />
+            </div>
+          )}
+
+          <div style={{ display: "flex", gap: ".5rem", marginTop: ".5rem", flexWrap: "wrap" }}>
+            {!readDone && <button className="btn" onClick={() => setSkipAll(true)}>⏭️ Lewati Semua</button>}
+            {readDone && <button className="btn primary" onClick={() => { setStage(1); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Selanjutnya ➡️ — Praktik</button>}
           </div>
         </section>
       )}
@@ -205,7 +259,7 @@ export default function GuidedLesson({ entry }) {
               </div>
               <iframe title="Hasil praktik" sandbox="" srcDoc={code} style={{ width: "100%", minHeight: 120, border: "2px dashed #5eead4", borderRadius: 12, background: "#fff", marginTop: ".4rem" }} />
               <div style={{ marginTop: ".5rem" }}>
-                <button className="btn primary" onClick={() => { setStage(2); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Selanjutnya ➡️</button>
+                <button className="btn primary" onClick={() => { setStage(2); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Selanjutnya ➡️ — Kuis Mini</button>
               </div>
             </>
           )}
