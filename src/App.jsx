@@ -6,6 +6,7 @@ import KesalahanCount from "./components/KesalahanCount.jsx";
 import Splash from "./pages/Splash.jsx";
 import IntroBasics from "./pages/IntroBasics.jsx";
 import BgmPlayer from "./components/BgmPlayer.jsx";
+import FloatingMusicButton from "./components/FloatingMusicButton.jsx";
 import { playClick } from "./lib/sounds.js";
 import Home from "./pages/Home.jsx";
 import Resources from "./pages/Resources.jsx";
@@ -117,6 +118,7 @@ export default function App() {
   return (
     <>
       {bgmOn && <BgmPlayer />}
+      <FloatingMusicButton />
       <FloatingShapes />
       <AnimatePresence mode="wait" initial={false}>
       {stage === "splash" && (
