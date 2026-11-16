@@ -84,6 +84,17 @@ const DECO = [
   { type: "rrect", style: { width: 64, height: 22, bottom: "12%", left: "26%", transform: "rotate(10deg)", border: "2px solid rgba(52,211,153,.45)" } },
   { type: "plus", style: { top: "38%", right: "10%", fontSize: "1.6rem", color: "#f9a8d4" } },
   { type: "plus", style: { bottom: "34%", left: "32%", fontSize: "1.1rem", color: "#7dd3fc" } },
+  { type: "ring", style: { width: 46, height: 46, top: "22%", left: "40%", borderColor: "rgba(52,211,153,.45)" } },
+  { type: "ring", style: { width: 120, height: 120, bottom: "8%", right: "28%", borderColor: "rgba(253,224,71,.4)" } },
+  { type: "dot", style: { width: 15, height: 15, top: "12%", left: "28%", background: "rgba(253,164,165,.7)" } },
+  { type: "dot", style: { width: 22, height: 22, top: "64%", right: "30%", background: "rgba(196,181,253,.6)" } },
+  { type: "dot", style: { width: 12, height: 12, top: "46%", left: "52%", background: "rgba(125,211,252,.8)" } },
+  { type: "rrect", style: { width: 52, height: 18, top: "42%", left: "18%", transform: "rotate(-14deg)", border: "2px solid rgba(253,224,71,.55)" } },
+  { type: "plus", style: { top: "16%", left: "62%", fontSize: "1.3rem", color: "#c4b5fd" } },
+  { type: "plus", style: { bottom: "44%", right: "40%", fontSize: ".95rem", color: "#fdba74" } },
+  { type: "sparkle", style: { top: "26%", left: "20%", fontSize: "1.2rem", color: "#facc15", animationDelay: "-1s" } },
+  { type: "sparkle", style: { top: "10%", right: "34%", fontSize: "1rem", color: "#facc15", animationDelay: "-2s" } },
+  { type: "sparkle", style: { bottom: "38%", left: "44%", fontSize: ".9rem", color: "#facc15", animationDelay: "-.5s" } },
 ];
 
 function Deco({ d }) {
@@ -91,7 +102,33 @@ function Deco({ d }) {
   if (d.type === "ring") return <div style={{ ...base, ...d.style, borderRadius: "50%", border: "10px solid" }} />;
   if (d.type === "dot") return <div style={{ ...base, ...d.style, borderRadius: "50%" }} />;
   if (d.type === "rrect") return <div style={{ ...base, ...d.style, background: "rgba(255,255,255,.5)" }} />;
+  if (d.type === "sparkle") return <span style={{ ...base, ...d.style, background: "none", animation: "twinkle 2.2s ease-in-out infinite" }}>✦</span>;
   return <div style={{ ...base, ...d.style, fontWeight: 900 }}>✚</div>;
+}
+
+/* ---------- Efek mengetik (setelah transisi masuk) ---------- */
+function Typed({ text, speed = 14, delay = 80, style }) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setCount(0);
+    let iv;
+    const starter = setTimeout(() => {
+      iv = setInterval(() => {
+        setCount((c) => {
+          if (c >= text.length) { clearInterval(iv); return c; }
+          return c + 1;
+        });
+      }, speed);
+    }, delay);
+    return () => { clearTimeout(starter); if (iv) clearInterval(iv); };
+  }, [text]);
+  const done = count >= text.length;
+  return (
+    <span style={style}>
+      {text.slice(0, count)}
+      {!done && <span aria-hidden="true" style={{ animation: "blink 1s infinite" }}>▌</span>}
+    </span>
+  );
 }
 
 export default function IntroBasics({ onDone }) {
@@ -154,8 +191,8 @@ export default function IntroBasics({ onDone }) {
                 <span className="badge" style={{ display: "inline-block", background: "#f0f9ff", color: "#0369a1", border: "2px solid #bae6fd" }}>📖 DASAR {step + 1} / {SLIDES.length}</span>
                 <div style={{ fontSize: "2rem", margin: ".15rem 0" }}>{current.emoji}</div>
                 <h1 style={{ margin: ".1rem 0 .1rem", fontSize: "1.55rem", color: "#0c4a6e" }}>{current.title}</h1>
-                <p style={{ color: "#0369a1", fontWeight: 800, margin: ".1rem 0 .6rem", fontSize: ".9rem" }}>“{current.analogi}”</p>
-                <p style={{ color: "#334155", lineHeight: 1.7, margin: 0, fontSize: ".92rem" }}>{current.text}</p>
+                <p style={{ color: "#0369a1", fontWeight: 800, margin: ".1rem 0 .6rem", fontSize: ".9rem", minHeight: "1.3em" }}>“<Typed text={current.analogi} speed={10} delay={150} />”</p>
+                <p style={{ color: "#334155", lineHeight: 1.7, margin: 0, fontSize: ".92rem", minHeight: "6.2em" }}><Typed text={current.text} speed={12} delay={700} /></p>
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: ".9rem", gap: ".5rem", flexWrap: "wrap" }}>
                   <button className="btn" onClick={skipAll}>⏭️ Lewati Dasar</button>

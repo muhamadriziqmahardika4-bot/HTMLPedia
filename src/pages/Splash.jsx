@@ -58,7 +58,7 @@ function CubbyBubble() {
   return <div className="cubby-bubble" style={{ opacity: visible ? 1 : 0 }}>{CUBBY_PHRASES[idx]}</div>;
 }
 
-export default function Splash({ onStart }) {
+export default function Splash({ onStart, onBabDasar, leaving }) {
   return (
     <div className="splash-screen">
       {/* Awan di LUAR box: membingkai box di 4 sudut */}
@@ -115,6 +115,10 @@ export default function Splash({ onStart }) {
               <button className="done-btn piece" onClick={onStart}
                 style={{ animationDelay: ".15s", fontSize: "1.1rem", padding: ".85rem 2.3rem", background: "linear-gradient(135deg,#38bdf8,#818cf8)", border: "none", color: "#fff", boxShadow: "0 6px 0 #0ea5e9", borderRadius: 999, cursor: "pointer" }}>
                 🚀 MULAI — LANGSUNG GASS!
+              </button>
+              <button className="done-btn piece" onClick={onBabDasar}
+                style={{ animationDelay: ".24s", fontSize: "1.05rem", padding: ".85rem 1.7rem", background: "#fff", border: "3px solid #fda4af", color: "#be185d", boxShadow: "0 6px 0 #fecdd3", borderRadius: 999, cursor: "pointer" }}>
+                📚 BAB DASAR
               </button>
             </div>
             <div className="piece" style={{ animationDelay: ".28s", display: "flex", gap: ".5rem", justifyContent: "center", flexWrap: "wrap", marginTop: ".9rem" }}>

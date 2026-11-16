@@ -251,3 +251,18 @@ html { scroll-behavior: smooth; }
 .title-underline::after { content: ''; position: absolute; left: 0; bottom: -4px; height: 5px; width: 100%; background: linear-gradient(90deg,#38bdf8,#a78bfa,#34d399,#fbbf24); border-radius: 99px; animation: underlinePulse 3s ease-in-out infinite; }
 @keyframes underlinePulse { 0%,100% { transform: scaleX(.55); transform-origin: left; opacity: .7; } 50% { transform: scaleX(1); opacity: 1; } }
 
+
+/* ---- Warna badge bahasa ---- */
+.badge-html { background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: #fff; }
+.badge-css { background: linear-gradient(135deg, #a78bfa, #7c3aed); color: #fff; }
+.badge-js { background: linear-gradient(135deg, #fde047, #f59e0b); color: #422006; }
+/* ---- Kartu tag: scroll-driven reveal ---- */
+.scroll-card { opacity: 0; transform: translateY(26px) scale(.96); }
+@keyframes cardIn { from { opacity: 0; transform: translateY(26px) scale(.96); } to { opacity: 1; transform: none; } }
+@supports (animation-timeline: view()) {
+  .scroll-card { animation: revealIn linear both; animation-timeline: view(); animation-range: entry 0% entry 75%; }
+}
+@supports not (animation-timeline: view()) {
+  .scroll-card { animation: cardIn .6s ease forwards; }
+}
+

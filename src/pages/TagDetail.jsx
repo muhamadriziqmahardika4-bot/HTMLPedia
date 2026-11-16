@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { ALL_ENTRIES, findEntry } from "../data/all.js";
+import { ALL_ENTRIES, findEntry, langOf } from "../data/all.js";
 import { CATEGORIES } from "../data/categories.js";
 import { useProgress } from "../hooks/useProgress.js";
 import TagBadge from "../components/TagBadge.jsx";
@@ -34,7 +34,7 @@ export default function TagDetail() {
       <div className="breadcrumb">🏠 Beranda › <Link to="/tag">Tag</Link> › {kategori?.name} › <b>{entry.tag}</b></div>
 
       <div className="tag-header">
-        <TagBadge tag={entry.tag} />
+        <TagBadge tag={entry.tag} lang={langOf(entry.category)} />
         <div>
           <div style={{ fontWeight: 800 }}>{entry.name}{entry.deprecated && <span style={{ marginLeft: ".5rem", fontSize: ".65rem", background: "#fef3c7", color: "#b45309", padding: ".1rem .45rem", borderRadius: 6, verticalAlign: "middle" }}>⚠️ DEPRECATED</span>}</div>
           <div style={{ fontSize: ".72rem", color: "#0369a1" }}>Kategori: {kategori?.name} • Tingkat: {entry.level}</div>
