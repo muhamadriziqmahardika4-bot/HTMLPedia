@@ -13,7 +13,11 @@ export const JS_TAGS = [
       { name: "let", desc: "Bisa di-reassign" },
       { name: "var", desc: "Legacy — hindari di kode modern" },
     ],
-    contohKode: "const nama = \"Mahardika\";\nlet umur = 20;\numur = 21; // OK\n// nama = \"Ellena\"; // ERROR",
+    contohKode: `const nama = "Mahardika";
+let umur = 20;
+umur = 21;   // let boleh di-reassign
+// const nama = "Ellena";  // ERROR kalau dicoba!
+document.getElementById("out").textContent = nama + " berumur " + umur + " tahun";`,
     related: ["js-function", "js-if-else"],
     demo: "generic",
   },
@@ -30,7 +34,10 @@ export const JS_TAGS = [
       { name: "return", desc: "Nilai yang dikembalikan fungsi" },
       { name: "arrow function", desc: "(x) => x * 2 — sintaks ringkas" },
     ],
-    contohKode: "function sapa(nama) {\n  return `Halo, ${nama}!`;\n}\nsapa(\"Mahardika\"); // \"Halo, Mahardika!\"",
+    contohKode: `function sapa(nama) {
+  return "Halo, " + nama + "! Selamat belajar.";
+}
+document.getElementById("out").textContent = sapa("Mahardika");`,
     related: ["js-const-let", "js-arrow-function"],
     demo: "generic",
   },
@@ -47,7 +54,9 @@ export const JS_TAGS = [
       { name: "(x) => x * 2", desc: "Satu parameter, return implisit" },
       { name: "(a, b) => { ... }", desc: "Banyak baris — butuh return eksplisit" },
     ],
-    contohKode: "const dua = (x) => x * 2;\ndua(21); // 42",
+    contohKode: `const duaKali = (x) => x * 2;
+const tambah = (a, b) => a + b;
+document.getElementById("out").textContent = "duaKali(21) = " + duaKali(21) + ", tambah(3, 4) = " + tambah(3, 4);`,
     related: ["js-function", "js-array-map"],
     demo: "generic",
   },
@@ -65,7 +74,16 @@ export const JS_TAGS = [
       { name: "else", desc: "Default jika semua salah" },
       { name: "&& / ||", desc: "Gabung kondisi" },
     ],
-    contohKode: "const nilai = 85;\nif (nilai >= 80) console.log(\"A\");\nelse if (nilai >= 70) console.log(\"B\");\nelse console.log(\"C\");",
+    contohKode: `const nilai = 85;
+let predikat;
+if (nilai >= 80) {
+  predikat = "A — Hebat!";
+} else if (nilai >= 70) {
+  predikat = "B — Baik";
+} else {
+  predikat = "C — Perlu belajar lagi";
+}
+document.getElementById("out").textContent = "Nilai kamu " + nilai + " → " + predikat;`,
     related: ["js-const-let", "js-for-loop"],
     demo: "generic",
   },
@@ -83,7 +101,13 @@ export const JS_TAGS = [
       { name: "for (let i = 0; ...)", desc: "Dengan indeks manual" },
       { name: "break / continue", desc: "Hentikan / lewati iterasi" },
     ],
-    contohKode: "const buah = [\"apel\", \"jeruk\"];\nfor (const b of buah) console.log(b);",
+    contohKode: `const buah = ["Apel", "Jeruk", "Anggur"];
+let isi = "<ul>";
+for (const b of buah) {
+  isi += "<li>" + b + "</li>";
+}
+isi += "</ul>";
+document.getElementById("out").innerHTML = isi;`,
     related: ["js-if-else", "js-array-map"],
     demo: "generic",
   },
@@ -100,7 +124,8 @@ export const JS_TAGS = [
       { name: "querySelectorAll('li')", desc: "Semua elemen (NodeList)" },
       { name: "getElementById('id')", desc: "Langsung lewat id — lebih cepat" },
     ],
-    contohKode: "const tombol = document.querySelector('.tombol');\ntombol.textContent = 'Klik aku!';",
+    contohKode: `const tombol = document.querySelector(".btn");
+document.getElementById("out").textContent = "Tombol ditemukan: " + tombol.textContent;`,
     related: ["js-addEventListener", "js-const-let"],
     demo: "generic",
   },
@@ -118,7 +143,11 @@ export const JS_TAGS = [
       { name: "submit", desc: "Form dikirim" },
       { name: "DOMContentLoaded", desc: "HTML selesai diparse" },
     ],
-    contohKode: "tombol.addEventListener('click', () => {\n  alert('Hai!');\n});",
+    contohKode: `const tombol = document.querySelector(".btn");
+const out = document.getElementById("out");
+tombol.addEventListener("click", function () {
+  out.textContent = "Tombol diklik!";
+});`,
     related: ["js-querySelector", "js-function"],
     demo: "generic",
   },
@@ -136,7 +165,9 @@ export const JS_TAGS = [
       { name: "find(fn)", desc: "Item pertama yang cocok" },
       { name: "reduce(fn)", desc: "Lipat semua jadi satu nilai" },
     ],
-    contohKode: "const harga = [1000, 2000];\nconst diskon = harga.map(h => h * 0.9);\n// [900, 1800]",
+    contohKode: `const harga = [1000, 2000, 3000];
+const diskon = harga.map((h) => h * 0.8);
+document.getElementById("out").textContent = "Setelah diskon 20%: " + diskon.join(", ");`,
     related: ["js-array-filter", "js-for-loop"],
     demo: "generic",
   },
@@ -153,7 +184,9 @@ export const JS_TAGS = [
       { name: "includes(x)", desc: "Cek apakah x ada di array" },
       { name: "some / every", desc: "Ada satu yang lolos / semua lolos" },
     ],
-    contohKode: "const lulus = nilai.filter(n => n >= 70);",
+    contohKode: `const nilai = [80, 60, 90, 40, 75];
+const lulus = nilai.filter((n) => n >= 70);
+document.getElementById("out").textContent = "Yang lulus: " + lulus.join(", ") + " (dari " + nilai.length + " nilai)";`,
     related: ["js-array-map"],
     demo: "generic",
   },
@@ -171,7 +204,11 @@ export const JS_TAGS = [
       { name: ".then / .catch", desc: "Menangani hasil / error" },
       { name: "Promise.all", desc: "Tunggu semua promise sekaligus" },
     ],
-    contohKode: "fetch('/api/menu')\n  .then(r => r.json())\n  .then(data => console.log(data))\n  .catch(err => console.error(err));",
+    contohKode: `const out = document.getElementById("out");
+out.textContent = "Memproses...";
+Promise.resolve("Data diterima!").then((v) => {
+  out.textContent = v;
+});`,
     related: ["js-async-await"],
     demo: "generic",
   },
@@ -188,7 +225,12 @@ export const JS_TAGS = [
       { name: "await expr", desc: "Tunggu promise selesai" },
       { name: "try/catch", desc: "Menangani error dari await" },
     ],
-    contohKode: "async function muat() {\n  try {\n    const r = await fetch('/api');\n    console.log(await r.json());\n  } catch (e) {\n    console.error(e);\n  }\n}",
+    contohKode: `const out = document.getElementById("out");
+out.textContent = "Memuat...";
+(async function () {
+  const hasil = await new Promise((resolve) => setTimeout(() => resolve("Data diterima dari server!"), 600));
+  out.textContent = hasil;
+})();`,
     related: ["js-promise", "js-addEventListener"],
     demo: "generic",
   },
@@ -206,7 +248,9 @@ export const JS_TAGS = [
       { name: "JSON.parse / stringify", desc: "Simpan object sebagai teks" },
       { name: "removeItem(k)", desc: "Hapus satu kunci" },
     ],
-    contohKode: "localStorage.setItem('progress', JSON.stringify(['html']));\nconst p = JSON.parse(localStorage.getItem('progress') || '[]');",
+    contohKode: `localStorage.setItem("nama-peserta", "Mahardika");
+const simpan = localStorage.getItem("nama-peserta");
+document.getElementById("out").textContent = "Tersimpan di localStorage: " + simpan;`,
     related: ["js-const-let", "js-async-await"],
     demo: "generic",
   },

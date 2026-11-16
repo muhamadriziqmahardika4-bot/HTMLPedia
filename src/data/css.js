@@ -15,7 +15,18 @@ export const CSS_TAGS = [
       { name: "gap", desc: "Jarak antar item flex" },
       { name: "flex-wrap", desc: "wrap = pindah baris kalau penuh" },
     ],
-    contohKode: ".navbar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 1rem;\n}",
+    contohKode: `ul {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+}
+ul li {
+  background: #e0f2fe;
+  padding: .5rem 1rem;
+  border-radius: 10px;
+  border: 2px solid #7dd3fc;
+}`,
     related: ["css-display-grid", "css-position", "css-gap"],
     demo: "generic",
   },
@@ -33,7 +44,20 @@ export const CSS_TAGS = [
       { name: "gap", desc: "Jarak antar sel grid" },
       { name: "grid-area", desc: "Nama area untuk penempatan eksplisit" },
     ],
-    contohKode: ".galeri {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 1rem;\n}",
+    contohKode: `ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .6rem;
+  list-style: none;
+  padding: 0;
+}
+ul li {
+  background: #ede9fe;
+  padding: .7rem;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #c4b5fd;
+}`,
     related: ["css-display-flex", "css-gap"],
     demo: "generic",
   },
@@ -49,7 +73,18 @@ export const CSS_TAGS = [
       { name: "row-gap", desc: "Jarak vertikal antar item" },
       { name: "column-gap", desc: "Jarak horizontal antar item" },
     ],
-    contohKode: ".list {\n  display: flex;\n  gap: 1.5rem;\n}",
+    contohKode: `ul {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  padding: 0;
+}
+ul li {
+  background: #fef9c3;
+  padding: .6rem 1.2rem;
+  border-radius: 8px;
+  border: 2px solid #fde047;
+}`,
     related: ["css-display-flex", "css-display-grid"],
     demo: "generic",
   },
@@ -67,7 +102,17 @@ export const CSS_TAGS = [
       { name: "fixed", desc: "Menempel di viewport, tidak ikut scroll" },
       { name: "sticky", desc: "Ikut scroll sampai batas tertentu, lalu menempel" },
     ],
-    contohKode: ".badge {\n  position: absolute;\n  top: -8px;\n  right: -8px;\n}",
+    contohKode: `.kartu { position: relative; padding-top: 1.4rem; }
+.kartu h2 {
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  background: #38bdf8;
+  color: #fff;
+  padding: .1rem .7rem;
+  border-radius: 8px;
+  margin: 0;
+}`,
     related: ["css-z-index", "css-display-flex"],
     demo: "generic",
   },
@@ -83,7 +128,18 @@ export const CSS_TAGS = [
       { name: "auto", desc: "Tidak membuat stacking context baru" },
       { name: "angka", desc: "Semakin besar, semakin di depan" },
     ],
-    contohKode: ".modal {\n  position: fixed;\n  z-index: 100;\n}",
+    contohKode: `.kartu { position: relative; z-index: 1; background: #f0f9ff; }
+.kartu h2 {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  z-index: 5;
+  background: #f472b6;
+  color: #fff;
+  padding: .15rem .7rem;
+  border-radius: 99px;
+  margin: 0;
+}`,
     related: ["css-position"],
     demo: "generic",
   },
@@ -99,7 +155,13 @@ export const CSS_TAGS = [
       { name: "content-box", desc: "width/height hanya isi (bawaan)" },
       { name: "border-box", desc: "width/height termasuk padding & border" },
     ],
-    contohKode: "* {\n  box-sizing: border-box;\n}",
+    contohKode: `.kartu {
+  width: 180px;
+  padding: 20px;
+  border: 6px solid #38bdf8;
+  box-sizing: border-box;   /* lebar tetap 180px */
+  background: #f0f9ff;
+}`,
     related: ["css-padding", "css-margin"],
     demo: "generic",
   },
@@ -116,7 +178,8 @@ export const CSS_TAGS = [
       { name: "margin-top / right / bottom / left", desc: "Jarak per sisi" },
       { name: "margin: 0 auto", desc: "Hilangkan margin vertikal, tengah horizontal" },
     ],
-    contohKode: ".kartu {\n  margin: 1rem auto;\n  max-width: 320px;\n}",
+    contohKode: `.judul { margin-bottom: 2rem; color: #7c3aed; }
+.kartu { margin: 2rem auto; max-width: 280px; text-align: center; }`,
     related: ["css-padding", "css-gap"],
     demo: "generic",
   },
@@ -132,7 +195,8 @@ export const CSS_TAGS = [
       { name: "padding", desc: "Shorthand 1-4 nilai" },
       { name: "padding-top / right / bottom / left", desc: "Per sisi" },
     ],
-    contohKode: ".tombol {\n  padding: .6rem 1.2rem;\n  border-radius: 999px;\n}",
+    contohKode: `.kartu { padding: 2rem; }
+.tombol { padding: .9rem 2rem; font-size: 1rem; }`,
     related: ["css-margin", "css-box-sizing"],
     demo: "generic",
   },
@@ -150,7 +214,8 @@ export const CSS_TAGS = [
       { name: "hsl", desc: "hsl(199, 93%, 60%) — mudah diputar hue-nya" },
       { name: "currentColor", desc: "Mengikuti warna teks induk" },
     ],
-    contohKode: ".judul {\n  color: #0c4a6e;\n}",
+    contohKode: `.judul { color: #e11d48; }
+.contoh { color: #0ea5e9; }`,
     related: ["css-background", "css-border"],
     demo: "generic",
   },
@@ -168,7 +233,8 @@ export const CSS_TAGS = [
       { name: "background-size", desc: "cover / contain / auto" },
       { name: "background-repeat", desc: "no-repeat untuk gambar latar" },
     ],
-    contohKode: ".hero {\n  background: linear-gradient(165deg, #f0f9ff, #e0f2fe);\n}",
+    contohKode: `body { background: linear-gradient(160deg, #fff7ed 0%, #fdf4ff 55%, #eff6ff 100%); }
+.kartu { background: linear-gradient(135deg, #fda4af, #f472b6); color: #fff; padding: 1rem; border: none; }`,
     related: ["css-color", "css-border"],
     demo: "generic",
   },
@@ -185,7 +251,8 @@ export const CSS_TAGS = [
       { name: "border-radius", desc: "radius sudut; 50% = lingkaran" },
       { name: "border-style", desc: "solid, dashed, dotted, double, none" },
     ],
-    contohKode: ".kartu {\n  border: 2px solid #bae6fd;\n  border-radius: 18px;\n}",
+    contohKode: `.kartu { border: 4px solid #f472b6; border-radius: 20px; background: #fdf2f8; }
+.tombol { border: 3px solid #0ea5e9; border-radius: 999px; background: #fff; color: #0ea5e9; }`,
     related: ["css-box-sizing", "css-background"],
     demo: "generic",
   },
@@ -202,7 +269,8 @@ export const CSS_TAGS = [
       { name: "web font", desc: "Google Fonts lewat <link> atau @import" },
       { name: "system font stack", desc: "\"Segoe UI\", system-ui, sans-serif" },
     ],
-    contohKode: "body {\n  font-family: \"Segoe UI\", system-ui, sans-serif;\n}",
+    contohKode: `body { font-family: Georgia, serif; }
+.judul { font-family: 'Courier New', monospace; letter-spacing: 2px; }`,
     related: ["css-font-size", "css-color"],
     demo: "generic",
   },
@@ -220,7 +288,8 @@ export const CSS_TAGS = [
       { name: "px", desc: "Ukuran tetap" },
       { name: "clamp(min, fluid, max)", desc: "Responsif: clamp(1rem, 5vw, 2rem)" },
     ],
-    contohKode: "h1 {\n  font-size: clamp(1.6rem, 5vw, 2.4rem);\n}",
+    contohKode: `.judul { font-size: 2rem; }
+.contoh { font-size: .75rem; color: #64748b; }`,
     related: ["css-font-family"],
     demo: "generic",
   },
@@ -238,7 +307,11 @@ export const CSS_TAGS = [
       { name: ":active", desc: "Saat ditekan/diklik" },
       { name: "transition", desc: "animasi perubahan yang halus" },
     ],
-    contohKode: ".kartu:hover {\n  transform: translateY(-4px);\n  transition: transform .2s;\n}",
+    contohKode: `button.tombol:hover { background: #0ea5e9; color: #fff; transform: scale(1.08); }
+.kartu:hover { background: #fef3c7; border-color: #f59e0b; }
+table tr:hover { background: #e0f2fe; }
+.judul { transition: color .3s; }
+.judul:hover { color: #f472b6; }`,
     related: ["css-position", "css-border"],
     demo: "generic",
   },
@@ -255,7 +328,13 @@ export const CSS_TAGS = [
       { name: "prefers-color-scheme", desc: "dark / light sesuai sistem" },
       { name: "prefers-reduced-motion", desc: "Hormati pengguna yang tidak suka animasi" },
     ],
-    contohKode: "@media (max-width: 768px) {\n  .grid { grid-template-columns: 1fr; }\n}",
+    contohKode: `@media (min-width: 250px) {
+  h1.judul { color: #16a34a; }
+  .kartu { background: #dcfce7; border-color: #4ade80; }
+}
+@media (min-width: 600px) {
+  .judul { letter-spacing: 3px; }
+}`,
     related: ["css-display-grid", "css-font-size"],
     demo: "generic",
   },

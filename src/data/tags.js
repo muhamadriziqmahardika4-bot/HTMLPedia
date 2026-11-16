@@ -616,7 +616,8 @@ export const TAGS = [
       { name: "rel", desc: "Hubungan: noopener, noreferrer,nofollow" },
       { name: "download", desc: "Men-download file alih-alih membukanya" },
     ],
-    contohKode: '<a href="https://contoh.com/resep" target="_blank" rel="noopener">Baca resep rendang</a>',
+    contohKode: `<p>Baca juga: <a href="https://www.google.com" target="_blank" rel="noopener">cari resep nasi goreng di Google</a></p>
+<p>Hubungi kami: <a href="mailto:halo@masakku.id">halo@masakku.id</a></p>`,
     related: ["link", "img"],
     analogi: "A itu jalan pintas antar kota — sekali klik, kamu langsung sampai di halaman lain.",
     demo: "link",
@@ -635,7 +636,10 @@ export const TAGS = [
       { name: "height", desc: "Tinggi gambar" },
       { name: "loading", desc: "lazy = dimuat saat dibutuhkan, menghemat data" },
     ],
-    contohKode: '<img src="rendang.jpg" alt="Sepiring rendang dengan nasi putih" loading="lazy">',
+    contohKode: `<figure>
+  <img src="https://images.unsplash.com/photo-1509048191080-912a28b0083b?w=300" alt="Secangkir kopi di atas meja kayu" loading="lazy">
+  <figcaption>Kopi pagi, ide sore ☕</figcaption>
+</figure>`,
     related: ["figure", "picture", "a"],
     analogi: "Img itu foto yang digantung di dinding — menghidupkan halamanmu secara instan.",
     demo: "img-fallback",
@@ -964,7 +968,16 @@ export const TAGS = [
       { name: "(global)", desc: "Atribut global berlaku" },
       { name: "border", desc: "Garis tepi (atribut lama — lebih baik pakai CSS border)" },
     ],
-    contohKode: '<table>\n  <thead>\n    <tr><th scope="col">Nama</th><th scope="col">Nilai</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Mahardika</td><td>95</td></tr>\n  </tbody>\n</table>',
+    contohKode: `<table border="1">
+  <thead>
+    <tr><th>Nama</th><th>Mapel</th><th>Nilai</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Mahardika</td><td>Matematika</td><td>90</td></tr>
+    <tr><td>Siti</td><td>IPA</td><td>85</td></tr>
+    <tr><td>Budi</td><td>IPS</td><td>78</td></tr>
+  </tbody>
+</table>`,
     related: ["tr", "th", "td", "caption"],
     analogi: "Table itu laporan nilai di buku raport — baris dan kolom supaya data gampang dibaca.",
     demo: "table-live",
@@ -1034,7 +1047,15 @@ export const TAGS = [
       { name: "colspan", desc: "Berapa kolom yang digabung" },
       { name: "rowspan", desc: "Berapa baris yang digabung" },
     ],
-    contohKode: '<th scope="col">Nama</th>',
+    contohKode: `<table border="1">
+  <thead>
+    <tr><th scope="col">Nama</th><th scope="col">Nilai</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Mahardika</td><td>95</td></tr>
+    <tr><td>Siti</td><td>88</td></tr>
+  </tbody>
+</table>`,
     related: ["tr", "td", "table"],
     demo: "generic",
   },
@@ -1050,7 +1071,12 @@ export const TAGS = [
       { name: "colspan", desc: "Jumlah kolom yang digabung" },
       { name: "rowspan", desc: "Jumlah baris yang digabung" },
     ],
-    contohKode: '<td colspan="2">Total semua</td>',
+    contohKode: `<table border="1">
+  <tr><th>Warna</th><th>Kode</th></tr>
+  <tr><td>Merah</td><td>#ef4444</td></tr>
+  <tr><td>Hijau</td><td>#22c55e</td></tr>
+  <tr><td>Biru</td><td>#3b82f6</td></tr>
+</table>`,
     related: ["tr", "th", "table"],
     demo: "generic",
   },
@@ -1092,7 +1118,14 @@ export const TAGS = [
       { name: "span", desc: "Jumlah kolom yang dicakup" },
       { name: "width", desc: "Lebar kolom" },
     ],
-    contohKode: '<col style="width: 40%">',
+    contohKode: `<table border="1">
+  <colgroup><col span="1"><col span="2" style="background:#e0f2fe"></colgroup>
+  <thead><tr><th>Nama</th><th>Q1</th><th>Q2</th></tr></thead>
+  <tbody>
+    <tr><td>Mahardika</td><td>80</td><td>90</td></tr>
+    <tr><td>Siti</td><td>85</td><td>88</td></tr>
+  </tbody>
+</table>`,
     related: ["colgroup", "table"],
     demo: "generic",
   },
