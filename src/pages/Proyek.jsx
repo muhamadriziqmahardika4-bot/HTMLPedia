@@ -42,6 +42,7 @@ const PROJECTS = [
 export default function Proyek() {
   const { done } = useProgress(ALL_ORDERED.length);
   const [checked, setChecked] = useState(load);
+  const [unlockAll, setUnlockAll] = useState(() => localStorage.getItem("htmlpedia-unlock-all") === "1");
 
   const [codes, setCodes] = useState(loadCode);
   const [feedback, setFeedback] = useState({});
@@ -84,10 +85,16 @@ export default function Proyek() {
     <div className="panel">
       <div className="breadcrumb">🏠 Beranda › <b>Proyek Mini</b></div>
       <h2 style={{ marginTop: 0 }}><span className="title-underline">🏗️ Proyek Mini</span></h2>
-      <p style={{ fontSize: ".85rem", color: "#0369a1" }}>Buat kode kamu di <a href="https://codepen.io/" target="_blank" rel="noreferrer">CodePen</a> atau editor favoritmu → **tempel di sini** → sistem cek → centang otomatis → lanjut ke tahap berikutnya. 3 proyek, 5 tahap per proyek.</p>
+      <p style={{ fontSize: ".85rem", color: "#0369a1" }}>Buat kode kamu di <a href="https://codepen.io/" target="_blank" rel="noreferrer">CodePen</a> atau editor favoritmu → <b>tempel di sini</b> → sistem cek → centang otomatis → lanjut ke tahap berikutnya. 3 proyek, 5 tahap per proyek.</p>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: ".6rem" }}>
+        <button className="btn" onClick={() => { const next = !unlockAll; localStorage.setItem("htmlpedia-unlock-all", next ? "1" : "0"); setUnlockAll(next); }}
+          style={{ fontSize: ".7rem", opacity: 0.85 }}>
+          {unlockAll ? "🔒 Tutup Semua (kunci lagi)" : "🔓 Buka Semua (cek — sementara)"}
+        </button>
+      </div>
 
       {PROJECTS.map((p) => {
-        const unlocked = doneCount >= p.need;
+        const unlocked = unlockAll || doneCount >= p.need;
         const passed = checked[p.id] || [];
         const totalStages = PROJECT_CHECKS[p.id].length;
         const currentStage = passed.length;
