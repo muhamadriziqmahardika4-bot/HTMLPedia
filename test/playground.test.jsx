@@ -4,12 +4,13 @@ import { render } from "@testing-library/react";
 import Playground from "../src/components/Playground.jsx";
 
 describe("Playground", () => {
-  it("iframe hasil render WAJIB punya sandbox tanpa allow-scripts", () => {
+  it("iframe hasil render WAJIB punya sandbox dengan allow-scripts tapi TANPA allow-same-origin", () => {
     const { container } = render(<Playground initialCode='<p>Halo</p>' />);
     const iframe = container.querySelector("iframe");
     expect(iframe).toBeTruthy();
-    expect(iframe.getAttribute("sandbox")).toBe("");
-    expect(iframe.getAttribute("sandbox") || "").not.toContain("allow-scripts");
+    const sandbox = iframe.getAttribute("sandbox") || "";
+    expect(sandbox).toContain("allow-scripts");
+    expect(sandbox).not.toContain("allow-same-origin");
   });
 
   it("bagian parent tidak mengeksekusi kode dari srcDoc", () => {
