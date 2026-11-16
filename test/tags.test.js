@@ -21,4 +21,8 @@ describe("data tag HTMLpedia", () => {
   it("level hanya Pemula atau Menengah", () => {
     for (const t of TAGS) expect(["Pemula", "Menengah"]).toContain(t.level);
   });
+
+  it("total tag minimal 100", () => {
+    expect(TAGS.length).toBeGreaterThanOrEqual(100);
+  });
 });
