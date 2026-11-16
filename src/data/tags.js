@@ -48,7 +48,16 @@ export const TAGS = [
     analogi: "Seperti kerangka rumah — tanpa ini, halamanmu tidak berdiri.",
     summary: "Baris paling pertama di setiap file HTML. Bukan tag, melainkan instruksi ke browser supaya merender halaman dalam mode standar (bukan quirks mode). Untuk HTML5, cukup tulis <!DOCTYPE html> — sederhana dan sama di semua browser.",
     atribut: [{ name: "(tidak ada atribut)", desc: "DOCTYPE adalah deklarasi, bukan elemen" }],
-    contohKode: "<!DOCTYPE html>\n<html lang=\"id\">...",
+    contohKode: `<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <title>Contoh Dokumen</title>
+  </head>
+  <body>
+    <h1>Halo Dunia!</h1>
+  </body>
+</html>`,
     related: ["html"],
     demo: "generic",
   },

@@ -7,8 +7,18 @@ export function isFullHtml(code) {
   return /<html[\s>]|<!doctype|<body[\s>]/i.test(code);
 }
 
+function wrapTableFragment(code) {
+  // Fragment tabel (<thead>/<tr>/dst. tanpa <table>) tidak akan dirender browser —
+  // bungkus dalam <table> agar tayang sebagai tabel.
+  if (/<(thead|tbody|tfoot|tr|th|td|caption|col\b|colgroup)[\s>/i.test(code) && !/<table[\s>]/i.test(code)) {
+    return `<table border="1">${code}</table>`;
+  }
+  return code;
+}
+
 export function wrapPreview(code, lang) {
   if (lang === "html") {
+    const body = wrapTableFragment(code);
     if (isFullHtml(code)) return code;
     return `<!DOCTYPE html>
 <html lang="id">
@@ -17,7 +27,7 @@ export function wrapPreview(code, lang) {
   <style>body{font-family:sans-serif;padding:1rem}</style>
 </head>
 <body>
-${code}
+${body}
 </body>
 </html>`;
   }
