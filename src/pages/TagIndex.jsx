@@ -45,17 +45,31 @@ export default function TagIndex() {
       </div>
 
       {filtered.length === 0 ? (
-        <p style={{ color: "#64748b" }}>Tidak ada tag yang cocok{q ? ` dengan "${q}"` : ""}. Coba kata lain.</p>
+        <p style={{ color: "#64748b" }}>Tidak ada materi yang cocok{q ? ` dengan "${q}"` : ""}. Coba kata lain.</p>
       ) : (
-        <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))" }}>
-          {filtered.map((t) => (
-            <Link key={t.slug} to={`/tag/${t.slug}`} className="card scroll-card" style={{ textDecoration: "none" }}>
-              <span className={`tag-badge ${LANG_META[langOf(t.category)].badgeClass}`} style={{ fontSize: ".85rem", padding: ".25rem .6rem" }}>{t.tag}</span>
-              <b style={{ marginTop: ".4rem" }}>{t.name}</b>
-              <span>{LANG_META[langOf(t.category)].emoji} {t.level}{t.deprecated ? " · ⚠️ Deprecated" : ""}</span>
-            </Link>
-          ))}
-        </div>
+        ["html", "css", "js"].map((lang) => {
+          const group = filtered.filter((t) => langOf(t.category) === lang);
+          if (group.length === 0) return null;
+          const meta = LANG_META[lang];
+          return (
+            <div key={lang} style={{ marginBottom: "1.2rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: ".6rem", margin: ".4rem 0 .6rem", padding: ".35rem .8rem", borderRadius: 12, background: lang === "html" ? "#e0f2fe" : lang === "css" ? "#eef2ff" : "#fefce8", border: `2px solid ${lang === "html" ? "#7dd3fc" : lang === "css" ? "#c7d2fe" : "#fde68a"}` }}>
+                <span style={{ fontSize: "1.1rem" }}>{meta.emoji}</span>
+                <b style={{ color: "#0c4a6e" }}>{meta.label}</b>
+                <span style={{ fontSize: ".75rem", color: "#0369a1", marginLeft: "auto" }}>{group.length} materi</span>
+              </div>
+              <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))" }}>
+                {group.map((t) => (
+                  <Link key={t.slug} to={`/tag/${t.slug}`} className="card scroll-card" style={{ textDecoration: "none" }}>
+                    <span className={`tag-badge ${meta.badgeClass}`} style={{ fontSize: ".85rem", padding: ".25rem .6rem" }}>{t.tag}</span>
+                    <b style={{ marginTop: ".4rem" }}>{t.name}</b>
+                    <span>{t.level}{t.deprecated ? " · ⚠️ Deprecated" : ""}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          );
+        })
       )}
     </div>
   );
