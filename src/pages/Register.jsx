@@ -55,7 +55,7 @@ export default function Register() {
     <div className="app splash-screen">
       <div className="splash-wrap">
         <div className="panel" style={{ maxWidth: 460, width: "100%", padding: "1.8rem 1.6rem", textAlign: "center" }}>
-          <div style={{ lineHeight: 1 }}><Avatar id={avatar} size={64} title="Avatar kamu" /></div>
+          <div className="avatar-frame" style={{ marginBottom: ".2rem" }}><Avatar id={avatar} size={64} title="Avatar kamu" style={{ borderRadius: 18 }} /></div>
           <h1 style={{ fontSize: "1.25rem", color: "var(--deep)", margin: ".4rem 0 .2rem" }}>Buat akun HTMLpedia</h1>
           <p style={{ fontSize: ".83rem", color: "var(--text)", marginBottom: "1rem" }}>
             Tanpa email — cukup username & password. Progress belajarmu tersimpan di akunmu.

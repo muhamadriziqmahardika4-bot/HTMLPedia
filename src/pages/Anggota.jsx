@@ -52,7 +52,7 @@ export default function Anggota() {
           {rows.map((p) => {
             const joined = p.created_at ? new Date(p.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "—";
             return (
-              <div key={p.id} style={{ background: "#f0f9ff", border: "1.5px solid var(--border)", borderRadius: 16, padding: ".85rem .8rem", textAlign: "center" }}>
+              <div key={p.id} style={{ background: "radial-gradient(rgba(255,255,255,.65) 1.4px, transparent 1.5px), linear-gradient(160deg, #f0f9ff, #fdf4ff 60%, #fef9c3)", backgroundSize: "15px 15px, auto", border: "2.5px solid #ffffff", borderRadius: 18, padding: ".65rem .6rem", textAlign: "center", boxShadow: "0 6px 16px rgba(12,74,110,.22), inset 0 2px 5px rgba(255,255,255,.9)" }}>
                 <Avatar id={p.avatar} size={50} title={p.full_name || "avatar"} />
                 <p style={{ fontWeight: 900, color: "var(--deep)", margin: ".25rem 0 .1rem", fontSize: ".85rem" }}>{p.full_name || "Pengguna HTMLpedia"}</p>
                 <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 800, margin: "0 0 .3rem" }}>@{p.username}</p>

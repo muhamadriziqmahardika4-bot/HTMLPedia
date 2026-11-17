@@ -28,11 +28,14 @@ export default function AvatarPicker({ value, onChange, columns = 2 }) {
               alignItems: "center",
               gap: ".4rem",
               padding: ".7rem .4rem .55rem",
-              borderRadius: 18,
+              borderRadius: 20,
               cursor: "pointer",
-              border: selected ? "3.5px solid #0284c7" : "3px solid rgba(12,74,110,.12)",
-              background: `linear-gradient(165deg, ${a.bg} 0%, ${a.bg}55 55%, #ffffff 100%)`,
-              boxShadow: selected ? "0 6px 0 rgba(2,132,199,.5)" : "0 3px 0 rgba(12,74,110,.08)",
+              border: selected ? "3px solid #0284c7" : "3px solid rgba(255,255,255,.9)",
+              background: `radial-gradient(rgba(255,255,255,.6) 1.5px, transparent 1.6px), linear-gradient(155deg, ${a.bg} 0%, ${a.bg}88 45%, #ffffff 110%)`,
+              backgroundSize: "15px 15px, auto",
+              boxShadow: selected
+                ? "0 6px 0 rgba(2,132,199,.55), 0 10px 22px rgba(2,132,199,.35)"
+                : "0 4px 0 rgba(12,74,110,.18), 0 8px 18px rgba(12,74,110,.22), inset 0 2px 4px rgba(255,255,255,.8)",
               transition: "transform .22s ease, box-shadow .22s ease, border-color .2s",
             }}
           >

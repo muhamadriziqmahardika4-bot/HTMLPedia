@@ -159,8 +159,8 @@ export default function Profile() {
     <div className="panel" style={{ padding: ".9rem 1rem", maxWidth: 540, margin: "0 auto" }}>
       {/* ===== Kepala profil ===== */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: ".35rem" }}>
-        <div style={{ lineHeight: 1 }}>
-          <Avatar id={avatar} size={60} title="Avatar kamu" />
+        <div className="avatar-frame">
+          <Avatar id={avatar} size={64} title="Avatar kamu" style={{ borderRadius: 18 }} />
         </div>
         <div style={{ minWidth: 0 }}>
           <h1 style={{ fontSize: "1.12rem", color: "var(--deep)", margin: 0 }}>{shownName}</h1>

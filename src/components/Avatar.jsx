@@ -32,7 +32,7 @@ export default function Avatar({ id, size = 96, className = "", title, style = {
       width={size}
       height={size}
       alt={title || (known ? known.name : "avatar")}
-      className={`avatar-live ${className}`}
+      className={`${className}`}
       loading="lazy"
       draggable={false}
       style={{ display: "block", borderRadius: "50%", objectFit: "cover", userSelect: "none", width: "100%", height: "100%", boxShadow: "0 0 0 4px #ffffff, 0 8px 18px rgba(12,74,110,.45)", ...style }}
