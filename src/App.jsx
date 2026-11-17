@@ -11,7 +11,7 @@ import FloatingMusicButton from "./components/FloatingMusicButton.jsx";
 import { playClick } from "./lib/sounds.js";
 import { useAuth } from "./hooks/useAuth.js";
 import { pullMergePush } from "./lib/progressSync.js";
-import { getProfile, touchLastSeen } from "./lib/profiles.js";
+import { getProfile, touchLastSeen, autoCreateProfile } from "./lib/profiles.js";
 import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
 const APP_VERSION = typeof __APP_VERSION__ !== "undefined" ? String(__APP_VERSION__) : "dev";
 import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
@@ -163,10 +163,19 @@ export default function App() {
 
   // Sudah login → buka situs langsung ke tampilan thumbnail (splash) seperti biasa
 
-  // Pengguna baru (belum punya profil) → langsung ke /profil untuk onboarding
+  // Pengguna baru → otomatis buat profil dari data login (mis. Google) supaya langsung keliatan di Anggota.
+  // Kalau gagal (mis. bentrok aneh), fallback ke halaman onboarding /profil seperti biasa.
   useEffect(() => {
-    if (!userId || !synced) return;
-    getProfile(userId).then((p) => { if (!p) navigate("/profil"); });
+    if (!userId || !synced || !user) return;
+    let alive = true;
+    (async () => {
+      const p = await getProfile(userId);
+      if (!alive || p) return;
+      const created = await autoCreateProfile(user);
+      if (!alive) return;
+      if (!created) navigate("/profil");
+    })();
+    return () => { alive = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, synced]);
 

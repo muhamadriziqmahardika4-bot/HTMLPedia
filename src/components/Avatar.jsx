@@ -42,7 +42,7 @@ export function getBorderStyle(id) {
 
 export default function Avatar({ id, size = 96, border = "classic", className = "", title, style = {} }) {
   const known = AVATAR_CHOICES.find((a) => a.id === id);
-  const isPhoto = typeof id === "string" && id.startsWith("data:image/");
+  const isPhoto = typeof id === "string" && (id.startsWith("data:image/") || id.startsWith("http://") || id.startsWith("https://"));
   const imgSrc = isPhoto ? id : (known ? `/avatars/${known.id}.png` : "/avatars/alan.png");
   const b = getBorderStyle(border);
   const pad = b.pad ?? (typeof size === "number" ? Math.max(4, Math.round(size * 0.055)) : 4);
