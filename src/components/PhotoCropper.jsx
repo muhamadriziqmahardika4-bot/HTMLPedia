@@ -1,10 +1,11 @@
 // Modal crop foto — pengguna geser & zoom untuk menyesuaikan potongan lingkaran.
+// Menerima `src` berupa data URL (base64) atau blob URL — paling stabil di semua browser.
 import React, { useEffect, useRef, useState } from "react";
 
 const PREVIEW = 240; // ukuran preview (px)
 const OUT = 224;     // ukuran hasil akhir
 
-export default function PhotoCropper({ file, onCancel, onApply }) {
+export default function PhotoCropper({ src, onCancel, onApply }) {
   const [img, setImg] = useState(null);
   const [loadErr, setLoadErr] = useState(false);
   const [scale, setScale] = useState(1);
@@ -12,13 +13,13 @@ export default function PhotoCropper({ file, onCancel, onApply }) {
   const drag = useRef(null);
 
   useEffect(() => {
+    setImg(null);
+    setLoadErr(false);
     const i = new Image();
-    const url = URL.createObjectURL(file);
     i.onload = () => setImg(i);
     i.onerror = () => setLoadErr(true);
-    i.src = url;
-    return () => URL.revokeObjectURL(url);
-  }, [file]);
+    i.src = src;
+  }, [src]);
 
   // Skala dasar agar gambar selalu menutupi lingkaran
   const base = img ? Math.max(PREVIEW / img.width, PREVIEW / img.height) : 1;

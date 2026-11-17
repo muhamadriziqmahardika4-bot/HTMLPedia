@@ -43,9 +43,13 @@ export default function Profile() {
     const f = e.target.files?.[0];
     e.target.value = "";
     if (!f) return;
-    if (!f.type.startsWith("image/")) { setNotice2("File harus berupa gambar, ya."); return; }
+    if (!f.type.startsWith("image/")) { setNotice2("File harus berupa gambar (JPG/PNG/WebP)."); return; }
     if (f.size > 5 * 1024 * 1024) { setNotice2("Ukuran maksimal 5 MB."); return; }
-    setCropFile(f);
+    // Baca sebagai data URL dulu — paling stabil, tidak bergantung pada blob URL
+    const reader = new FileReader();
+    reader.onload = () => setCropFile(String(reader.result || ""));
+    reader.onerror = () => setNotice2("Gagal membaca file — coba gambar lain.");
+    reader.readAsDataURL(f);
   };
 
   const create = async (e) => {
@@ -124,7 +128,7 @@ export default function Profile() {
         <AuthDecor />
         {cropFile && (
           <PhotoCropper
-            file={cropFile}
+            src={cropFile}
             onCancel={() => setCropFile(null)}
             onApply={(dataUrl) => { setAvatar(dataUrl); setCropFile(null); setNotice2("Foto diimpor ✅"); }}
           />
@@ -224,7 +228,7 @@ export default function Profile() {
           </div>
           {cropFile && (
             <PhotoCropper
-              file={cropFile}
+              src={cropFile}
               onCancel={() => setCropFile(null)}
               onApply={(dataUrl) => { setAvatar(dataUrl); setCropFile(null); setNotice2("Foto diimpor ✅ — jangan lupa klik Simpan"); }}
             />

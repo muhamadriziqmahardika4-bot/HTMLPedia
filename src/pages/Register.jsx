@@ -26,9 +26,12 @@ export default function Register() {
     const f = e.target.files?.[0];
     e.target.value = "";
     if (!f) return;
-    if (!f.type.startsWith("image/")) { setNotice("File harus berupa gambar, ya."); return; }
+    if (!f.type.startsWith("image/")) { setNotice("File harus berupa gambar (JPG/PNG/WebP)."); return; }
     if (f.size > 5 * 1024 * 1024) { setNotice("Ukuran maksimal 5 MB."); return; }
-    setCropFile(f);
+    const reader = new FileReader();
+    reader.onload = () => setCropFile(String(reader.result || ""));
+    reader.onerror = () => setNotice("Gagal membaca file — coba gambar lain.");
+    reader.readAsDataURL(f);
   };
 
   const submit = async (e) => {
@@ -75,7 +78,7 @@ export default function Register() {
           <input ref={fileRef} type="file" accept="image/*" hidden onChange={pickPhoto} />
           {cropFile && (
             <PhotoCropper
-              file={cropFile}
+              src={cropFile}
               onCancel={() => setCropFile(null)}
               onApply={(dataUrl) => { setAvatar(dataUrl); setCropFile(null); setNotice("Foto diimpor ✅"); }}
             />
