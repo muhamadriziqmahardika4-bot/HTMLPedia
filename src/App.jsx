@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatingShapes from "./components/FloatingShapes.jsx";
+import UpdateChecker from "./components/UpdateChecker.jsx";
 import KesalahanCount from "./components/KesalahanCount.jsx";
 import Splash from "./pages/Splash.jsx";
 import IntroBasics from "./pages/IntroBasics.jsx";
@@ -187,6 +188,7 @@ export default function App() {
       {bgmOn && <BgmPlayer />}
       <FloatingMusicButton bgmOn={bgmOn} onToggleBgm={toggleBgm} />
       <FloatingShapes />
+      <UpdateChecker />
       <AnimatePresence mode="wait" initial={false}>
       {stage === "splash" && (
         <motion.div key="splash" exit={{ opacity: 0, transition: { duration: 0.22, ease: "easeOut" } }}>
