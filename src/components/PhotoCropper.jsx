@@ -65,7 +65,7 @@ export default function PhotoCropper({ src, onCancel, onApply }) {
         ) : (
         <>
         <div
-          style={{ position: "relative", width: PREVIEW, height: PREVIEW, margin: "0 auto", borderRadius: 28, overflow: "hidden", border: "4px solid #ffffff", boxShadow: "0 8px 22px rgba(2,132,199,.45)", background: "#0c4a6e", touchAction: "none", cursor: "grab" }}
+          style={{ position: "relative", width: PREVIEW, height: PREVIEW, margin: "0 auto", borderRadius: "50%", overflow: "hidden", border: "4px solid #ffffff", boxShadow: "0 8px 22px rgba(2,132,199,.45)", background: "#0c4a6e", touchAction: "none", cursor: "grab" }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
