@@ -4,6 +4,18 @@ import { supabase, OWNER_EMAIL } from "../lib/supabase.js";
 import Avatar from "../components/Avatar.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 
+function formatDate(s) {
+  if (!s) return "—";
+  const d = new Date(s);
+  return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+}
+function formatDateTime(s) {
+  if (!s) return "Belum pernah";
+  const d = new Date(s);
+  return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) +
+    " · " + d.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB";
+}
+
 export default function Anggota() {
   const { user } = useAuth();
   const isOwner = Boolean(user?.email && OWNER_EMAIL && user.email.toLowerCase() === OWNER_EMAIL);
@@ -37,10 +49,10 @@ export default function Anggota() {
   }
 
   return (
-    <div className="panel" style={{ padding: "1.3rem 1.2rem" }}>
-      <h1 style={{ fontSize: "1.5rem", color: "var(--deep)", margin: "0 0 .2rem" }}>👥 Anggota HTMLpedia</h1>
-      <p style={{ fontSize: ".8rem", color: "#64748b", margin: "0 0 1rem" }}>
-        {rows ? rows.length : "…"} anggota terdaftar · progress mereka tersimpan di akun masing-masing
+    <div className="panel" style={{ padding: "1rem 1rem", maxWidth: 640, margin: "0 auto" }}>
+      <h1 style={{ fontSize: "1.4rem", color: "var(--deep)", margin: "0 0 .1rem" }}>👥 Anggota HTMLpedia</h1>
+      <p style={{ fontSize: ".8rem", color: "#64748b", margin: "0 0 .8rem" }}>
+        {rows ? rows.length : "…"} anggota terdaftar
       </p>
 
       {rows === null ? (
@@ -48,17 +60,46 @@ export default function Anggota() {
       ) : rows.length === 0 ? (
         <p style={{ color: "#64748b" }}>Belum ada yang daftar — bagikan link situsmu dulu 😄</p>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: ".7rem" }}>
+        <div style={{ display: "grid", gap: ".55rem" }}>
           {rows.map((p) => {
-            const joined = p.created_at ? new Date(p.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "—";
+            const online = p.last_seen && Date.now() - new Date(p.last_seen).getTime() < 15 * 60 * 1000;
             return (
-              <div key={p.id} style={{ background: "radial-gradient(rgba(255,255,255,.65) 1.4px, transparent 1.5px), linear-gradient(160deg, #f0f9ff, #fdf4ff 60%, #fef9c3)", backgroundSize: "15px 15px, auto", border: "2.5px solid #ffffff", borderRadius: 18, padding: ".65rem .6rem", textAlign: "center", boxShadow: "0 6px 16px rgba(12,74,110,.22), inset 0 2px 5px rgba(255,255,255,.9)" }}>
-                <Avatar id={p.avatar} size={50} title={p.full_name || "avatar"} />
-                <p style={{ fontWeight: 900, color: "var(--deep)", margin: ".25rem 0 .1rem", fontSize: ".85rem" }}>{p.full_name || "Pengguna HTMLpedia"}</p>
-                <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 800, margin: "0 0 .3rem" }}>@{p.username}</p>
-                <p style={{ fontSize: ".66rem", color: "#64748b", margin: 0 }}>Bergabung {joined}</p>
-                <div style={{ marginTop: ".5rem", fontSize: ".72rem", fontWeight: 800, color: "#0369a1", background: "#e0f2fe", borderRadius: 999, display: "inline-block", padding: ".25rem .7rem" }}>
-                  📚 {p.selesai} materi selesai
+              <div key={p.id} style={{
+                display: "flex",
+                alignItems: "center",
+                gap: ".7rem",
+                background: "linear-gradient(155deg, #f0f9ff, #fdf4ff 62%, #fef9c3)",
+                border: "2.5px solid #ffffff",
+                borderRadius: 16,
+                padding: ".55rem .65rem",
+                boxShadow: "0 4px 14px rgba(12,74,110,.2), inset 0 2px 5px rgba(255,255,255,.9)",
+              }}>
+                {/* Avatar dengan border yang sama dipakai di profilnya */}
+                <Avatar id={p.avatar} border={p.border_style || "classic"} size={58} title={p.full_name || "avatar"} />
+
+                {/* Identitas */}
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: ".4rem", flexWrap: "wrap" }}>
+                    <p style={{ fontWeight: 900, color: "var(--deep)", margin: 0, fontSize: ".88rem" }}>{p.full_name || "Pengguna HTMLpedia"}</p>
+                    <span style={{
+                      fontSize: ".6rem", fontWeight: 800, borderRadius: 999, padding: ".15rem .45rem",
+                      color: online ? "#15803d" : "#64748b",
+                      background: online ? "#dcfce7" : "#f1f5f9",
+                    }}>
+                      {online ? "● Online" : "○ Offline"}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: ".68rem", color: "#0284c7", fontWeight: 800, margin: ".1rem 0 .25rem" }}>@{p.username}</p>
+                  <div style={{ fontSize: ".64rem", color: "#475569", lineHeight: 1.55 }}>
+                    <div>📅 <b>Bergabung:</b> {formatDate(p.created_at)}</div>
+                    <div>🕐 <b>Terakhir login:</b> {formatDateTime(p.last_seen)}</div>
+                  </div>
+                </div>
+
+                {/* Statistik */}
+                <div style={{ flexShrink: 0, textAlign: "center" }}>
+                  <div style={{ fontSize: "1.05rem", fontWeight: 900, color: "var(--deep)" }}>{p.selesai}</div>
+                  <div style={{ fontSize: ".55rem", fontWeight: 800, color: "#0369a1", background: "#e0f2fe", borderRadius: 8, padding: ".15rem .4rem" }}>materi selesai</div>
                 </div>
               </div>
             );
@@ -67,7 +108,7 @@ export default function Anggota() {
       )}
 
       <p style={{ fontSize: ".68rem", color: "#94a3b8", marginTop: "1rem" }}>
-        Email anggota tidak ditampilkan di sini demi privasi — daftar email lengkap tersedia di Supabase → Authentication → Users.
+        Email tidak ditampilkan demi privasi — daftar email tersedia di Supabase → Authentication → Users.
       </p>
     </div>
   );

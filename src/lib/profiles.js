@@ -23,12 +23,32 @@ export async function getProfile(userId) {
   }
 }
 
-export async function createProfile({ id, username, full_name, avatar }) {
-  const { error } = await supabase.from("profiles").insert({ id, username, full_name, avatar });
+export async function createProfile({ id, username, full_name, avatar, border_style }) {
+  const { error } = await supabase.from("profiles").insert({
+    id,
+    username,
+    full_name,
+    avatar,
+    border_style: border_style || "classic",
+    last_seen: new Date().toISOString(),
+  });
   if (error) throw error;
 }
 
-export async function updateProfile({ id, full_name, avatar }) {
-  const { error } = await supabase.from("profiles").update({ full_name, avatar }).eq("id", id);
+export async function updateProfile({ id, full_name, avatar, border_style }) {
+  const payload = {};
+  if (full_name !== undefined) payload.full_name = full_name;
+  if (avatar !== undefined) payload.avatar = avatar;
+  if (border_style !== undefined) payload.border_style = border_style;
+  const { error } = await supabase.from("profiles").update(payload).eq("id", id);
   if (error) throw error;
+}
+
+// Catat "terakhir online" — dipanggil sekali setelah login
+export async function touchLastSeen(userId) {
+  try {
+    await supabase.from("profiles").update({ last_seen: new Date().toISOString() }).eq("id", userId);
+  } catch {
+    // gagal = abaikan
+  }
 }

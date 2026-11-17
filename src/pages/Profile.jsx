@@ -8,6 +8,9 @@ import { PROJECT_CHECKS } from "../lib/codeCheck.js";
 
 import Avatar from "../components/Avatar.jsx";
 import AvatarPicker from "../components/AvatarPicker.jsx";
+import BorderPicker from "../components/BorderPicker.jsx";
+import PhotoCropper from "../components/PhotoCropper.jsx";
+import AuthDecor from "../components/AuthDecor.jsx";
 
 function readJSON(key, fallback) {
   try {
@@ -25,6 +28,8 @@ export default function Profile() {
   const [editing, setEditing] = useState(false);
   const [fullName, setFullName] = useState("");
   const [avatar, setAvatar] = useState("alan");
+  const [border, setBorder] = useState("classic");
+  const [cropFile, setCropFile] = useState(null);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
   const [newUsername, setNewUsername] = useState("");
@@ -34,30 +39,13 @@ export default function Profile() {
   const fileRef = useRef(null);
   const [notice2, setNotice2] = useState("");
 
-  const importPhoto = (e) => {
+  const pickPhoto = (e) => {
     const f = e.target.files?.[0];
     e.target.value = "";
     if (!f) return;
     if (!f.type.startsWith("image/")) { setNotice2("File harus berupa gambar, ya."); return; }
     if (f.size > 5 * 1024 * 1024) { setNotice2("Ukuran maksimal 5 MB."); return; }
-    const img = new Image();
-    const url = URL.createObjectURL(f);
-    img.onload = () => {
-      const size = 224;
-      const canvas = document.createElement("canvas");
-      canvas.width = canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      const scale = Math.max(size / img.width, size / img.height);
-      const w = Math.round(img.width * scale);
-      const h = Math.round(img.height * scale);
-      ctx.drawImage(img, Math.round((size - w) / 2), Math.round((size - h) / 2), w, h);
-      URL.revokeObjectURL(url);
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
-      setAvatar(dataUrl);
-      setNotice2("Foto diimpor ✅ — jangan lupa klik Simpan");
-    };
-    img.onerror = () => { URL.revokeObjectURL(url); setNotice2("Gambar tidak bisa dibuka."); };
-    img.src = url;
+    setCropFile(f);
   };
 
   const create = async (e) => {
@@ -69,8 +57,8 @@ export default function Profile() {
     setCreating(true);
     setCreateErr("");
     try {
-      await createProfile({ id: user.id, username: u, full_name: fullName.trim(), avatar });
-      setProfile({ id: user.id, username: u, full_name: fullName.trim(), avatar, created_at: new Date().toISOString() });
+      await createProfile({ id: user.id, username: u, full_name: fullName.trim(), avatar, border_style: border });
+      setProfile({ id: user.id, username: u, full_name: fullName.trim(), avatar, border_style: border, created_at: new Date().toISOString() });
     } catch (e2) {
       const msg = String(e2?.message || e2);
       setCreateErr(/duplicate|unique/i.test(msg) ? "Username itu sudah dipakai orang. Coba yang lain." : "Gagal menyimpan: " + msg);
@@ -87,6 +75,7 @@ export default function Profile() {
       setProfile(p);
       setFullName(p?.full_name || "");
       setAvatar(p?.avatar || "alan");
+      setBorder(p?.border_style || "classic");
     });
     return () => { alive = false; };
   }, [user?.id]);
@@ -109,8 +98,8 @@ export default function Profile() {
     setSaving(true);
     setNotice("");
     try {
-      await updateProfile({ id: user.id, full_name: fullName.trim(), avatar });
-      setProfile((p) => ({ ...(p || {}), full_name: fullName.trim(), avatar }));
+      await updateProfile({ id: user.id, full_name: fullName.trim(), avatar, border_style: border });
+      setProfile((p) => ({ ...(p || {}), full_name: fullName.trim(), avatar, border_style: border }));
       setEditing(false);
       setNotice("Profil tersimpan ✨");
     } catch (e) {
@@ -131,20 +120,35 @@ export default function Profile() {
   // ===== Onboarding: belum punya profil → lengkapi dulu =====
   if (profile === null) {
     return (
-      <div className="panel" style={{ padding: "1.15rem 1.1rem", maxWidth: 430, textAlign: "center" }}>
-        <div style={{ fontSize: "2.2rem" }}>👋</div>
+      <div className="panel" style={{ padding: "1.15rem 1.1rem", maxWidth: 430, textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <AuthDecor />
+        {cropFile && (
+          <PhotoCropper
+            file={cropFile}
+            onCancel={() => setCropFile(null)}
+            onApply={(dataUrl) => { setAvatar(dataUrl); setCropFile(null); setNotice2("Foto diimpor ✅"); }}
+          />
+        )}
+        <div style={{ position: "relative", zIndex: 2 }}>
+        <div style={{ fontSize: "2rem" }}>👋</div>
         <h1 style={{ fontSize: "1.2rem", color: "var(--deep)", margin: ".2rem 0" }}>Hai, selamat datang!</h1>
         <p style={{ fontSize: ".85rem", color: "var(--text)", margin: "0 0 1rem" }}>
           Bikin profilmu dulu biar nanti bisa progres belajarmu tampil lengkap — pilih avatar, nama & username kamu 🍡
         </p>
         <form onSubmit={create}>
-          <input ref={fileRef} type="file" accept="image/*" hidden onChange={importPhoto} />
+          <input ref={fileRef} type="file" accept="image/*" hidden onChange={pickPhoto} />
           <div style={{ display: "flex", justifyContent: "center", marginBottom: ".4rem" }}>
             <button type="button" className="btn" style={{ fontSize: ".76rem", padding: ".4rem .8rem", borderRadius: 10 }} onClick={() => fileRef.current?.click()}>
               📁 Import foto sendiri
             </button>
           </div>
-          <AvatarPicker value={avatar} onChange={setAvatar} columns={2} />
+          <AvatarPicker value={avatar} onChange={setAvatar} columns={2} border={border} />
+          <div style={{ display: "flex", justifyContent: "center", marginTop: ".4rem" }}>
+            <BorderPicker value={border} onChange={setBorder} avatarId={avatar} />
+          </div>
+          <div className="avatar-frame" style={{ margin: ".55rem 0 .1rem" }}>
+            <Avatar id={avatar} size={64} border={border} title="Preview avatar" style={{ borderRadius: 16 }} />
+          </div>
           {notice2 && <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 700, margin: ".4rem 0 0" }}>{notice2}</p>}
 
           <input
@@ -183,6 +187,7 @@ export default function Profile() {
             <p style={{ color: "#dc2626", fontSize: ".8rem", marginTop: ".6rem", fontWeight: 700 }}>{createErr}</p>
           )}
         </form>
+        </div>
       </div>
     );
   }
@@ -196,7 +201,7 @@ export default function Profile() {
       {/* ===== Kepala profil ===== */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: ".35rem" }}>
         <div className="avatar-frame">
-          <Avatar id={avatar} size={64} title="Avatar kamu" style={{ borderRadius: 18 }} />
+          <Avatar id={avatar} size={64} border={border} title="Avatar kamu" style={{ borderRadius: 16 }} />
         </div>
         <div style={{ minWidth: 0 }}>
           <h1 style={{ fontSize: "1.12rem", color: "var(--deep)", margin: 0 }}>{shownName}</h1>
@@ -211,9 +216,19 @@ export default function Profile() {
       {/* ===== Edit ===== */}
       {editing && (
         <div style={{ marginTop: ".6rem", background: "#f8fafc", border: "1.5px solid var(--border)", borderRadius: 12, padding: ".55rem .55rem" }}>
-          <input ref={fileRef} type="file" accept="image/*" hidden onChange={importPhoto} />
+          <input ref={fileRef} type="file" accept="image/*" hidden onChange={pickPhoto} />
           <p style={{ fontSize: ".78rem", fontWeight: 800, color: "var(--deep)", margin: "0 0 .4rem" }}>Pilih avatar</p>
-          <AvatarPicker value={avatar} onChange={setAvatar} columns={2} />
+          <AvatarPicker value={avatar} onChange={setAvatar} columns={2} border={border} />
+          <div style={{ display: "flex", justifyContent: "center", margin: ".4rem 0 .1rem" }}>
+            <BorderPicker value={border} onChange={setBorder} avatarId={avatar} />
+          </div>
+          {cropFile && (
+            <PhotoCropper
+              file={cropFile}
+              onCancel={() => setCropFile(null)}
+              onApply={(dataUrl) => { setAvatar(dataUrl); setCropFile(null); setNotice2("Foto diimpor ✅ — jangan lupa klik Simpan"); }}
+            />
+          )}
           <div style={{ display: "flex", justifyContent: "center", margin: ".45rem 0 .1rem" }}>
             <button type="button" className="btn" style={{ fontSize: ".74rem", padding: ".4rem .8rem", borderRadius: 10 }} onClick={() => fileRef.current?.click()}>
               📁 Import foto sendiri

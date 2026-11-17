@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase.js";
 import { usernameToEmail, validateUsername } from "../lib/profiles.js";
+import AuthDecor from "../components/AuthDecor.jsx";
 
 export function LoadingScreen() {
   return (
@@ -136,7 +137,9 @@ export default function Login() {
   return (
     <div className="app splash-screen">
       <div className="splash-wrap">
-        <div className="panel" style={{ maxWidth: 460, width: "100%", padding: "1.8rem 1.6rem", textAlign: "center" }}>
+        <div className="panel" style={{ maxWidth: 460, width: "100%", padding: "1.5rem 1.5rem", textAlign: "center", position: "relative", overflow: "hidden" }}>
+          <AuthDecor />
+          <div style={{ position: "relative", zIndex: 2 }}>
           <div style={{ fontSize: "2.6rem" }}>🍡</div>
           <h1 style={{ fontSize: "1.5rem", color: "var(--deep)", margin: ".4rem 0 .2rem" }}>
             <span className="text-shimmer">HTMLpedia</span>
@@ -309,6 +312,7 @@ export default function Login() {
           <p style={{ fontSize: ".68rem", color: "#94a3b8", marginTop: "1rem" }}>
             Tanpa password · Progress tersimpan di akun · Aman & gratis
           </p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
-// Pemilih avatar — kartu latar lembut + avatar BULAT (gaya profil, bukan stiker).
+// Pemilih avatar — kartu latar lembut + avatar bulat dengan border terpilih.
 import React from "react";
 import Avatar, { AVATAR_CHOICES } from "./Avatar.jsx";
 
-export default function AvatarPicker({ value, onChange, columns = 2 }) {
+export default function AvatarPicker({ value, onChange, columns = 2, border = "classic" }) {
   return (
     <div
       role="radiogroup"
@@ -26,8 +26,8 @@ export default function AvatarPicker({ value, onChange, columns = 2 }) {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: ".4rem",
-              padding: ".7rem .4rem .55rem",
+              gap: ".35rem",
+              padding: ".6rem .4rem .5rem",
               borderRadius: 20,
               cursor: "pointer",
               border: selected ? "3px solid #0284c7" : "3px solid rgba(255,255,255,.9)",
@@ -39,7 +39,7 @@ export default function AvatarPicker({ value, onChange, columns = 2 }) {
               transition: "transform .22s ease, box-shadow .22s ease, border-color .2s",
             }}
           >
-            <Avatar id={a.id} size="100%" title={a.name} style={{ width: "78%", height: "auto" }} />
+            <Avatar id={a.id} size={64} border={border} title={a.name} style={{ width: "88%", height: "auto" }} />
             <span style={{ fontSize: ".62rem", fontWeight: 800, color: "#0c4a6e", lineHeight: 1.15, textAlign: "center" }}>{a.name}</span>
           </button>
         );

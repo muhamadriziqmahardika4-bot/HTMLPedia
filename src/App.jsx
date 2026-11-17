@@ -10,7 +10,7 @@ import FloatingMusicButton from "./components/FloatingMusicButton.jsx";
 import { playClick } from "./lib/sounds.js";
 import { useAuth } from "./hooks/useAuth.js";
 import { pullMergePush } from "./lib/progressSync.js";
-import { getProfile } from "./lib/profiles.js";
+import { getProfile, touchLastSeen } from "./lib/profiles.js";
 import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
 import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
@@ -138,6 +138,11 @@ export default function App() {
   const { session, user, loading: authLoading, isOwner } = useAuth();
   const [synced, setSynced] = useState(false);
   const userId = session?.user?.id ?? null;
+
+  useEffect(() => {
+    if (!userId) return;
+    touchLastSeen(userId);
+  }, [userId]);
 
   useEffect(() => {
     if (!userId) { setSynced(false); return; }
