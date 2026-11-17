@@ -128,10 +128,7 @@ export default function App() {
     return () => { alive = false; };
   }, [userId]);
 
-  // Sudah login → langsung ke app, tanpa splash/intro lagi
-  useEffect(() => {
-    if (!authLoading && session) setStage((prev) => (prev === "splash" ? "app" : prev));
-  }, [authLoading, session]);
+  // Sudah login → buka situs langsung ke tampilan thumbnail (splash) seperti biasa
 
   const toggleBgm = () => {
     const next = !bgmOn;
