@@ -347,3 +347,10 @@ html { scroll-behavior: smooth; }
 .av-eyes { transform-box: fill-box; transform-origin: center; animation: avatarBlink 4.4s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .avatar-live, .av-eyes { animation: none !important; } }
 
+
+/* ===== Kartu pemilih avatar (grid 2 kolom) ===== */
+.avatar-card:hover { transform: translateY(-5px) scale(1.04); box-shadow: 0 8px 20px rgba(2,132,199,.35); }
+.avatar-card:active { transform: translateY(-1px) scale(.98); }
+.avatar-card:focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; }
+@media (max-width: 420px) { .avatar-card:hover { transform: none; } .avatar-card { padding: .45rem .3rem .4rem !important; } }
+

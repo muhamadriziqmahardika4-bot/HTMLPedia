@@ -6,7 +6,8 @@ import { getStreak } from "../lib/streak.js";
 import { ALL_ORDERED } from "../data/all.js";
 import { PROJECT_CHECKS } from "../lib/codeCheck.js";
 
-import Avatar, { AVATAR_CHOICES } from "../components/Avatar.jsx";
+import Avatar from "../components/Avatar.jsx";
+import AvatarPicker from "../components/AvatarPicker.jsx";
 
 function readJSON(key, fallback) {
   try {
@@ -108,25 +109,8 @@ export default function Profile() {
           Bikin profilmu dulu biar nanti bisa progres belajarmu tampil lengkap — pilih avatar, nama & username kamu 🍡
         </p>
         <form onSubmit={create}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem", justifyContent: "center", marginBottom: ".7rem" }}>
-            {AVATAR_CHOICES.map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                onClick={() => setAvatar(a.id)}
-                aria-pressed={avatar === a.id}
-                aria-label={a.name}
-                title={a.name}
-                style={{
-                  padding: ".2rem .3rem", borderRadius: 12, cursor: "pointer",
-                  border: avatar === a.id ? "2.5px solid var(--sky)" : "2px solid transparent",
-                  background: avatar === a.id ? "#e0f2fe" : "#f8fafc",
-                }}
-              >
-                <Avatar id={a.id} size={46} title={a.name} />
-              </button>
-            ))}
-          </div>
+          <AvatarPicker value={avatar} onChange={setAvatar} columns={2} />
+
           <input
             type="text"
             value={newUsername}
@@ -192,24 +176,7 @@ export default function Profile() {
       {editing && (
         <div style={{ marginTop: "1rem", background: "#f8fafc", border: "1.5px solid var(--border)", borderRadius: 14, padding: ".8rem" }}>
           <p style={{ fontSize: ".78rem", fontWeight: 800, color: "var(--deep)", margin: "0 0 .4rem" }}>Pilih avatar</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem", marginBottom: ".6rem" }}>
-            {AVATAR_CHOICES.map((a) => (
-              <button
-                key={a.id}
-                onClick={() => setAvatar(a.id)}
-                aria-pressed={avatar === a.id}
-                aria-label={a.name}
-                title={a.name}
-                style={{
-                  padding: ".2rem .3rem", borderRadius: 12, cursor: "pointer",
-                  border: avatar === a.id ? "2.5px solid var(--sky)" : "2px solid transparent",
-                  background: avatar === a.id ? "#e0f2fe" : "#fff",
-                }}
-              >
-                <Avatar id={a.id} size={46} title={a.name} />
-              </button>
-            ))}
-          </div>
+          <AvatarPicker value={avatar} onChange={setAvatar} columns={2} />
           <input
             type="text"
             value={fullName}

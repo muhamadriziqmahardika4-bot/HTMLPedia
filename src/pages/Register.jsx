@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabase.js";
 import { validateUsername, usernameToEmail, createProfile } from "../lib/profiles.js";
 import Avatar, { AVATAR_CHOICES } from "../components/Avatar.jsx";
+import AvatarPicker from "../components/AvatarPicker.jsx";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -61,25 +62,8 @@ export default function Register() {
           </p>
 
           <form onSubmit={submit}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem", justifyContent: "center", marginBottom: ".7rem" }}>
-              {AVATAR_CHOICES.map((a) => (
-                <button
-                  key={a.id}
-                  type="button"
-                  onClick={() => setAvatar(a.id)}
-                  aria-pressed={avatar === a.id}
-                  aria-label={a.name}
-                  title={a.name}
-                  style={{
-                    padding: ".2rem .3rem", borderRadius: 12, cursor: "pointer",
-                    border: avatar === a.id ? "2.5px solid var(--sky)" : "2px solid transparent",
-                    background: avatar === a.id ? "#e0f2fe" : "#f8fafc",
-                  }}
-                >
-                  <Avatar id={a.id} size={44} title={a.name} />
-                </button>
-              ))}
-            </div>
+            <AvatarPicker value={avatar} onChange={setAvatar} columns={2} />
+
 
             <input
               type="text"
