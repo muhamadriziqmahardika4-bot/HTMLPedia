@@ -25,13 +25,14 @@ export const AVATAR_CHOICES = [
 
 export default function Avatar({ id, size = 96, className = "", title, style = {} }) {
   const known = AVATAR_CHOICES.find((a) => a.id === id);
-  const file = known ? known.id : "alan";
+  const isPhoto = typeof id === "string" && id.startsWith("data:image/");
+  const src = isPhoto ? id : (known ? `/avatars/${known.id}.png` : "/avatars/alan.png");
   return (
     <img
-      src={`/avatars/${file}.png`}
+      src={src}
       width={size}
       height={size}
-      alt={title || (known ? known.name : "avatar")}
+      alt={title || (isPhoto ? "Foto profil" : (known ? known.name : "avatar"))}
       className={`${className}`}
       loading="lazy"
       draggable={false}

@@ -1,5 +1,5 @@
 ﻿// Halaman profil pengguna — avatar, nama, username, tanggal gabung + statistik belajar
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../hooks/useAuth.js";
 import { getProfile, updateProfile, createProfile, validateUsername } from "../lib/profiles.js";
 import { getStreak } from "../lib/streak.js";
@@ -30,6 +30,35 @@ export default function Profile() {
   const [newUsername, setNewUsername] = useState("");
   const [creating, setCreating] = useState(false);
   const [createErr, setCreateErr] = useState("");
+
+  const fileRef = useRef(null);
+  const [notice2, setNotice2] = useState("");
+
+  const importPhoto = (e) => {
+    const f = e.target.files?.[0];
+    e.target.value = "";
+    if (!f) return;
+    if (!f.type.startsWith("image/")) { setNotice2("File harus berupa gambar, ya."); return; }
+    if (f.size > 5 * 1024 * 1024) { setNotice2("Ukuran maksimal 5 MB."); return; }
+    const img = new Image();
+    const url = URL.createObjectURL(f);
+    img.onload = () => {
+      const size = 224;
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      const scale = Math.max(size / img.width, size / img.height);
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      ctx.drawImage(img, Math.round((size - w) / 2), Math.round((size - h) / 2), w, h);
+      URL.revokeObjectURL(url);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
+      setAvatar(dataUrl);
+      setNotice2("Foto diimpor ✅ — jangan lupa klik Simpan");
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); setNotice2("Gambar tidak bisa dibuka."); };
+    img.src = url;
+  };
 
   const create = async (e) => {
     e.preventDefault();
@@ -109,7 +138,14 @@ export default function Profile() {
           Bikin profilmu dulu biar nanti bisa progres belajarmu tampil lengkap — pilih avatar, nama & username kamu 🍡
         </p>
         <form onSubmit={create}>
+          <input ref={fileRef} type="file" accept="image/*" hidden onChange={importPhoto} />
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: ".4rem" }}>
+            <button type="button" className="btn" style={{ fontSize: ".76rem", padding: ".4rem .8rem", borderRadius: 10 }} onClick={() => fileRef.current?.click()}>
+              📁 Import foto sendiri
+            </button>
+          </div>
           <AvatarPicker value={avatar} onChange={setAvatar} columns={2} />
+          {notice2 && <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 700, margin: ".4rem 0 0" }}>{notice2}</p>}
 
           <input
             type="text"
@@ -175,8 +211,15 @@ export default function Profile() {
       {/* ===== Edit ===== */}
       {editing && (
         <div style={{ marginTop: ".6rem", background: "#f8fafc", border: "1.5px solid var(--border)", borderRadius: 12, padding: ".55rem .55rem" }}>
+          <input ref={fileRef} type="file" accept="image/*" hidden onChange={importPhoto} />
           <p style={{ fontSize: ".78rem", fontWeight: 800, color: "var(--deep)", margin: "0 0 .4rem" }}>Pilih avatar</p>
           <AvatarPicker value={avatar} onChange={setAvatar} columns={2} />
+          <div style={{ display: "flex", justifyContent: "center", margin: ".45rem 0 .1rem" }}>
+            <button type="button" className="btn" style={{ fontSize: ".74rem", padding: ".4rem .8rem", borderRadius: 10 }} onClick={() => fileRef.current?.click()}>
+              📁 Import foto sendiri
+            </button>
+          </div>
+          {notice2 && <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 700, margin: ".2rem 0 0" }}>{notice2}</p>}
           <input
             type="text"
             value={fullName}

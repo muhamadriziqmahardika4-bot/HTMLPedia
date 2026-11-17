@@ -360,6 +360,11 @@ html { scroll-behavior: smooth; }
 
 
 /* ===== Kotak avatar: gradien ceria + tekstur titik ===== */
-.avatar-frame { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(150deg, #fdf4ff 0%, #e0f2fe 45%, #fef9c3 100%); background-image: radial-gradient(circle at 16% 20%, rgba(244,114,182,.45) 0 16%, transparent 17%), radial-gradient(circle at 84% 22%, rgba(56,189,248,.45) 0 14%, transparent 15%), radial-gradient(circle at 84% 80%, rgba(250,204,21,.45) 0 15%, transparent 16%), radial-gradient(circle at 16% 80%, rgba(134,239,172,.45) 0 15%, transparent 16%), radial-gradient(rgba(12,74,110,.12) 1.3px, transparent 1.4px); background-size: auto, auto, auto, auto, 17px 17px; border: 3px solid #ffffff; border-radius: 26px; box-shadow: 0 12px 26px rgba(12,74,110,.4), inset 0 2px 6px rgba(255,255,255,.9); padding: .45rem; }
+
+
+/* ===== Kotak avatar: gradien ceria + sparkle ===== */
+.avatar-frame { position: relative; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(150deg, #fdf4ff 0%, #e0f2fe 38%, #fce7f3 68%, #fef9c3 100%); background-image: radial-gradient(circle at 14% 14%, rgba(244,114,182,.5) 0 13%, transparent 14%), radial-gradient(circle at 86% 16%, rgba(56,189,248,.5) 0 12%, transparent 13%), radial-gradient(circle at 88% 84%, rgba(250,204,21,.5) 0 13%, transparent 14%), radial-gradient(circle at 12% 82%, rgba(134,239,172,.5) 0 13%, transparent 14%), radial-gradient(rgba(12,74,110,.13) 1.3px, transparent 1.4px); background-size: auto, auto, auto, auto, 15px 15px; border: 3px solid #ffffff; border-radius: 26px; box-shadow: 0 14px 30px rgba(12,74,110,.42), inset 0 2px 6px rgba(255,255,255,.95); padding: .45rem; }
+.avatar-frame::before { content: '✨'; position: absolute; top: .32rem; left: .45rem; font-size: .85rem; filter: drop-shadow(0 1px 2px rgba(2,132,199,.6)); }
+.avatar-frame::after { content: '✨'; position: absolute; bottom: .32rem; right: .45rem; font-size: .85rem; filter: drop-shadow(0 1px 2px rgba(2,132,199,.6)); }
 .avatar-frame img { border-radius: 18px; }
 
