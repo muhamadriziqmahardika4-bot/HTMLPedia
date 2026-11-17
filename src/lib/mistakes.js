@@ -1,4 +1,6 @@
 // Buku Kesalahan — mencatat soal yang pernah kamu jawab salah agar bisa diulang.
+import { scheduleSync } from "./progressSync.js";
+
 const KEY = "htmlpedia-mistakes";
 
 function readAll() {
@@ -14,6 +16,7 @@ function readAll() {
 function writeAll(list) {
   try {
     localStorage.setItem(KEY, JSON.stringify(list));
+    scheduleSync();
   } catch {
     // abaikan
   }

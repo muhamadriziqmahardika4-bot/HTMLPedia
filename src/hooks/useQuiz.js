@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { scheduleSync } from "../lib/progressSync.js";
 
 const KEY = "htmlpedia-quiz";
 
@@ -20,6 +21,7 @@ export function useQuiz() {
   useEffect(() => {
     try {
       localStorage.setItem(KEY, JSON.stringify(best));
+      scheduleSync();
     } catch {
       // abaikan
     }

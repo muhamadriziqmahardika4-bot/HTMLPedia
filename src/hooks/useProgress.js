@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { recordActiveToday } from "../lib/streak.js";
+import { scheduleSync } from "../lib/progressSync.js";
 
 const KEY = "htmlpedia-progress";
 
@@ -20,6 +21,7 @@ export function useProgress(total = 0) {
   useEffect(() => {
     try {
       localStorage.setItem(KEY, JSON.stringify(done));
+      scheduleSync();
     } catch {
       // penyimpanan penuh/ditolak — abaikan, jangan crash
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatingShapes from "./components/FloatingShapes.jsx";
@@ -8,6 +8,10 @@ import IntroBasics from "./pages/IntroBasics.jsx";
 import BgmPlayer from "./components/BgmPlayer.jsx";
 import FloatingMusicButton from "./components/FloatingMusicButton.jsx";
 import { playClick } from "./lib/sounds.js";
+import { useAuth } from "./hooks/useAuth.js";
+import { pullMergePush } from "./lib/progressSync.js";
+import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
+import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import Resources from "./pages/Resources.jsx";
 import About from "./pages/About.jsx";
@@ -20,7 +24,7 @@ import Review from "./pages/Review.jsx";
 import Kesalahan from "./pages/Kesalahan.jsx";
 import Proyek from "./pages/Proyek.jsx";
 
-function Navbar({ bgmOn, onToggleBgm }) {
+function Navbar({ bgmOn, onToggleBgm, userEmail, onLogout }) {
   return (
     <nav className="nav">
       <Link to="/" className="logo text-shimmer" style={{ textDecoration: "none" }} onClick={playClick}>🍡 HTMLpedia</Link>
@@ -44,6 +48,14 @@ function Navbar({ bgmOn, onToggleBgm }) {
           style={{ fontSize: ".85rem" }}
         >
           {bgmOn ? "🎵 Musik: On" : "🔇 Musik: Off"}
+        </button>
+        <button
+          className="pill"
+          title={userEmail ? `Keluar dari ${userEmail}` : "Keluar"}
+          onClick={onLogout}
+          style={{ fontSize: ".78rem" }}
+        >
+          🚪 Keluar
         </button>
       </div>
     </nav>
@@ -104,11 +116,34 @@ export default function App() {
 
   const [bgmOn, setBgmOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
 
+  // ===== Auth wajib + progress tersimpan di akun =====
+  const { session, user, loading: authLoading } = useAuth();
+  const [synced, setSynced] = useState(false);
+  const userId = session?.user?.id ?? null;
+
+  useEffect(() => {
+    if (!userId) { setSynced(false); return; }
+    let alive = true;
+    pullMergePush().finally(() => { if (alive) setSynced(true); });
+    return () => { alive = false; };
+  }, [userId]);
+
   const toggleBgm = () => {
     const next = !bgmOn;
     localStorage.setItem("htmlpedia-bgm", next ? "on" : "off");
     setBgmOn(next);
   };
+
+  const logout = async () => {
+    playClick();
+    try { await supabase?.auth.signOut(); } catch { /* abaikan */ }
+    setStage("splash");
+  };
+
+  // Gerbang wajib login — jangan render app sebelum session + sinkron selesai
+  if (!isSupabaseConfigured) return <NotConfiguredScreen />;
+  if (authLoading || (session && !synced)) return <LoadingScreen />;
+  if (!session) return <Login />;
 
   return (
     <>
@@ -143,7 +178,7 @@ export default function App() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="app app-root"
         >
-          <Navbar bgmOn={bgmOn} onToggleBgm={toggleBgm} />
+          <Navbar bgmOn={bgmOn} onToggleBgm={toggleBgm} userEmail={user?.email} onLogout={logout} />
           <AnimatedRoutes />
         </motion.div>
       )}

@@ -6,6 +6,8 @@ import { useProgress } from "../hooks/useProgress.js";
 import { ALL_ORDERED } from "../data/all.js";
 import { PROJECT_CHECKS } from "../lib/codeCheck.js";
 import { playCorrect, playWrong } from "../lib/sounds.js";
+import { scheduleSync } from "../lib/progressSync.js";
+import { useAuth } from "../hooks/useAuth.js";
 
 const KEY = "htmlpedia-projects";
 const CODE_KEY = "htmlpedia-code";
@@ -230,13 +232,14 @@ function CopyBtn({ text, label }) {
 export default function Proyek() {
   const { done } = useProgress(ALL_ORDERED.length);
   const [checked, setChecked] = useState(load);
-  const [unlockAll, setUnlockAll] = useState(() => localStorage.getItem("htmlpedia-unlock-all") === "1");
+  const { isOwner } = useAuth();
+  const [unlockAll, setUnlockAll] = useState(() => localStorage.getItem("htmlpedia-unlock-all") === "1" || isOwner);
   const [codes, setCodes] = useState(loadCode);
   const [feedback, setFeedback] = useState({});
 
   const doneCount = done.length;
-  const saveChecked = (next) => { setChecked(next); try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* abaikan */ } };
-  const saveCodes = (next) => { setCodes(next); try { localStorage.setItem(CODE_KEY, JSON.stringify(next)); } catch { /* abaikan */ } };
+  const saveChecked = (next) => { setChecked(next); try { localStorage.setItem(KEY, JSON.stringify(next)); scheduleSync(); } catch { /* abaikan */ } };
+  const saveCodes = (next) => { setCodes(next); try { localStorage.setItem(CODE_KEY, JSON.stringify(next)); scheduleSync(); } catch { /* abaikan */ } };
   const setCode = (id, v) => saveCodes({ ...codes, [id]: v });
 
   const runCheck = (projectId) => {
@@ -287,7 +290,7 @@ export default function Proyek() {
       </div>
 
       {PROJECTS.map((p) => {
-        const unlocked = unlockAll || doneCount >= p.need;
+        const unlocked = unlockAll || isOwner || doneCount >= p.need;
         const passed = checked[p.id] || [];
         const totalStages = PROJECT_CHECKS[p.id].length;
         const currentStage = passed.length;

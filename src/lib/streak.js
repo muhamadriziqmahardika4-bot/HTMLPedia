@@ -1,4 +1,6 @@
 // Streak harian — dihitung dari hari-hari saat kamu menyelesaikan minimal 1 materi.
+import { scheduleSync } from "./progressSync.js";
+
 const KEY = "htmlpedia-activity";
 
 function readDates() {
@@ -23,6 +25,7 @@ export function recordActiveToday() {
     const t = todayStr();
     if (!dates.includes(t)) {
       localStorage.setItem(KEY, JSON.stringify([...dates, t].sort()));
+      scheduleSync();
     }
   } catch {
     // abaikan
