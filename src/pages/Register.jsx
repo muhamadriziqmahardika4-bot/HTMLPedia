@@ -26,11 +26,17 @@ export default function Register() {
     const f = e.target.files?.[0];
     e.target.value = "";
     if (!f) return;
-    if (!f.type.startsWith("image/")) { setNotice("File harus berupa gambar (JPG/PNG/WebP)."); return; }
+    if (!f.type.startsWith("image/")) { setNotice(`File ini tidak dikenali sebagai gambar (tipe: ${f.type || "kosong"}) — coba JPG/PNG/WebP.`); return; }
     if (f.size > 5 * 1024 * 1024) { setNotice("Ukuran maksimal 5 MB."); return; }
     const reader = new FileReader();
-    reader.onload = () => setCropFile(String(reader.result || ""));
-    reader.onerror = () => setNotice("Gagal membaca file — coba gambar lain.");
+    reader.onerror = () => setNotice("Gagal membaca file — coba salin foto ke folder lain lalu pilih lagi.");
+    reader.onload = () => {
+      const url = String(reader.result || "");
+      const test = new Image();
+      test.onload = () => setCropFile(url);
+      test.onerror = () => setNotice("Browser tidak bisa membuka foto ini — simpan ulang sebagai JPG/PNG (bukan HEIC/WEBP aneh).");
+      test.src = url;
+    };
     reader.readAsDataURL(f);
   };
 
