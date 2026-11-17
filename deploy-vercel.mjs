@@ -73,6 +73,19 @@ while (Date.now() < deadline) {
     if (state === "READY") {
       console.log("✅ Deployment siap!");
       console.log("🌐 URL:", url);
+      // Pin domain produksi ke deployment terbaru (domain tidak otomatis pindah)
+      for (const alias of ["htmlpedia-mahardika.vercel.app", "htmlpedia.vercel.app"]) {
+        try {
+          const a = await fetch(`${API}/v13/deployments/${deploy.id}/aliases${qs}`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ alias }),
+          });
+          console.log(`🔗 ${alias} -> HTTP ${a.status}`);
+        } catch (e) {
+          console.warn(`⚠️ gagal alias ${alias}: ${e?.message || e}`);
+        }
+      }
     } else {
       console.error(`❌ Deployment ${state}`);
     }
