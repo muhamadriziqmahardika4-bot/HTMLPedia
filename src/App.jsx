@@ -10,6 +10,7 @@ import FloatingMusicButton from "./components/FloatingMusicButton.jsx";
 import { playClick } from "./lib/sounds.js";
 import { useAuth } from "./hooks/useAuth.js";
 import { pullMergePush } from "./lib/progressSync.js";
+import { getProfile } from "./lib/profiles.js";
 import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
 import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
@@ -138,6 +139,13 @@ export default function App() {
   }, [userId]);
 
   // Sudah login → buka situs langsung ke tampilan thumbnail (splash) seperti biasa
+
+  // Pengguna baru (belum punya profil) → langsung ke /profil untuk onboarding
+  useEffect(() => {
+    if (!userId || !synced) return;
+    getProfile(userId).then((p) => { if (!p) navigate("/profil"); });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, synced]);
 
   const toggleBgm = () => {
     const next = !bgmOn;

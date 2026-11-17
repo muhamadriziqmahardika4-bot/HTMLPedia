@@ -1,7 +1,7 @@
 // Halaman profil pengguna — avatar, nama, username, tanggal gabung + statistik belajar
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth.js";
-import { getProfile, updateProfile } from "../lib/profiles.js";
+import { getProfile, updateProfile, createProfile, validateUsername } from "../lib/profiles.js";
 import { getStreak } from "../lib/streak.js";
 import { ALL_ORDERED } from "../data/all.js";
 import { PROJECT_CHECKS } from "../lib/codeCheck.js";
@@ -26,6 +26,28 @@ export default function Profile() {
   const [avatar, setAvatar] = useState("🧝");
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
+  const [newUsername, setNewUsername] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [createErr, setCreateErr] = useState("");
+
+  const create = async (e) => {
+    e.preventDefault();
+    const u = newUsername.trim().toLowerCase();
+    const err = validateUsername(u);
+    if (err) { setCreateErr(err); return; }
+    if (!fullName.trim()) { setCreateErr("Isi nama panggilanmu dulu 🙂"); return; }
+    setCreating(true);
+    setCreateErr("");
+    try {
+      await createProfile({ id: user.id, username: u, full_name: fullName.trim(), avatar });
+      setProfile({ id: user.id, username: u, full_name: fullName.trim(), avatar, created_at: new Date().toISOString() });
+    } catch (e2) {
+      const msg = String(e2?.message || e2);
+      setCreateErr(/duplicate|unique/i.test(msg) ? "Username itu sudah dipakai orang. Coba yang lain." : "Gagal menyimpan: " + msg);
+    } finally {
+      setCreating(false);
+    }
+  };
 
   useEffect(() => {
     if (!user?.id) return;
@@ -72,6 +94,73 @@ export default function Profile() {
     return (
       <div className="panel" style={{ textAlign: "center", padding: "2rem" }}>
         <p style={{ color: "var(--deep)", fontWeight: 800 }}>Memuat profil…</p>
+      </div>
+    );
+  }
+
+  // ===== Onboarding: belum punya profil → lengkapi dulu =====
+  if (profile === null) {
+    return (
+      <div className="panel" style={{ padding: "1.6rem 1.4rem", maxWidth: 480, textAlign: "center" }}>
+        <div style={{ fontSize: "3rem" }}>👋</div>
+        <h1 style={{ fontSize: "1.4rem", color: "var(--deep)", margin: ".3rem 0" }}>Hai, selamat datang!</h1>
+        <p style={{ fontSize: ".85rem", color: "var(--text)", margin: "0 0 1rem" }}>
+          Bikin profilmu dulu biar nanti bisa progres belajarmu tampil lengkap — pilih avatar, nama & username kamu 🍡
+        </p>
+        <form onSubmit={create}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem", justifyContent: "center", marginBottom: ".7rem" }}>
+            {AVATARS.map((a) => (
+              <button
+                key={a}
+                type="button"
+                onClick={() => setAvatar(a)}
+                aria-pressed={avatar === a}
+                style={{
+                  fontSize: "1.4rem", padding: ".3rem .5rem", borderRadius: 10, cursor: "pointer",
+                  border: avatar === a ? "2.5px solid var(--sky)" : "2px solid transparent",
+                  background: avatar === a ? "#e0f2fe" : "#f8fafc",
+                }}
+              >
+                {a}
+              </button>
+            ))}
+          </div>
+          <input
+            type="text"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 20))}
+            placeholder="username (huruf kecil/angka/_)"
+            required
+            style={{
+              width: "100%", boxSizing: "border-box", fontSize: "1rem",
+              padding: ".65rem .9rem", borderRadius: 12, border: "2px solid var(--border)",
+              outline: "none", fontFamily: "inherit", marginBottom: ".6rem",
+            }}
+          />
+          <input
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="nama panggilan"
+            required
+            style={{
+              width: "100%", boxSizing: "border-box", fontSize: "1rem",
+              padding: ".65rem .9rem", borderRadius: 12, border: "2px solid var(--border)",
+              outline: "none", fontFamily: "inherit", marginBottom: ".7rem",
+            }}
+          />
+          <button
+            type="submit"
+            className="btn primary"
+            disabled={creating}
+            style={{ width: "100%", fontSize: ".95rem", padding: ".75rem", borderRadius: 12, fontWeight: 800 }}
+          >
+            {creating ? "Menyimpan…" : "🚀 Mulai belajar"}
+          </button>
+          {createErr && (
+            <p style={{ color: "#dc2626", fontSize: ".8rem", marginTop: ".6rem", fontWeight: 700 }}>{createErr}</p>
+          )}
+        </form>
       </div>
     );
   }
