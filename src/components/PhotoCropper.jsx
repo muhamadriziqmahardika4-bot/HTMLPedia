@@ -6,6 +6,7 @@ const OUT = 224;     // ukuran hasil akhir
 
 export default function PhotoCropper({ file, onCancel, onApply }) {
   const [img, setImg] = useState(null);
+  const [loadErr, setLoadErr] = useState(false);
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const drag = useRef(null);
@@ -13,7 +14,8 @@ export default function PhotoCropper({ file, onCancel, onApply }) {
   useEffect(() => {
     const i = new Image();
     const url = URL.createObjectURL(file);
-    i.onload = () => { setImg(i); URL.revokeObjectURL(url); };
+    i.onload = () => setImg(i);
+    i.onerror = () => setLoadErr(true);
     i.src = url;
     return () => URL.revokeObjectURL(url);
   }, [file]);
@@ -55,6 +57,12 @@ export default function PhotoCropper({ file, onCancel, onApply }) {
       <div className="panel" style={{ padding: "1rem 1rem 1.1rem", maxWidth: 330, width: "92%", textAlign: "center", position: "relative" }} onClick={(e) => e.stopPropagation()}>
         <p style={{ fontWeight: 900, color: "var(--deep)", margin: "0 0 .55rem", fontSize: ".9rem" }}>✂️ Potong foto profil</p>
 
+        {loadErr ? (
+          <p style={{ color: "#dc2626", fontWeight: 700, fontSize: ".82rem", padding: ".8rem" }}>
+            ❌ Gambar ini tidak bisa dibuka — coba file lain (JPG/PNG/WebP).
+          </p>
+        ) : (
+
         <div
           style={{ width: PREVIEW, height: PREVIEW, margin: "0 auto", borderRadius: "50%", overflow: "hidden", border: "3px solid #fff", boxShadow: "0 8px 22px rgba(2,132,199,.45)", background: "#0c4a6e", touchAction: "none", cursor: "grab" }}
           onPointerDown={onPointerDown}
@@ -81,6 +89,7 @@ export default function PhotoCropper({ file, onCancel, onApply }) {
           <button className="btn" onClick={onCancel} style={{ fontSize: ".78rem", padding: ".45rem .9rem" }}>Batal</button>
           <button className="btn primary" onClick={apply} style={{ fontSize: ".78rem", padding: ".45rem 1.1rem" }}>✅ Pakai foto</button>
         </div>
+        )}
       </div>
     </div>
   );
