@@ -1,6 +1,7 @@
 // Daftar anggota HTMLpedia — khusus pemilik
 import React, { useEffect, useState } from "react";
 import { supabase, OWNER_EMAIL } from "../lib/supabase.js";
+import Avatar from "../components/Avatar.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 
 export default function Anggota() {
@@ -52,7 +53,7 @@ export default function Anggota() {
             const joined = p.created_at ? new Date(p.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "—";
             return (
               <div key={p.id} style={{ background: "#f0f9ff", border: "1.5px solid var(--border)", borderRadius: 16, padding: ".85rem .8rem", textAlign: "center" }}>
-                <div style={{ fontSize: "2.6rem" }}>{p.avatar || "🧝"}</div>
+                <Avatar id={p.avatar} size={72} title={p.full_name || "avatar"} />
                 <p style={{ fontWeight: 900, color: "var(--deep)", margin: ".25rem 0 .1rem", fontSize: ".95rem" }}>{p.full_name || "Pengguna HTMLpedia"}</p>
                 <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 800, margin: "0 0 .3rem" }}>@{p.username}</p>
                 <p style={{ fontSize: ".66rem", color: "#64748b", margin: 0 }}>Bergabung {joined}</p>

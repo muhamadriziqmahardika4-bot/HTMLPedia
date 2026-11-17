@@ -3,15 +3,14 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabase.js";
 import { validateUsername, usernameToEmail, createProfile } from "../lib/profiles.js";
-
-const AVATARS = ["🧝", "🦊", "🐱", "🐼", "🐸", "🤖", "🦄", "🐯", "🐳", "🦉", "🐲", "👾"];
+import Avatar, { AVATAR_CHOICES } from "../components/Avatar.jsx";
 
 export default function Register() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState(AVATARS[0]);
+  const [avatar, setAvatar] = useState(AVATAR_CHOICES[0].id);
   const [status, setStatus] = useState("idle"); // idle | sending | error
   const [message, setMessage] = useState("");
 
@@ -55,7 +54,7 @@ export default function Register() {
     <div className="app splash-screen">
       <div className="splash-wrap">
         <div className="panel" style={{ maxWidth: 460, width: "100%", padding: "1.8rem 1.6rem", textAlign: "center" }}>
-          <div style={{ fontSize: "2.4rem" }}>{avatar}</div>
+          <div style={{ lineHeight: 1 }}><Avatar id={avatar} size={96} title="Avatar kamu" /></div>
           <h1 style={{ fontSize: "1.4rem", color: "var(--deep)", margin: ".4rem 0 .2rem" }}>Buat akun HTMLpedia</h1>
           <p style={{ fontSize: ".83rem", color: "var(--text)", marginBottom: "1rem" }}>
             Tanpa email — cukup username & password. Progress belajarmu tersimpan di akunmu.
@@ -63,19 +62,21 @@ export default function Register() {
 
           <form onSubmit={submit}>
             <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem", justifyContent: "center", marginBottom: ".7rem" }}>
-              {AVATARS.map((a) => (
+              {AVATAR_CHOICES.map((a) => (
                 <button
-                  key={a}
+                  key={a.id}
                   type="button"
-                  onClick={() => setAvatar(a)}
-                  aria-pressed={avatar === a}
+                  onClick={() => setAvatar(a.id)}
+                  aria-pressed={avatar === a.id}
+                  aria-label={a.name}
+                  title={a.name}
                   style={{
-                    fontSize: "1.35rem", padding: ".3rem .45rem", borderRadius: 10, cursor: "pointer",
-                    border: avatar === a ? "2.5px solid var(--sky)" : "2px solid transparent",
-                    background: avatar === a ? "#e0f2fe" : "#f8fafc",
+                    padding: ".2rem .3rem", borderRadius: 12, cursor: "pointer",
+                    border: avatar === a.id ? "2.5px solid var(--sky)" : "2px solid transparent",
+                    background: avatar === a.id ? "#e0f2fe" : "#f8fafc",
                   }}
                 >
-                  {a}
+                  <Avatar id={a.id} size={44} title={a.name} />
                 </button>
               ))}
             </div>

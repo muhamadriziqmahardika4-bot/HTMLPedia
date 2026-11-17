@@ -1,4 +1,4 @@
-// Halaman profil pengguna — avatar, nama, username, tanggal gabung + statistik belajar
+﻿// Halaman profil pengguna — avatar, nama, username, tanggal gabung + statistik belajar
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth.js";
 import { getProfile, updateProfile, createProfile, validateUsername } from "../lib/profiles.js";
@@ -6,7 +6,7 @@ import { getStreak } from "../lib/streak.js";
 import { ALL_ORDERED } from "../data/all.js";
 import { PROJECT_CHECKS } from "../lib/codeCheck.js";
 
-const AVATARS = ["🧝", "🦊", "🐱", "🐼", "🐸", "🤖", "🦄", "🐯", "🐳", "🦉", "🐲", "👾"];
+import Avatar, { AVATAR_CHOICES } from "../components/Avatar.jsx";
 
 function readJSON(key, fallback) {
   try {
@@ -23,7 +23,7 @@ export default function Profile() {
   const [profile, setProfile] = useState(undefined); // undefined = memuat
   const [editing, setEditing] = useState(false);
   const [fullName, setFullName] = useState("");
-  const [avatar, setAvatar] = useState("🧝");
+  const [avatar, setAvatar] = useState("mc-1");
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
   const [newUsername, setNewUsername] = useState("");
@@ -56,7 +56,7 @@ export default function Profile() {
       if (!alive) return;
       setProfile(p);
       setFullName(p?.full_name || "");
-      setAvatar(p?.avatar || "🧝");
+      setAvatar(p?.avatar || "mc-1");
     });
     return () => { alive = false; };
   }, [user?.id]);
@@ -109,19 +109,21 @@ export default function Profile() {
         </p>
         <form onSubmit={create}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem", justifyContent: "center", marginBottom: ".7rem" }}>
-            {AVATARS.map((a) => (
+            {AVATAR_CHOICES.map((a) => (
               <button
-                key={a}
+                key={a.id}
                 type="button"
-                onClick={() => setAvatar(a)}
-                aria-pressed={avatar === a}
+                onClick={() => setAvatar(a.id)}
+                aria-pressed={avatar === a.id}
+                aria-label={a.name}
+                title={a.name}
                 style={{
-                  fontSize: "1.4rem", padding: ".3rem .5rem", borderRadius: 10, cursor: "pointer",
-                  border: avatar === a ? "2.5px solid var(--sky)" : "2px solid transparent",
-                  background: avatar === a ? "#e0f2fe" : "#f8fafc",
+                  padding: ".2rem .3rem", borderRadius: 12, cursor: "pointer",
+                  border: avatar === a.id ? "2.5px solid var(--sky)" : "2px solid transparent",
+                  background: avatar === a.id ? "#e0f2fe" : "#f8fafc",
                 }}
               >
-                {a}
+                <Avatar id={a.id} size={46} title={a.name} />
               </button>
             ))}
           </div>
@@ -173,8 +175,8 @@ export default function Profile() {
     <div className="panel" style={{ padding: "1.4rem 1.3rem" }}>
       {/* ===== Kepala profil ===== */}
       <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
-        <div style={{ fontSize: "4rem", lineHeight: 1, background: "#e0f2fe", border: "2.5px solid var(--sky)", borderRadius: 20, padding: ".5rem .7rem" }}>
-          {avatar}
+        <div style={{ background: "#e0f2fe", border: "2.5px solid var(--sky)", borderRadius: 20, padding: ".4rem .6rem" }}>
+          <Avatar id={avatar} size={104} title="Avatar kamu" />
         </div>
         <div style={{ minWidth: 0 }}>
           <h1 style={{ fontSize: "1.5rem", color: "var(--deep)", margin: 0 }}>{shownName}</h1>
@@ -191,18 +193,20 @@ export default function Profile() {
         <div style={{ marginTop: "1rem", background: "#f8fafc", border: "1.5px solid var(--border)", borderRadius: 14, padding: ".8rem" }}>
           <p style={{ fontSize: ".78rem", fontWeight: 800, color: "var(--deep)", margin: "0 0 .4rem" }}>Pilih avatar</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem", marginBottom: ".6rem" }}>
-            {AVATARS.map((a) => (
+            {AVATAR_CHOICES.map((a) => (
               <button
-                key={a}
-                onClick={() => setAvatar(a)}
-                aria-pressed={avatar === a}
+                key={a.id}
+                onClick={() => setAvatar(a.id)}
+                aria-pressed={avatar === a.id}
+                aria-label={a.name}
+                title={a.name}
                 style={{
-                  fontSize: "1.4rem", padding: ".3rem .5rem", borderRadius: 10, cursor: "pointer",
-                  border: avatar === a ? "2.5px solid var(--sky)" : "2px solid transparent",
-                  background: avatar === a ? "#e0f2fe" : "#fff",
+                  padding: ".2rem .3rem", borderRadius: 12, cursor: "pointer",
+                  border: avatar === a.id ? "2.5px solid var(--sky)" : "2px solid transparent",
+                  background: avatar === a.id ? "#e0f2fe" : "#fff",
                 }}
               >
-                {a}
+                <Avatar id={a.id} size={46} title={a.name} />
               </button>
             ))}
           </div>

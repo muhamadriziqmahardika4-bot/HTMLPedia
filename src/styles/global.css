@@ -339,3 +339,11 @@ html { scroll-behavior: smooth; }
   .splash-screen .sparkle { display: block !important; opacity: .55 !important; }
 }
 
+
+/* ===== Avatar Cubby manusia kartun (animasi hidup) ===== */
+@keyframes avatarBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.avatar-live { animation: avatarBob 2.6s ease-in-out infinite; }
+@keyframes avatarBlink { 0%, 91%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+.av-eyes { transform-box: fill-box; transform-origin: center; animation: avatarBlink 4.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .avatar-live, .av-eyes { animation: none !important; } }
+
