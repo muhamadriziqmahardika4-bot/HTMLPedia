@@ -128,6 +128,11 @@ export default function App() {
     return () => { alive = false; };
   }, [userId]);
 
+  // Sudah login → langsung ke app, tanpa splash/intro lagi
+  useEffect(() => {
+    if (!authLoading && session) setStage((prev) => (prev === "splash" ? "app" : prev));
+  }, [authLoading, session]);
+
   const toggleBgm = () => {
     const next = !bgmOn;
     localStorage.setItem("htmlpedia-bgm", next ? "on" : "off");
