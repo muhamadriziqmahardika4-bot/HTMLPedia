@@ -1,5 +1,5 @@
 ﻿// Halaman daftar — username + password + nama + pilih avatar & border + import foto
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabase.js";
 import { validateUsername, usernameToEmail, createProfile } from "../lib/profiles.js";
@@ -20,7 +20,6 @@ export default function Register() {
   const [notice, setNotice] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | error
   const [message, setMessage] = useState("");
-  const fileRef = useRef(null);
 
   const pickPhoto = (e) => {
     const f = e.target.files?.[0];
@@ -81,7 +80,6 @@ export default function Register() {
       <div className="splash-wrap">
         <div className="panel" style={{ maxWidth: 440, width: "100%", padding: "1.3rem 1.1rem", textAlign: "center", position: "relative", overflow: "hidden", paddingTop: "1.5rem", paddingBottom: "1.4rem" }}>
           <AuthDecor />
-          <input ref={fileRef} type="file" accept="image/*" hidden onChange={pickPhoto} />
           {cropFile && (
             <PhotoCropper
               src={cropFile}
@@ -101,9 +99,10 @@ export default function Register() {
             <form onSubmit={submit}>
               <div style={{ marginBottom: ".45rem" }}><AvatarPicker value={avatar} onChange={setAvatar} columns={2} border={border} /></div>
 
-              <button type="button" className="btn" style={{ fontSize: ".74rem", padding: ".4rem .75rem", borderRadius: 10, marginBottom: ".45rem" }} onClick={() => fileRef.current?.click()}>
+              <label className="btn" style={{ display: "inline-flex", alignItems: "center", gap: ".35rem", fontSize: ".74rem", padding: ".4rem .75rem", borderRadius: 10, cursor: "pointer", marginBottom: ".45rem" }}>
                 📁 Import foto sendiri
-              </button>
+                <input type="file" accept="image/*" onChange={pickPhoto} style={{ display: "none" }} />
+              </label>
               {notice && <p style={{ fontSize: ".7rem", color: "#0284c7", fontWeight: 700, margin: "-.15rem 0 .35rem" }}>{notice}</p>}
 
               <BorderPicker value={border} onChange={setBorder} avatarId={avatar} />

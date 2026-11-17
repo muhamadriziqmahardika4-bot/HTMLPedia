@@ -1,5 +1,5 @@
 ﻿// Halaman profil pengguna — avatar, nama, username, tanggal gabung + statistik belajar
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth.js";
 import { getProfile, updateProfile, createProfile, validateUsername } from "../lib/profiles.js";
 import { getStreak } from "../lib/streak.js";
@@ -36,7 +36,6 @@ export default function Profile() {
   const [creating, setCreating] = useState(false);
   const [createErr, setCreateErr] = useState("");
 
-  const fileRef = useRef(null);
   const [notice2, setNotice2] = useState("");
 
   const pickPhoto = (e) => {
@@ -146,12 +145,11 @@ export default function Profile() {
           Bikin profilmu dulu biar nanti bisa progres belajarmu tampil lengkap — pilih avatar, nama & username kamu 🍡
         </p>
         <form onSubmit={create}>
-          <input ref={fileRef} type="file" accept="image/*" hidden onChange={pickPhoto} />
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: ".4rem" }}>
-            <button type="button" className="btn" style={{ fontSize: ".76rem", padding: ".4rem .8rem", borderRadius: 10 }} onClick={() => fileRef.current?.click()}>
-              📁 Import foto sendiri
-            </button>
-          </div>
+
+          <label className="btn" style={{ display: "inline-flex", alignItems: "center", gap: ".35rem", fontSize: ".76rem", padding: ".4rem .8rem", borderRadius: 10, cursor: "pointer", marginBottom: ".4rem" }}>
+            📁 Import foto sendiri
+            <input type="file" accept="image/*" onChange={pickPhoto} style={{ display: "none" }} />
+          </label>
           <AvatarPicker value={avatar} onChange={setAvatar} columns={2} border={border} />
           <div style={{ display: "flex", justifyContent: "center", marginTop: ".4rem" }}>
             <BorderPicker value={border} onChange={setBorder} avatarId={avatar} />
@@ -226,7 +224,7 @@ export default function Profile() {
       {/* ===== Edit ===== */}
       {editing && (
         <div style={{ marginTop: ".6rem", background: "#f8fafc", border: "1.5px solid var(--border)", borderRadius: 12, padding: ".55rem .55rem" }}>
-          <input ref={fileRef} type="file" accept="image/*" hidden onChange={pickPhoto} />
+
           <p style={{ fontSize: ".78rem", fontWeight: 800, color: "var(--deep)", margin: "0 0 .4rem" }}>Pilih avatar</p>
           <AvatarPicker value={avatar} onChange={setAvatar} columns={2} border={border} />
           <div style={{ display: "flex", justifyContent: "center", margin: ".4rem 0 .1rem" }}>
@@ -240,9 +238,10 @@ export default function Profile() {
             />
           )}
           <div style={{ display: "flex", justifyContent: "center", margin: ".45rem 0 .1rem" }}>
-            <button type="button" className="btn" style={{ fontSize: ".74rem", padding: ".4rem .8rem", borderRadius: 10 }} onClick={() => fileRef.current?.click()}>
+            <label className="btn" style={{ display: "inline-flex", alignItems: "center", gap: ".35rem", fontSize: ".74rem", padding: ".4rem .8rem", borderRadius: 10, cursor: "pointer" }}>
               📁 Import foto sendiri
-            </button>
+              <input type="file" accept="image/*" onChange={pickPhoto} style={{ display: "none" }} />
+            </label>
           </div>
           {notice2 && <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 700, margin: ".2rem 0 0" }}>{notice2}</p>}
           <input
@@ -287,3 +286,4 @@ export default function Profile() {
     </div>
   );
 }
+
