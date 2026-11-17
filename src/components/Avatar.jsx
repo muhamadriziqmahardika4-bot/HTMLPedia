@@ -23,16 +23,16 @@ export const AVATAR_CHOICES = [
 
 // Gaya border avatar — id ini disimpan di kolom profiles.border_style
 export const BORDER_STYLES = [
-  { id: "classic", name: "Putih Lembut", bg: "#ffffff", shadow: "0 6px 16px rgba(12,74,110,.4)" },
-  { id: "gold", name: "Emas Berkilau", bg: "linear-gradient(135deg,#fef08a,#f59e0b 55%,#fde047)", shadow: "0 0 16px rgba(250,204,21,.9), 0 6px 16px rgba(12,74,110,.35)" },
-  { id: "neon", name: "Neon Cyan", bg: "linear-gradient(135deg,#67e8f9,#06b6d4)", shadow: "0 0 18px rgba(34,211,238,.95), 0 6px 16px rgba(12,74,110,.35)" },
-  { id: "sunset", name: "Senja Pink", bg: "linear-gradient(135deg,#f9a8d4,#fb7185 55%,#fdba74)", shadow: "0 0 16px rgba(251,113,133,.9), 0 6px 16px rgba(12,74,110,.35)" },
-  { id: "berry", name: "Ungu Berry", bg: "linear-gradient(135deg,#d8b4fe,#a855f7)", shadow: "0 0 16px rgba(168,85,247,.85), 0 6px 16px rgba(12,74,110,.35)" },
-  { id: "forest", name: "Hijau Hutan", bg: "linear-gradient(135deg,#86efac,#16a34a)", shadow: "0 0 15px rgba(34,197,94,.85), 0 6px 16px rgba(12,74,110,.35)" },
-  { id: "ocean", name: "Samudra Biru", bg: "linear-gradient(135deg,#7dd3fc,#2563eb)", shadow: "0 0 16px rgba(59,130,246,.85), 0 6px 16px rgba(12,74,110,.35)" },
-  { id: "peach", name: "Peach Lembut", bg: "linear-gradient(135deg,#fed7aa,#fb923c)", shadow: "0 0 14px rgba(251,146,60,.6), 0 6px 16px rgba(12,74,110,.35)" },
-  { id: "midnight", name: "Gelap Tegas", bg: "#1e293b", shadow: "0 8px 20px rgba(12,74,110,.55)" },
-  { id: "dashed", name: "Putus-Putus", bg: "#ffffff", shadow: "0 6px 14px rgba(12,74,110,.32)", outline: "3px dashed #0c4a6e", outlineOffset: "3px" },
+  { id: "classic", name: "Putih Lembut", bg: "#ffffff", shadow: "0 6px 16px rgba(12,74,110,.4)", icon: "✨", badgeBg: "#e0f2fe" },
+  { id: "gold", name: "Emas Berkilau", bg: "linear-gradient(135deg,#fef08a,#f59e0b 55%,#fde047)", shadow: "0 0 16px rgba(250,204,21,.9), 0 6px 16px rgba(12,74,110,.35)", icon: "👑", badgeBg: "#fef9c3" },
+  { id: "neon", name: "Neon Cyan", bg: "linear-gradient(135deg,#67e8f9,#06b6d4)", shadow: "0 0 18px rgba(34,211,238,.95), 0 6px 16px rgba(12,74,110,.35)", icon: "💻", badgeBg: "#cffafe" },
+  { id: "sunset", name: "Senja Pink", bg: "linear-gradient(135deg,#f9a8d4,#fb7185 55%,#fdba74)", shadow: "0 0 16px rgba(251,113,133,.9), 0 6px 16px rgba(12,74,110,.35)", icon: "⭐", badgeBg: "#ffe4e6" },
+  { id: "berry", name: "Ungu Berry", bg: "linear-gradient(135deg,#d8b4fe,#a855f7)", shadow: "0 0 16px rgba(168,85,247,.85), 0 6px 16px rgba(12,74,110,.35)", icon: "🍇", badgeBg: "#f3e8ff" },
+  { id: "forest", name: "Hijau Hutan", bg: "linear-gradient(135deg,#86efac,#16a34a)", shadow: "0 0 15px rgba(34,197,94,.85), 0 6px 16px rgba(12,74,110,.35)", icon: "🌿", badgeBg: "#dcfce7" },
+  { id: "ocean", name: "Samudra Biru", bg: "linear-gradient(135deg,#7dd3fc,#2563eb)", shadow: "0 0 16px rgba(59,130,246,.85), 0 6px 16px rgba(12,74,110,.35)", icon: "🌊", badgeBg: "#dbeafe" },
+  { id: "peach", name: "Peach Lembut", bg: "linear-gradient(135deg,#fed7aa,#fb923c)", shadow: "0 0 14px rgba(251,146,60,.6), 0 6px 16px rgba(12,74,110,.35)", icon: "⚡", badgeBg: "#ffedd5" },
+  { id: "midnight", name: "Gelap Tegas", bg: "#1e293b", shadow: "0 8px 20px rgba(12,74,110,.55)", icon: "🌙", badgeBg: "#e2e8f0" },
+  { id: "dashed", name: "Putus-Putus", bg: "#ffffff", shadow: "0 6px 14px rgba(12,74,110,.32)", outline: "3px dashed #0c4a6e", outlineOffset: "3px", icon: "#", badgeBg: "#f0f9ff" },
 ];
 
 export function getBorderStyle(id) {
@@ -47,10 +47,13 @@ export default function Avatar({ id, size = 96, border = "classic", className = 
   const b = getBorderStyle(border);
   const pad = b.pad ?? (typeof size === "number" ? Math.max(4, Math.round(size * 0.055)) : 4);
   const total = typeof size === "number" ? size + pad * 2 : "100%";
+  const badge = typeof size === "number" ? Math.max(18, Math.round(size * 0.32)) : 26;
+  const badgeOff = typeof total === "number" ? Math.round(total * -0.04) : -3;
   return (
     <div
       className={className}
       style={{
+        position: "relative",
         display: "inline-flex", alignItems: "center", justifyContent: "center",
         width: total, height: total, borderRadius: "50%", padding: pad,
         background: b.bg, boxShadow: b.shadow,
@@ -66,6 +69,30 @@ export default function Avatar({ id, size = 96, border = "classic", className = 
         draggable={false}
         style={{ display: "block", borderRadius: "50%", objectFit: "cover", width: "100%", height: "100%", userSelect: "none" }}
       />
+      {b.icon && (
+        <span
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            right: badgeOff,
+            bottom: badgeOff,
+            width: badge,
+            height: badge,
+            borderRadius: "50%",
+            background: b.badgeBg || "#fff",
+            border: "2px solid #ffffff",
+            boxShadow: "0 3px 8px rgba(12,74,110,.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: Math.round(badge * 0.58),
+            lineHeight: 1,
+            pointerEvents: "none",
+          }}
+        >
+          {b.icon}
+        </span>
+      )}
     </div>
   );
 }
