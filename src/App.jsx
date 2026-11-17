@@ -15,6 +15,7 @@ import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
 import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Anggota from "./pages/Anggota.jsx";
+import Ngoding from "./pages/Ngoding.jsx";
 import Profile from "./pages/Profile.jsx";
 import Privasi from "./pages/Privasi.jsx";
 import Syarat from "./pages/Syarat.jsx";
@@ -45,6 +46,7 @@ function Navbar({ bgmOn, onToggleBgm, userEmail, onLogout, isOwner }) {
         <NavLink to="/kuis" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Kuis</NavLink>
         <NavLink to="/kesalahan" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📓 Kesalahan<KesalahanCount /></NavLink>
         <NavLink to="/sumber" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📺 Sumber</NavLink>
+        <NavLink to="/ngoding" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>🧪 Ngoding</NavLink>
         <NavLink to="/profil" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👤 Profil</NavLink>
         {isOwner && (
           <NavLink to="/anggota" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👥 Anggota</NavLink>
@@ -106,6 +108,7 @@ function AnimatedRoutes() {
           <Route path="/dasar/:slug" element={<BasicsDetail />} />
           <Route path="/profil" element={<Profile />} />
           <Route path="/anggota" element={<Anggota />} />
+          <Route path="/ngoding" element={<Ngoding />} />
           <Route path="/privasi" element={<Privasi />} />
           <Route path="/syarat-ketentuan" element={<Syarat />} />
           <Route path="/sumber" element={<Resources />} />
