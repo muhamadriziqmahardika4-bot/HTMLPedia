@@ -47,8 +47,8 @@ export default function Avatar({ id, size = 96, border = "classic", className = 
   const b = getBorderStyle(border);
   const pad = b.pad ?? (typeof size === "number" ? Math.max(4, Math.round(size * 0.055)) : 4);
   const total = typeof size === "number" ? size + pad * 2 : "100%";
-  const badge = typeof size === "number" ? Math.max(18, Math.round(size * 0.32)) : 26;
-  const badgeOff = typeof total === "number" ? Math.round(total * -0.04) : -3;
+  const badge = typeof size === "number" ? Math.max(16, Math.round(size * 0.3)) : 26;
+  const badgeOff = typeof total === "number" ? Math.max(2, Math.round(total * 0.055)) : 4;
   return (
     <div
       className={className}
