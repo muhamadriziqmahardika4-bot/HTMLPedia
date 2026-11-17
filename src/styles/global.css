@@ -363,10 +363,14 @@ html { scroll-behavior: smooth; }
 
 
 /* ===== Kotak avatar: gradien ceria + sparkle ===== */
-.avatar-frame { position: relative; display: inline-flex; overflow: hidden; background: linear-gradient(150deg, #fdf4ff 0%, #e0f2fe 38%, #fce7f3 68%, #fef9c3 100%); border: 4px solid #ffffff; border-radius: 26px; box-shadow: 0 14px 30px rgba(12,74,110,.42), 0 0 0 2px #dbeafe, inset 0 0 0 2px rgba(255,255,255,.55); padding: 0; }
-.avatar-frame > *, .avatar-frame img { width: 100%; height: 100%; border-radius: 0 !important; object-fit: cover; display: block; }
+.avatar-frame { position: relative; overflow: hidden; border-radius: 26px; padding: 0; border: none; box-shadow: 0 14px 30px rgba(12,74,110,.42); width: 100%; height: 100%; }
+.avatar-frame > * { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0 !important; }
 .avatar-frame::before { content: '✨'; position: absolute; top: .35rem; left: .5rem; font-size: .95rem; z-index: 2; filter: drop-shadow(0 1px 2px rgba(2,132,199,.7)); }
 .avatar-frame::after { content: '✨'; position: absolute; bottom: .35rem; right: .5rem; font-size: .95rem; z-index: 2; filter: drop-shadow(0 1px 2px rgba(2,132,199,.7)); }
 
 
+
+
+/* Cincin putih + gradasi vignette DI ATAS foto (bingkai di atas gambar) */
+.avatar-frame-ring { position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: 26px; box-shadow: inset 0 0 0 6px #ffffff, inset 0 0 0 8px rgba(12,74,110,.35), inset 0 -26px 36px rgba(12,74,110,.42); }
 
