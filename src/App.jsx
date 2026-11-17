@@ -12,6 +12,8 @@ import { useAuth } from "./hooks/useAuth.js";
 import { pullMergePush } from "./lib/progressSync.js";
 import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
 import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Profile from "./pages/Profile.jsx";
 import Home from "./pages/Home.jsx";
 import Resources from "./pages/Resources.jsx";
 import About from "./pages/About.jsx";
@@ -39,6 +41,7 @@ function Navbar({ bgmOn, onToggleBgm, userEmail, onLogout }) {
         <NavLink to="/kuis" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>Kuis</NavLink>
         <NavLink to="/kesalahan" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📓 Kesalahan<KesalahanCount /></NavLink>
         <NavLink to="/sumber" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📺 Sumber</NavLink>
+        <NavLink to="/profil" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👤 Profil</NavLink>
         <NavLink to="/tentang" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👨‍💻 Tentang</NavLink>
         <button
           className="pill"
@@ -94,6 +97,7 @@ function AnimatedRoutes() {
           <Route path="/tag/:slug" element={<TagDetail />} />
           <Route path="/dasar" element={<Basics />} />
           <Route path="/dasar/:slug" element={<BasicsDetail />} />
+          <Route path="/profil" element={<Profile />} />
           <Route path="/sumber" element={<Resources />} />
           <Route path="/tentang" element={<About />} />
           <Route path="*" element={<NotFound />} />
@@ -106,6 +110,7 @@ function AnimatedRoutes() {
 export default function App() {
   const [stage, setStage] = useState("splash");   // splash → intro → app
   const navigate = useNavigate();
+  const location = useLocation();
 
   const start = () => setStage("intro");                 // MULAI → penjelasan singkat dulu
 
@@ -145,7 +150,10 @@ export default function App() {
   // Gerbang wajib login — jangan render app sebelum session + sinkron selesai
   if (!isSupabaseConfigured) return <NotConfiguredScreen />;
   if (authLoading || (session && !synced)) return <LoadingScreen />;
-  if (!session) return <Login />;
+  if (!session) {
+    if (location.pathname === "/daftar") return <Register />;
+    return <Login />;
+  }
 
   return (
     <>

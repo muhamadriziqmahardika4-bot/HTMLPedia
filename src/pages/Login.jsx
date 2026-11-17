@@ -1,6 +1,8 @@
 // Gerbang login — aplikasi wajib login (magic link email via Supabase).
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase.js";
+import { usernameToEmail, validateUsername } from "../lib/profiles.js";
 
 export function LoadingScreen() {
   return (
@@ -41,9 +43,32 @@ VITE_OWNER_EMAIL=emailkamu@example.com`}
 }
 
 export default function Login() {
+  const [mode, setMode] = useState("email"); // "email" | "username"
   const [email, setEmail] = useState("");
+  const [uname, setUname] = useState("");
+  const [password, setPassword] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [message, setMessage] = useState("");
+
+  const submitUsername = async (e) => {
+    e.preventDefault();
+    const u = uname.trim().toLowerCase();
+    const uErr = validateUsername(u);
+    if (uErr) { setStatus("error"); setMessage(uErr); return; }
+    setStatus("sending");
+    setMessage("");
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: usernameToEmail(u),
+        password,
+      });
+      if (error) throw error;
+      // sesi tercipta — onAuthStateChange membawa masuk otomatis
+    } catch {
+      setStatus("error");
+      setMessage("Username atau password salah.");
+    }
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -116,9 +141,35 @@ export default function Login() {
           <h1 style={{ fontSize: "1.5rem", color: "var(--deep)", margin: ".4rem 0 .2rem" }}>
             <span className="text-shimmer">HTMLpedia</span>
           </h1>
-          <p style={{ fontSize: ".85rem", color: "var(--text)", marginBottom: "1.1rem" }}>
-            Masuk dulu dengan email — progress belajarmu akan tersimpan rapi di akunmu.
+          <p style={{ fontSize: ".85rem", color: "var(--text)", marginBottom: ".7rem" }}>
+            Masuk dulu — progress belajarmu akan tersimpan rapi di akunmu.
           </p>
+
+          {status !== "sent" && (
+            <div style={{ display: "flex", gap: ".4rem", marginBottom: ".9rem" }} role="tablist">
+              {[
+                { key: "email", label: "📧 Email" },
+                { key: "username", label: "👤 Username" },
+              ].map((t) => (
+                <button
+                  key={t.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={mode === t.key}
+                  onClick={() => { setMode(t.key); setStatus("idle"); setMessage(""); }}
+                  style={{
+                    flex: 1, padding: ".5rem", borderRadius: 10, cursor: "pointer", fontFamily: "inherit",
+                    fontWeight: 800, fontSize: ".85rem",
+                    border: mode === t.key ? "2px solid var(--sky)" : "2px solid var(--border)",
+                    background: mode === t.key ? "#e0f2fe" : "#fff",
+                    color: mode === t.key ? "#0369a1" : "#64748b",
+                  }}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           {status === "sent" ? (
             <div>
@@ -155,7 +206,7 @@ export default function Login() {
                 ← Pakai email lain
               </button>
             </div>
-          ) : (
+          ) : mode === "email" ? (
             <form onSubmit={submit}>
               <input
                 type="email"
@@ -177,6 +228,47 @@ export default function Login() {
                 style={{ width: "100%", fontSize: ".95rem", padding: ".7rem", borderRadius: 12, fontWeight: 800 }}
               >
                 {status === "sending" ? "Mengirim…" : "✉️ Kirim magic link"}
+              </button>
+              {status === "error" && (
+                <p style={{ color: "#dc2626", fontSize: ".8rem", marginTop: ".6rem", fontWeight: 700 }}>{message}</p>
+              )}
+            </form>
+          ) : (
+            <form onSubmit={submitUsername}>
+              <input
+                type="text"
+                value={uname}
+                onChange={(e) => setUname(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 20))}
+                placeholder="username"
+                autoFocus
+                autoComplete="username"
+                required
+                style={{
+                  width: "100%", boxSizing: "border-box", fontSize: "1rem",
+                  padding: ".7rem .9rem", borderRadius: 12, border: "2px solid var(--border)",
+                  outline: "none", fontFamily: "inherit", marginBottom: ".6rem",
+                }}
+              />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="password"
+                autoComplete="current-password"
+                required
+                style={{
+                  width: "100%", boxSizing: "border-box", fontSize: "1rem",
+                  padding: ".7rem .9rem", borderRadius: 12, border: "2px solid var(--border)",
+                  outline: "none", fontFamily: "inherit", marginBottom: ".7rem",
+                }}
+              />
+              <button
+                type="submit"
+                className="btn primary"
+                disabled={status === "sending"}
+                style={{ width: "100%", fontSize: ".95rem", padding: ".7rem", borderRadius: 12, fontWeight: 800 }}
+              >
+                {status === "sending" ? "Memeriksa…" : "👤 Masuk"}
               </button>
               {status === "error" && (
                 <p style={{ color: "#dc2626", fontSize: ".8rem", marginTop: ".6rem", fontWeight: 700 }}>{message}</p>
@@ -208,6 +300,10 @@ export default function Login() {
                 </svg>
                 Masuk dengan Google
               </button>
+              <p style={{ fontSize: ".78rem", color: "var(--text)", marginTop: ".7rem" }}>
+                Belum punya akun?{" "}
+                <Link to="/daftar" style={{ color: "var(--sky)", fontWeight: 800, textDecoration: "none" }}>Buat akun di sini</Link>
+              </p>
             </>
           )}
           <p style={{ fontSize: ".68rem", color: "#94a3b8", marginTop: "1rem" }}>
