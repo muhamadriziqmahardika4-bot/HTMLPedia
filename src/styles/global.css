@@ -1,4 +1,4 @@
-/* ===== HTMLpedia Preview — Candy Soft Blue ===== */
+﻿/* ===== HTMLpedia Preview — Candy Soft Blue ===== */
 :root {
   --sky: #38bdf8; --cyan: #22d3ee; --indigo: #818cf8;
   --deep: #0c4a6e; --text: #075985;
@@ -341,7 +341,7 @@ html { scroll-behavior: smooth; }
 
 
 /* ===== Avatar Cubby manusia kartun (animasi hidup) ===== */
-@keyframes avatarBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes avatarBob { 0%,100% { transform: translateY(0) rotate(0deg); } 30% { transform: translateY(-5px) rotate(-1.4deg); } 60% { transform: translateY(2px) rotate(1deg); } }
 .avatar-live { animation: avatarBob 2.6s ease-in-out infinite; }
 @keyframes avatarBlink { 0%, 91%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
 .av-eyes { transform-box: fill-box; transform-origin: center; animation: avatarBlink 4.4s ease-in-out infinite; }
@@ -349,7 +349,11 @@ html { scroll-behavior: smooth; }
 
 
 /* ===== Kartu pemilih avatar (grid 2 kolom) ===== */
-.avatar-card:hover { transform: translateY(-5px) scale(1.04); box-shadow: 0 8px 20px rgba(2,132,199,.35); }
+.avatar-card { transition: transform .25s ease, box-shadow .25s ease; }
+.avatar-card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(2,132,199,.4); }
+.avatar-card img { transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+.avatar-card:hover img { transform: scale(1.06); }
+.avatar-card:active img { transform: scale(1.02); }
 .avatar-card:active { transform: translateY(-1px) scale(.98); }
 .avatar-card:focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; }
 @media (max-width: 420px) { .avatar-card:hover { transform: none; } .avatar-card { padding: .45rem .3rem .4rem !important; } }

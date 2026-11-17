@@ -14,7 +14,7 @@ export const AVATAR_CHOICES = [
   { id: "reno", name: "Reno Si Musik", bg: "#67e8f9" },
 ];
 
-export default function Avatar({ id, size = 96, className = "", title }) {
+export default function Avatar({ id, size = 96, className = "", title, style = {} }) {
   const known = AVATAR_CHOICES.find((a) => a.id === id);
   const file = known ? known.id : "alan";
   return (
@@ -25,7 +25,8 @@ export default function Avatar({ id, size = 96, className = "", title }) {
       alt={title || (known ? known.name : "avatar")}
       className={`avatar-live ${className}`}
       loading="lazy"
-      style={{ display: "block", borderRadius: "22%", objectFit: "cover" }}
+      draggable={false}
+      style={{ display: "block", borderRadius: "22%", objectFit: "cover", userSelect: "none", width: "100%", height: "100%", ...style }}
     />
   );
 }
