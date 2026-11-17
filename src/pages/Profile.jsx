@@ -24,7 +24,7 @@ export default function Profile() {
   const [profile, setProfile] = useState(undefined); // undefined = memuat
   const [editing, setEditing] = useState(false);
   const [fullName, setFullName] = useState("");
-  const [avatar, setAvatar] = useState("mc-1");
+  const [avatar, setAvatar] = useState("ana");
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
   const [newUsername, setNewUsername] = useState("");
@@ -57,7 +57,7 @@ export default function Profile() {
       if (!alive) return;
       setProfile(p);
       setFullName(p?.full_name || "");
-      setAvatar(p?.avatar || "mc-1");
+      setAvatar(p?.avatar || "ana");
     });
     return () => { alive = false; };
   }, [user?.id]);
