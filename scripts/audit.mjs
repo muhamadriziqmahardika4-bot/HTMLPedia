@@ -1,8 +1,8 @@
-import { JSDOM } from "jsdom";
-import { TAGS } from "./src/data/tags.js";
-import { CSS_TAGS } from "./src/data/css.js";
-import { JS_TAGS } from "./src/data/js.js";
-import { wrapPreview } from "./src/lib/preview.js";
+﻿import { JSDOM } from "jsdom";
+import { TAGS } from "../src/data/tags.js";
+import { CSS_TAGS } from "../src/data/css.js";
+import { JS_TAGS } from "../src/data/js.js";
+import { wrapPreview } from "../src/lib/preview.js";
 
 let flags = [];
 
