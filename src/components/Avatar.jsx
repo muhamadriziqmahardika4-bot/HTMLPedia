@@ -36,6 +36,7 @@ export const BORDER_STYLES = [
 ];
 
 export function getBorderStyle(id) {
+  if (id === "none") return { id: "none", name: "Tanpa border", bg: "transparent", shadow: "none", pad: 0 };
   return BORDER_STYLES.find((b) => b.id === id) || BORDER_STYLES[0];
 }
 
@@ -44,7 +45,7 @@ export default function Avatar({ id, size = 96, border = "classic", className = 
   const isPhoto = typeof id === "string" && id.startsWith("data:image/");
   const imgSrc = isPhoto ? id : (known ? `/avatars/${known.id}.png` : "/avatars/alan.png");
   const b = getBorderStyle(border);
-  const pad = typeof size === "number" ? Math.max(4, Math.round(size * 0.055)) : 4;
+  const pad = b.pad ?? (typeof size === "number" ? Math.max(4, Math.round(size * 0.055)) : 4);
   const total = typeof size === "number" ? size + pad * 2 : "100%";
   return (
     <div

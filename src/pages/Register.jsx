@@ -88,8 +88,8 @@ export default function Register() {
             />
           )}
           <div style={{ position: "relative", zIndex: 2 }}>
-            <div className="avatar-frame" style={{ marginBottom: ".55rem" }}>
-              <Avatar id={avatar} size={76} border={border} title="Avatar kamu" style={{ borderRadius: 18 }} />
+            <div className="avatar-frame" style={{ marginBottom: ".55rem", width: 104, height: 104 }}>
+              <Avatar id={avatar} size="100%" border="none" title="Avatar kamu" style={{ borderRadius: 0 }} />
             </div>
             <h1 style={{ fontSize: "1.2rem", color: "var(--deep)", margin: ".15rem 0 .15rem" }}>Buat akun HTMLpedia</h1>
             <p style={{ fontSize: ".78rem", color: "var(--text)", margin: "0 0 .6rem" }}>
