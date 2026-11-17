@@ -1,20 +1,20 @@
-// Tempat Ngoding — bebas menulis HTML/CSS/JS dan langsung melihat hasilnya.
+﻿// Tempat Ngoding — bebas menulis HTML/CSS/JS dan langsung melihat hasilnya.
 // Mirip CodePen mini: 3 tab editor, preview langsung, bisa disalin & diunduh.
 import React, { useEffect, useState } from "react";
 
 const STARTER_HTML = `<!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Proyek Ngoding — HTMLpedia</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <h1>Selamat datang di Tempat Ngoding!</h1>
-  <p>Ubah kode ini sesuka hati kamu 🍡</p>
-  <button id="tombol">Klik aku 🎉</button>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contoh Dokumen</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Halo Dunia!</h1>
+    <p>Ubah kode ini sesuka hati kamu 🍡</p>
+    <button id="tombol">Klik aku 🎉</button>
+  </body>
 </html>`;
 
 const STARTER_CSS = `body {
@@ -72,18 +72,18 @@ ${html}
 };
 
 export default function Ngoding() {
-  const [html, setHtml] = useState(() => { try { return localStorage.getItem("htmlpedia-ngoding-html") ?? STARTER_HTML; } catch { return STARTER_HTML; } });
-  const [css, setCss] = useState(() => { try { return localStorage.getItem("htmlpedia-ngoding-css") ?? STARTER_CSS; } catch { return STARTER_CSS; } });
-  const [js, setJs] = useState(() => { try { return localStorage.getItem("htmlpedia-ngoding-js") ?? STARTER_JS; } catch { return STARTER_JS; } });
+  const [html, setHtml] = useState(() => { try { return localStorage.getItem("htmlpedia-ngoding-v2-html") ?? STARTER_HTML; } catch { return STARTER_HTML; } });
+  const [css, setCss] = useState(() => { try { return localStorage.getItem("htmlpedia-ngoding-v2-css") ?? STARTER_CSS; } catch { return STARTER_CSS; } });
+  const [js, setJs] = useState(() => { try { return localStorage.getItem("htmlpedia-ngoding-v2-js") ?? STARTER_JS; } catch { return STARTER_JS; } });
   const [tab, setTab] = useState("html");
   const [srcDoc, setSrcDoc] = useState(() => buildDoc(html, css, js));
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
     try {
-      localStorage.setItem("htmlpedia-ngoding-html", html);
-      localStorage.setItem("htmlpedia-ngoding-css", css);
-      localStorage.setItem("htmlpedia-ngoding-js", js);
+      localStorage.setItem("htmlpedia-ngoding-v2-html", html);
+      localStorage.setItem("htmlpedia-ngoding-v2-css", css);
+      localStorage.setItem("htmlpedia-ngoding-v2-js", js);
     } catch { /* abaikan */ }
     const t = setTimeout(() => setSrcDoc(buildDoc(html, css, js)), 350);
     return () => clearTimeout(t);
