@@ -14,6 +14,7 @@ import { getProfile } from "./lib/profiles.js";
 import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
 import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import Anggota from "./pages/Anggota.jsx";
 import Profile from "./pages/Profile.jsx";
 import Privasi from "./pages/Privasi.jsx";
 import Syarat from "./pages/Syarat.jsx";
@@ -29,7 +30,7 @@ import Review from "./pages/Review.jsx";
 import Kesalahan from "./pages/Kesalahan.jsx";
 import Proyek from "./pages/Proyek.jsx";
 
-function Navbar({ bgmOn, onToggleBgm, userEmail, onLogout }) {
+function Navbar({ bgmOn, onToggleBgm, userEmail, onLogout, isOwner }) {
   return (
     <nav className="nav">
       <Link to="/" className="logo text-shimmer" style={{ textDecoration: "none" }} onClick={playClick}>🍡 HTMLpedia</Link>
@@ -45,6 +46,9 @@ function Navbar({ bgmOn, onToggleBgm, userEmail, onLogout }) {
         <NavLink to="/kesalahan" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📓 Kesalahan<KesalahanCount /></NavLink>
         <NavLink to="/sumber" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>📺 Sumber</NavLink>
         <NavLink to="/profil" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👤 Profil</NavLink>
+        {isOwner && (
+          <NavLink to="/anggota" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👥 Anggota</NavLink>
+        )}
         <NavLink to="/tentang" onClick={playClick} className={({ isActive }) => `pill ${isActive ? "active" : ""}`}>👨‍💻 Tentang</NavLink>
         <button
           className="pill"
@@ -101,6 +105,7 @@ function AnimatedRoutes() {
           <Route path="/dasar" element={<Basics />} />
           <Route path="/dasar/:slug" element={<BasicsDetail />} />
           <Route path="/profil" element={<Profile />} />
+          <Route path="/anggota" element={<Anggota />} />
           <Route path="/privasi" element={<Privasi />} />
           <Route path="/syarat-ketentuan" element={<Syarat />} />
           <Route path="/sumber" element={<Resources />} />
@@ -127,7 +132,7 @@ export default function App() {
   const [bgmOn, setBgmOn] = useState(() => localStorage.getItem("htmlpedia-bgm") !== "off");
 
   // ===== Auth wajib + progress tersimpan di akun =====
-  const { session, user, loading: authLoading } = useAuth();
+  const { session, user, loading: authLoading, isOwner } = useAuth();
   const [synced, setSynced] = useState(false);
   const userId = session?.user?.id ?? null;
 
@@ -202,7 +207,7 @@ export default function App() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="app app-root"
         >
-          <Navbar bgmOn={bgmOn} onToggleBgm={toggleBgm} userEmail={user?.email} onLogout={logout} />
+          <Navbar bgmOn={bgmOn} onToggleBgm={toggleBgm} userEmail={user?.email} onLogout={logout} isOwner={isOwner} />
           <AnimatedRoutes />
         </motion.div>
       )}
