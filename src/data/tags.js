@@ -646,7 +646,7 @@ export const TAGS = [
       { name: "loading", desc: "lazy = dimuat saat dibutuhkan, menghemat data" },
     ],
     contohKode: `<figure>
-  <img src="https://images.unsplash.com/photo-1509048191080-912a28b0083b?w=300" alt="Secangkir kopi di atas meja kayu" loading="lazy">
+  <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300" alt="Secangkir kopi di atas meja kayu" loading="lazy">
   <figcaption>Kopi pagi, ide sore ☕</figcaption>
 </figure>`,
     related: ["figure", "picture", "a"],
