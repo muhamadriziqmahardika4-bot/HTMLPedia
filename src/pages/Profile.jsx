@@ -156,25 +156,25 @@ export default function Profile() {
   const shownUsername = profile?.username || (user?.email ? user.email.split("@")[0] : "");
 
   return (
-    <div className="panel" style={{ padding: "1.1rem 1.1rem" }}>
+    <div className="panel" style={{ padding: ".9rem 1rem", maxWidth: 540, margin: "0 auto" }}>
       {/* ===== Kepala profil ===== */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: ".45rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: ".35rem" }}>
         <div style={{ lineHeight: 1 }}>
-          <Avatar id={avatar} size={96} title="Avatar kamu" />
+          <Avatar id={avatar} size={60} title="Avatar kamu" />
         </div>
         <div style={{ minWidth: 0 }}>
-          <h1 style={{ fontSize: "1.3rem", color: "var(--deep)", margin: 0 }}>{shownName}</h1>
-          <p style={{ fontSize: ".82rem", color: "#0284c7", fontWeight: 800, margin: ".15rem 0" }}>@{shownUsername}</p>
-          <p style={{ fontSize: ".72rem", color: "#64748b", margin: 0 }}>Bergabung sejak {joined}</p>
+          <h1 style={{ fontSize: "1.12rem", color: "var(--deep)", margin: 0 }}>{shownName}</h1>
+          <p style={{ fontSize: ".74rem", color: "#0284c7", fontWeight: 800, margin: ".12rem 0" }}>@{shownUsername}</p>
+          <p style={{ fontSize: ".66rem", color: "#64748b", margin: 0 }}>Bergabung sejak {joined}</p>
         </div>
-        <button className="btn" style={{ fontSize: ".78rem", marginTop: ".2rem" }} onClick={() => setEditing((v) => !v)}>
+        <button className="btn" style={{ fontSize: ".7rem", padding: ".32rem .7rem", marginTop: ".15rem" }} onClick={() => setEditing((v) => !v)}>
           {editing ? "✕ Tutup" : "✏️ Edit profil"}
         </button>
       </div>
 
       {/* ===== Edit ===== */}
       {editing && (
-        <div style={{ marginTop: "1rem", background: "#f8fafc", border: "1.5px solid var(--border)", borderRadius: 14, padding: ".8rem" }}>
+        <div style={{ marginTop: ".6rem", background: "#f8fafc", border: "1.5px solid var(--border)", borderRadius: 12, padding: ".55rem .55rem" }}>
           <p style={{ fontSize: ".78rem", fontWeight: 800, color: "var(--deep)", margin: "0 0 .4rem" }}>Pilih avatar</p>
           <AvatarPicker value={avatar} onChange={setAvatar} columns={2} />
           <input
@@ -196,8 +196,8 @@ export default function Profile() {
       )}
 
       {/* ===== Statistik ===== */}
-      <p className="section-title" style={{ marginTop: "1.4rem" }}>Statistik belajarmu</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(105px, 1fr))", gap: ".5rem" }}>
+      <p className="section-title" style={{ marginTop: ".9rem", marginBottom: ".4rem" }}>Statistik belajarmu</p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(88px, 1fr))", gap: ".4rem" }}>
         {[
           { emoji: "📚", label: "Materi selesai", value: `${done.length}/${totalMateri}` },
           { emoji: "🔥", label: "Streak terbaik", value: `${streak.best} hari` },
@@ -205,10 +205,10 @@ export default function Profile() {
           { emoji: "🎯", label: "Kuis stage (total)", value: bestStages },
           { emoji: "🏗️", label: "Proyek Mini tuntas", value: `${proyTuntas}/${totalProyek}` },
         ].map((s) => (
-          <div key={s.label} style={{ background: "#f0f9ff", border: "1.5px solid var(--border)", borderRadius: 14, padding: ".55rem .45rem", textAlign: "center" }}>
-            <div style={{ fontSize: "1.3rem" }}>{s.emoji}</div>
-            <div style={{ fontSize: "1.05rem", fontWeight: 900, color: "var(--deep)" }}>{s.value}</div>
-            <div style={{ fontSize: ".62rem", color: "#64748b", fontWeight: 700 }}>{s.label}</div>
+          <div key={s.label} style={{ background: "#f0f9ff", border: "1.5px solid var(--border)", borderRadius: 12, padding: ".42rem .35rem", textAlign: "center" }}>
+            <div style={{ fontSize: "1.1rem" }}>{s.emoji}</div>
+            <div style={{ fontSize: ".88rem", fontWeight: 900, color: "var(--deep)" }}>{s.value}</div>
+            <div style={{ fontSize: ".56rem", color: "#64748b", fontWeight: 700 }}>{s.label}</div>
           </div>
         ))}
       </div>
