@@ -1,0 +1,32 @@
+name: Deploy HTMLpedia ke Netlify
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # tombol "Run workflow" manual di GitHub
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: https://xprcyzggswlgervetjxy.supabase.co
+          VITE_SUPABASE_ANON_KEY: sb_publishable_Zd_oAQkCg-asOxPo0_Z2dg_LMaywfL5
+          VITE_OWNER_EMAIL: muhamadriziqmahardika4@gmail.com
+
+      - name: Deploy ke Netlify
+        run: node deploy-netlify.mjs
+        env:
+          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          SITE_NAME: htmlpedia-mahardika
