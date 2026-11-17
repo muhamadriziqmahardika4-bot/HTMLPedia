@@ -155,7 +155,7 @@ export default function Profile() {
             <BorderPicker value={border} onChange={setBorder} avatarId={avatar} />
           </div>
           <div className="avatar-frame" style={{ margin: ".55rem 0 .1rem", width: 104, height: 104 }}>
-            <Avatar id={avatar} size="100%" border="none" title="Preview avatar" style={{ borderRadius: 0 }} />
+            <Avatar id={avatar} size="100%" border={border} title="Preview avatar" style={{ borderRadius: 0 }} />
 
           </div>
           {notice2 && <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 700, margin: ".4rem 0 0" }}>{notice2}</p>}
@@ -210,7 +210,7 @@ export default function Profile() {
       {/* ===== Kepala profil ===== */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: ".35rem" }}>
         <div className="avatar-frame" style={{ width: 104, height: 104 }}>
-          <Avatar id={avatar} size="100%" border="none" title="Avatar kamu" style={{ borderRadius: 0 }} />
+          <Avatar id={avatar} size="100%" border={border} title="Avatar kamu" style={{ borderRadius: 0 }} />
 
         </div>
         <div style={{ minWidth: 0 }}>
