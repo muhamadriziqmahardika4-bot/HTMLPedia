@@ -53,8 +53,8 @@ export default function Anggota() {
             const joined = p.created_at ? new Date(p.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "—";
             return (
               <div key={p.id} style={{ background: "#f0f9ff", border: "1.5px solid var(--border)", borderRadius: 16, padding: ".85rem .8rem", textAlign: "center" }}>
-                <Avatar id={p.avatar} size={72} title={p.full_name || "avatar"} />
-                <p style={{ fontWeight: 900, color: "var(--deep)", margin: ".25rem 0 .1rem", fontSize: ".95rem" }}>{p.full_name || "Pengguna HTMLpedia"}</p>
+                <Avatar id={p.avatar} size={58} title={p.full_name || "avatar"} />
+                <p style={{ fontWeight: 900, color: "var(--deep)", margin: ".25rem 0 .1rem", fontSize: ".85rem" }}>{p.full_name || "Pengguna HTMLpedia"}</p>
                 <p style={{ fontSize: ".72rem", color: "#0284c7", fontWeight: 800, margin: "0 0 .3rem" }}>@{p.username}</p>
                 <p style={{ fontSize: ".66rem", color: "#64748b", margin: 0 }}>Bergabung {joined}</p>
                 <div style={{ marginTop: ".5rem", fontSize: ".72rem", fontWeight: 800, color: "#0369a1", background: "#e0f2fe", borderRadius: 999, display: "inline-block", padding: ".25rem .7rem" }}>

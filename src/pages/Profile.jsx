@@ -102,9 +102,9 @@ export default function Profile() {
   // ===== Onboarding: belum punya profil → lengkapi dulu =====
   if (profile === null) {
     return (
-      <div className="panel" style={{ padding: "1.6rem 1.4rem", maxWidth: 480, textAlign: "center" }}>
-        <div style={{ fontSize: "3rem" }}>👋</div>
-        <h1 style={{ fontSize: "1.4rem", color: "var(--deep)", margin: ".3rem 0" }}>Hai, selamat datang!</h1>
+      <div className="panel" style={{ padding: "1.15rem 1.1rem", maxWidth: 430, textAlign: "center" }}>
+        <div style={{ fontSize: "2.2rem" }}>👋</div>
+        <h1 style={{ fontSize: "1.2rem", color: "var(--deep)", margin: ".2rem 0" }}>Hai, selamat datang!</h1>
         <p style={{ fontSize: ".85rem", color: "var(--text)", margin: "0 0 1rem" }}>
           Bikin profilmu dulu biar nanti bisa progres belajarmu tampil lengkap — pilih avatar, nama & username kamu 🍡
         </p>
@@ -156,14 +156,14 @@ export default function Profile() {
   const shownUsername = profile?.username || (user?.email ? user.email.split("@")[0] : "");
 
   return (
-    <div className="panel" style={{ padding: "1.4rem 1.3rem" }}>
+    <div className="panel" style={{ padding: "1.1rem 1.1rem" }}>
       {/* ===== Kepala profil ===== */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: ".45rem" }}>
         <div style={{ lineHeight: 1 }}>
-          <Avatar id={avatar} size={128} title="Avatar kamu" />
+          <Avatar id={avatar} size={96} title="Avatar kamu" />
         </div>
         <div style={{ minWidth: 0 }}>
-          <h1 style={{ fontSize: "1.5rem", color: "var(--deep)", margin: 0 }}>{shownName}</h1>
+          <h1 style={{ fontSize: "1.3rem", color: "var(--deep)", margin: 0 }}>{shownName}</h1>
           <p style={{ fontSize: ".82rem", color: "#0284c7", fontWeight: 800, margin: ".15rem 0" }}>@{shownUsername}</p>
           <p style={{ fontSize: ".72rem", color: "#64748b", margin: 0 }}>Bergabung sejak {joined}</p>
         </div>
@@ -197,7 +197,7 @@ export default function Profile() {
 
       {/* ===== Statistik ===== */}
       <p className="section-title" style={{ marginTop: "1.4rem" }}>Statistik belajarmu</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: ".6rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(105px, 1fr))", gap: ".5rem" }}>
         {[
           { emoji: "📚", label: "Materi selesai", value: `${done.length}/${totalMateri}` },
           { emoji: "🔥", label: "Streak terbaik", value: `${streak.best} hari` },
@@ -205,9 +205,9 @@ export default function Profile() {
           { emoji: "🎯", label: "Kuis stage (total)", value: bestStages },
           { emoji: "🏗️", label: "Proyek Mini tuntas", value: `${proyTuntas}/${totalProyek}` },
         ].map((s) => (
-          <div key={s.label} style={{ background: "#f0f9ff", border: "1.5px solid var(--border)", borderRadius: 14, padding: ".7rem .6rem", textAlign: "center" }}>
-            <div style={{ fontSize: "1.6rem" }}>{s.emoji}</div>
-            <div style={{ fontSize: "1.15rem", fontWeight: 900, color: "var(--deep)" }}>{s.value}</div>
+          <div key={s.label} style={{ background: "#f0f9ff", border: "1.5px solid var(--border)", borderRadius: 14, padding: ".55rem .45rem", textAlign: "center" }}>
+            <div style={{ fontSize: "1.3rem" }}>{s.emoji}</div>
+            <div style={{ fontSize: "1.05rem", fontWeight: 900, color: "var(--deep)" }}>{s.value}</div>
             <div style={{ fontSize: ".62rem", color: "#64748b", fontWeight: 700 }}>{s.label}</div>
           </div>
         ))}
