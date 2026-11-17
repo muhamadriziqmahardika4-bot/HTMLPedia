@@ -11,14 +11,29 @@ export default function SaranAdmin() {
   const [items, setItems] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
   const [error, setError] = useState("");
+  const [toast, setToast] = useState("");
 
   useEffect(() => {
     if (!isOwner) return;
     let alive = true;
-    listFeedback()
-      .then((d) => { if (alive) setItems(d); })
-      .catch((e) => { if (alive) setError(e?.message || "Gagal memuat laporan."); });
-    return () => { alive = false; };
+    const load = async () => {
+      try {
+        const d = await listFeedback();
+        if (!alive) return;
+        setItems((prev) => {
+          if (prev && d.length > prev.length) {
+            setToast(`📬 ${d.length - prev.length} saran baru masuk!`);
+            setTimeout(() => setToast(""), 5000);
+          }
+          return d;
+        });
+      } catch (e) {
+        if (alive) setError(e?.message || "Gagal memuat laporan.");
+      }
+    };
+    load();
+    const t = setInterval(load, 15000);   // cek saran baru setiap 15 detik
+    return () => { alive = false; clearInterval(t); };
   }, [isOwner]);
 
   if (!isOwner) {
@@ -43,7 +58,12 @@ export default function SaranAdmin() {
   };
 
   return (
-    <div className="panel" style={{ padding: "1.2rem 1.1rem", maxWidth: 640, margin: "0 auto" }}>
+    <div className="panel" style={{ padding: "1.2rem 1.1rem", maxWidth: 640, margin: "0 auto", position: "relative" }}>
+      {toast && (
+        <div style={{ position: "absolute", top: "-0.8rem", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg,#f59e0b,#d97706)", color: "#fff", fontSize: ".75rem", fontWeight: 800, padding: ".35rem .8rem", borderRadius: 999, boxShadow: "0 4px 10px rgba(217,119,6,.4)", whiteSpace: "nowrap", zIndex: 5 }}>
+          {toast}
+        </div>
+      )}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: ".5rem", flexWrap: "wrap", marginBottom: ".3rem" }}>
         <h1 style={{ fontSize: "1.35rem", color: "var(--deep)", margin: 0 }}>📬 Laporan Saran & Masukan</h1>
         <Link to="/saran" className="pill" style={{ textDecoration: "none", fontSize: ".75rem" }}>💬 Kirim saran</Link>

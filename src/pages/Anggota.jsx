@@ -20,11 +20,12 @@ export default function Anggota() {
   const { user } = useAuth();
   const isOwner = Boolean(user?.email && OWNER_EMAIL && user.email.toLowerCase() === OWNER_EMAIL);
   const [rows, setRows] = useState(null);
+  const [toast, setToast] = useState("");
 
   useEffect(() => {
     if (!isOwner) return;
     let alive = true;
-    (async () => {
+    const load = async () => {
       const { data: profiles } = await supabase.from("profiles").select("*").order("created_at", { ascending: true });
       const { data: progs } = await supabase.from("user_progress").select("user_id, data");
       if (!alive) return;
@@ -33,9 +34,18 @@ export default function Anggota() {
         const arr = p?.data?.["htmlpedia-progress"];
         progMap[p.user_id] = Array.isArray(arr) ? arr.length : 0;
       }
-      setRows((profiles || []).map((p) => ({ ...p, selesai: progMap[p.id] ?? 0 })));
-    })();
-    return () => { alive = false; };
+      setRows((prev) => {
+        const next = (profiles || []).map((p) => ({ ...p, selesai: progMap[p.id] ?? 0 }));
+        if (prev && next.length > prev.length) {
+          setToast(`🎉 ${next.length - prev.length} anggota baru bergabung!`);
+          setTimeout(() => setToast(""), 5000);
+        }
+        return next;
+      });
+    };
+    load();
+    const t = setInterval(load, 15000);   // cek anggota baru setiap 15 detik
+    return () => { alive = false; clearInterval(t); };
   }, [isOwner]);
 
   if (!isOwner) {
@@ -49,7 +59,12 @@ export default function Anggota() {
   }
 
   return (
-    <div className="panel" style={{ padding: "1rem 1rem", maxWidth: 640, margin: "0 auto" }}>
+    <div className="panel" style={{ padding: "1rem 1rem", maxWidth: 640, margin: "0 auto", position: "relative" }}>
+      {toast && (
+        <div style={{ position: "absolute", top: "-1rem", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg,#0ea5e9,#0284c7)", color: "#fff", fontSize: ".75rem", fontWeight: 800, padding: ".35rem .8rem", borderRadius: 999, boxShadow: "0 4px 10px rgba(2,132,199,.4)", whiteSpace: "nowrap", zIndex: 5 }}>
+          {toast}
+        </div>
+      )}
       <h1 style={{ fontSize: "1.4rem", color: "var(--deep)", margin: "0 0 .1rem" }}>👥 Anggota HTMLpedia</h1>
       <p style={{ fontSize: ".8rem", color: "#64748b", margin: "0 0 .8rem" }}>
         {rows ? rows.length : "…"} anggota terdaftar

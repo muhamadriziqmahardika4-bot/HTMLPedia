@@ -13,6 +13,7 @@ import { useAuth } from "./hooks/useAuth.js";
 import { pullMergePush } from "./lib/progressSync.js";
 import { getProfile, touchLastSeen } from "./lib/profiles.js";
 import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
+const APP_VERSION = typeof __APP_VERSION__ !== "undefined" ? String(__APP_VERSION__) : "dev";
 import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Anggota from "./pages/Anggota.jsx";
@@ -127,7 +128,9 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
-  const [stage, setStage] = useState("splash");   // splash → intro → app
+  const [stage, setStage] = useState(() =>
+    localStorage.getItem("htmlpedia-seen-version") === APP_VERSION ? "app" : "splash"
+  );   // splash → intro → app
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -135,6 +138,7 @@ export default function App() {
 
   const introDone = (target) => {
     setStage("app");
+    localStorage.setItem("htmlpedia-seen-version", APP_VERSION);
     if (target === "dasar") setTimeout(() => navigate("/dasar"), 60);
   };
 
