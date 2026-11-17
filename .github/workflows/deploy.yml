@@ -1,4 +1,4 @@
-name: Deploy HTMLpedia ke Netlify
+name: Deploy HTMLpedia ke Vercel
 on:
   push:
     branches: [main]
@@ -25,8 +25,7 @@ jobs:
           VITE_SUPABASE_ANON_KEY: sb_publishable_Zd_oAQkCg-asOxPo0_Z2dg_LMaywfL5
           VITE_OWNER_EMAIL: muhamadriziqmahardika4@gmail.com
 
-      - name: Deploy ke Netlify
-        run: node deploy-netlify.mjs
+      - name: Deploy ke Vercel
+        run: node deploy-vercel.mjs
         env:
-          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN_KEENAN }}
-          SITE_NAME: htmlpedia-mahardika
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN_KEENAN }}
