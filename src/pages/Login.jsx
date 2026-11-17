@@ -68,6 +68,30 @@ export default function Login() {
     }
   };
 
+  const [code, setCode] = useState("");
+  const [verifyErr, setVerifyErr] = useState("");
+
+  const verifyCode = async (e) => {
+    e.preventDefault();
+    const clean = code.trim();
+    if (!/^\d{8}$/.test(clean)) {
+      setVerifyErr("Masukkan 8 angka kode dari email, ya.");
+      return;
+    }
+    setVerifyErr("");
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: email.trim().toLowerCase(),
+        token: clean,
+        type: "email",
+      });
+      if (error) throw error;
+      // sesi tercipta — onAuthStateChange akan membawa pengguna masuk otomatis
+    } catch (err) {
+      setVerifyErr(err?.message || "Kode salah atau kedaluwarsa. Coba kode yang baru.");
+    }
+  };
+
   const signInWithGoogle = async () => {
     setStatus("sending");
     setMessage("");
@@ -101,10 +125,33 @@ export default function Login() {
               <div style={{ fontSize: "2rem" }}>📬</div>
               <p style={{ fontWeight: 800, color: "var(--deep)" }}>Cek emailmu!</p>
               <p style={{ fontSize: ".83rem", color: "var(--text)", lineHeight: 1.6 }}>
-                Kami sudah mengirim <strong>magic link</strong> ke <strong>{email.trim().toLowerCase()}</strong>.
-                Klik link di email itu — kamu langsung masuk, tanpa password.
+                Kami sudah mengirim email ke <strong>{email.trim().toLowerCase()}</strong>.<br />
+                Klik link di email — <strong>atau</strong> ketik kode 8 angka di bawah di sini:
               </p>
-              <button className="btn" style={{ marginTop: ".8rem" }} onClick={() => { setStatus("idle"); setEmail(""); }}>
+              <form onSubmit={verifyCode} style={{ marginTop: ".7rem" }}>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 8))}
+                  placeholder="Kode 8 angka"
+                  autoFocus
+                  style={{
+                    width: "100%", boxSizing: "border-box", fontSize: "1.6rem",
+                    letterSpacing: ".45rem", textAlign: "center", fontFamily: "monospace",
+                    padding: ".6rem .5rem .6rem 1rem", borderRadius: 12,
+                    border: "2px solid var(--border)", outline: "none", marginBottom: ".6rem",
+                  }}
+                />
+                <button type="submit" className="btn primary" style={{ width: "100%", fontSize: ".9rem", padding: ".7rem", borderRadius: 12, fontWeight: 800 }}>
+                  ✅ Masuk dengan kode
+                </button>
+                {verifyErr && (
+                  <p style={{ color: "#dc2626", fontSize: ".8rem", marginTop: ".5rem", fontWeight: 700 }}>{verifyErr}</p>
+                )}
+              </form>
+              <button className="btn" style={{ marginTop: ".7rem" }} onClick={() => { setStatus("idle"); setEmail(""); setCode(""); }}>
                 ← Pakai email lain
               </button>
             </div>
