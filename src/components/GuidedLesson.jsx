@@ -301,7 +301,10 @@ export default function GuidedLesson({ entry }) {
               </div>
               {isVisibleHtml || lang !== "html"
                 ? <LivePlayground initialCode={entry.contohKode} lang={lang} />
-                : <div style={{ fontSize: ".8rem", color: "#0369a1", background: "#e0f2fe", borderRadius: 12, padding: ".6rem .8rem", border: "2px dashed #7dd3fc" }}>🪞 Tag ini <b>tidak menampilkan apa-apa di layar</b> — kamu bisa baca bagian “Kapan &amp; di mana dipakai” di atas untuk tahu gunanya.</div>}
+                : <>
+                    <div style={{ fontSize: ".8rem", color: "#0369a1", background: "#e0f2fe", borderRadius: 12, padding: ".6rem .8rem", border: "2px dashed #7dd3fc", marginBottom: ".5rem" }}>🪞 Tag ini <b>tidak menampilkan apa-apa di layar</b> — kamu bisa baca bagian “Kapan &amp; di mana dipakai” di atas untuk tahu gunanya. Contoh penggunaannya tetap di bawah ini:</div>
+                    <CodeBlock code={entry.contohKode} label="Contoh untuk ditiru" />
+                  </>}
             </div>
           )}
 

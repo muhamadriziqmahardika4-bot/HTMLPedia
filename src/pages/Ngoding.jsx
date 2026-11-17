@@ -2,9 +2,20 @@
 // Mirip CodePen mini: 3 tab editor, preview langsung, bisa disalin & diunduh.
 import React, { useEffect, useState } from "react";
 
-const STARTER_HTML = `<h1>Selamat datang di Tempat Ngoding!</h1>
-<p>Ubah kode ini sesuka hati kamu 🍡</p>
-<button id="tombol">Klik aku 🎉</button>`;
+const STARTER_HTML = `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proyek Ngoding — HTMLpedia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Selamat datang di Tempat Ngoding!</h1>
+  <p>Ubah kode ini sesuka hati kamu 🍡</p>
+  <button id="tombol">Klik aku 🎉</button>
+</body>
+</html>`;
 
 const STARTER_CSS = `body {
   font-family: sans-serif;
@@ -30,17 +41,35 @@ const STARTER_JS = `document.getElementById("tombol").addEventListener("click", 
   document.body.style.background = "hsl(" + Math.random() * 360 + ", 90%, 85%)";
 });`;
 
-const buildDoc = (html, css, js) => `<!DOCTYPE html>
+const buildDoc = (html, css, js) => {
+  // Kalau tab HTML sudah berisi dokumen lengkap → pakai apa adanya, sisipkan CSS & JS
+  let doc = html;
+  if (!/<html[\s>]|<!doctype/i.test(doc)) {
+    doc = `<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8" />
-<style>${css}</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proyek Ngoding — HTMLpedia</title>
 </head>
 <body>
 ${html}
-<script>${js.replace(/<\/script>/g, "<\\/script>")}<\/script>
 </body>
 </html>`;
+  }
+  // Tab CSS → <style> di dalam <head>
+  if (css.trim()) {
+    if (/<\/head>/i.test(doc)) doc = doc.replace(/<\/head>/i, `  <style>\n${css}\n  </style>\n</head>`);
+    else doc = `<style>\n${css}\n</style>\n` + doc;
+  }
+  // Tab JS → <script> sebelum </body>
+  const safe = js.replace(/<\/script>/g, "<\\/script>");
+  if (safe.trim()) {
+    if (/<\/body>/i.test(doc)) doc = doc.replace(/<\/body>/i, `  <script>\n${safe}\n  </script>\n</body>`);
+    else doc += `\n<script>\n${safe}\n</script>`;
+  }
+  return doc;
+};
 
 export default function Ngoding() {
   const [html, setHtml] = useState(() => { try { return localStorage.getItem("htmlpedia-ngoding-html") ?? STARTER_HTML; } catch { return STARTER_HTML; } });
@@ -106,7 +135,7 @@ export default function Ngoding() {
         </div>
       </div>
       <p style={{ fontSize: ".8rem", color: "#64748b", margin: "0 0 .7rem" }}>
-        Tulis HTML, CSS, dan JavaScript sesukamu — hasilnya langsung tampil di sebelah kanan. Progresmu tersimpan otomatis di perangkat ini.
+        Tulis HTML lengkap di tab HTML (struktur lengkap: doctype, head, body), CSS di tab CSS, dan JavaScript di tab JS — hasilnya langsung tampil di sebelah kanan, tersimpan otomatis di perangkat ini.
       </p>
 
       <div style={{ display: "flex", gap: ".35rem", marginBottom: ".5rem" }} role="tablist">
