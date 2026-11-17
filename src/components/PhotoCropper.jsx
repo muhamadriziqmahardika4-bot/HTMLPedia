@@ -62,7 +62,7 @@ export default function PhotoCropper({ file, onCancel, onApply }) {
             ❌ Gambar ini tidak bisa dibuka — coba file lain (JPG/PNG/WebP).
           </p>
         ) : (
-
+        <>
         <div
           style={{ width: PREVIEW, height: PREVIEW, margin: "0 auto", borderRadius: "50%", overflow: "hidden", border: "3px solid #fff", boxShadow: "0 8px 22px rgba(2,132,199,.45)", background: "#0c4a6e", touchAction: "none", cursor: "grab" }}
           onPointerDown={onPointerDown}
@@ -89,6 +89,7 @@ export default function PhotoCropper({ file, onCancel, onApply }) {
           <button className="btn" onClick={onCancel} style={{ fontSize: ".78rem", padding: ".45rem .9rem" }}>Batal</button>
           <button className="btn primary" onClick={apply} style={{ fontSize: ".78rem", padding: ".45rem 1.1rem" }}>✅ Pakai foto</button>
         </div>
+        </>
         )}
       </div>
     </div>
