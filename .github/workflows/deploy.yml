@@ -1,4 +1,4 @@
-name: Deploy HTMLpedia ke Vercel
+﻿name: Deploy HTMLpedia ke Vercel
 on:
   push:
     branches: [main]
@@ -26,6 +26,6 @@ jobs:
           VITE_OWNER_EMAIL: muhamadriziqmahardika4@gmail.com
 
       - name: Deploy ke Vercel
-        run: node deploy-vercel.mjs
+        run: node scripts/deploy-vercel.mjs
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN_KEENAN }}

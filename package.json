@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "htmlpedia",
   "private": true,
   "version": "0.1.0",
@@ -8,7 +8,7 @@
     "build": "node scripts/build.mjs",
     "preview": "vite preview",
     "test": "vitest run",
-    "audit": "node audit.mjs"
+    "audit": "node scripts/audit.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",
