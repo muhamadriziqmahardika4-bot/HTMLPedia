@@ -14,6 +14,8 @@ import { isSupabaseConfigured, supabase } from "./lib/supabase.js";
 import Login, { LoadingScreen, NotConfiguredScreen } from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
+import Privasi from "./pages/Privasi.jsx";
+import Syarat from "./pages/Syarat.jsx";
 import Home from "./pages/Home.jsx";
 import Resources from "./pages/Resources.jsx";
 import About from "./pages/About.jsx";
@@ -98,6 +100,8 @@ function AnimatedRoutes() {
           <Route path="/dasar" element={<Basics />} />
           <Route path="/dasar/:slug" element={<BasicsDetail />} />
           <Route path="/profil" element={<Profile />} />
+          <Route path="/privasi" element={<Privasi />} />
+          <Route path="/syarat-ketentuan" element={<Syarat />} />
           <Route path="/sumber" element={<Resources />} />
           <Route path="/tentang" element={<About />} />
           <Route path="*" element={<NotFound />} />
@@ -152,6 +156,8 @@ export default function App() {
   if (authLoading || (session && !synced)) return <LoadingScreen />;
   if (!session) {
     if (location.pathname === "/daftar") return <Register />;
+    if (location.pathname === "/privasi") return <Privasi />;
+    if (location.pathname === "/syarat-ketentuan") return <Syarat />;
     return <Login />;
   }
 
