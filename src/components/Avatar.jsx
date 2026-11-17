@@ -26,7 +26,7 @@ export default function Avatar({ id, size = 96, className = "", title, style = {
       className={`avatar-live ${className}`}
       loading="lazy"
       draggable={false}
-      style={{ display: "block", borderRadius: "22%", objectFit: "cover", userSelect: "none", width: "100%", height: "100%", ...style }}
+      style={{ display: "block", borderRadius: "50%", objectFit: "cover", userSelect: "none", width: "100%", height: "100%", boxShadow: "0 0 0 4px #fff, 0 8px 16px rgba(2,132,199,.35)", ...style }}
     />
   );
 }
