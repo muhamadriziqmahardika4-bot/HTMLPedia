@@ -158,7 +158,7 @@ export default function Profile() {
   return (
     <div className="panel" style={{ padding: "1.4rem 1.3rem" }}>
       {/* ===== Kepala profil ===== */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: ".45rem" }}>
         <div style={{ lineHeight: 1 }}>
           <Avatar id={avatar} size={128} title="Avatar kamu" />
         </div>
@@ -167,7 +167,7 @@ export default function Profile() {
           <p style={{ fontSize: ".82rem", color: "#0284c7", fontWeight: 800, margin: ".15rem 0" }}>@{shownUsername}</p>
           <p style={{ fontSize: ".72rem", color: "#64748b", margin: 0 }}>Bergabung sejak {joined}</p>
         </div>
-        <button className="btn" style={{ marginLeft: "auto", fontSize: ".78rem" }} onClick={() => setEditing((v) => !v)}>
+        <button className="btn" style={{ fontSize: ".78rem", marginTop: ".2rem" }} onClick={() => setEditing((v) => !v)}>
           {editing ? "✕ Tutup" : "✏️ Edit profil"}
         </button>
       </div>
