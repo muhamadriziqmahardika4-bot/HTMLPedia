@@ -1,4 +1,4 @@
-﻿import { JSDOM } from "jsdom";
+import { JSDOM } from "jsdom";
 import { TAGS } from "../src/data/tags.js";
 import { CSS_TAGS } from "../src/data/css.js";
 import { JS_TAGS } from "../src/data/js.js";

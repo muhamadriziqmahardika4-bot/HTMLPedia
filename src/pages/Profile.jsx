@@ -1,4 +1,4 @@
-﻿// Halaman profil pengguna — avatar, nama, username, tanggal gabung + statistik belajar
+// Halaman profil pengguna — avatar, nama, username, tanggal gabung + statistik belajar
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth.js";
 import { getProfile, updateProfile, createProfile, validateUsername } from "../lib/profiles.js";

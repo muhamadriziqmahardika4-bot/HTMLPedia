@@ -1,4 +1,4 @@
-﻿// Halaman daftar — username + password + nama + pilih avatar & border + import foto
+// Halaman daftar — username + password + nama + pilih avatar & border + import foto
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabase.js";

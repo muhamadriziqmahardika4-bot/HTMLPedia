@@ -1,4 +1,4 @@
-﻿name: Deploy HTMLpedia ke Vercel
+name: Deploy HTMLpedia ke Vercel
 on:
   push:
     branches: [main]

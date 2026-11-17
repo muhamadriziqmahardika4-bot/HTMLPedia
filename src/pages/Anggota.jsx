@@ -1,4 +1,4 @@
-﻿// Daftar anggota HTMLpedia — khusus pemilik
+// Daftar anggota HTMLpedia — khusus pemilik
 import React, { useEffect, useState } from "react";
 import { supabase, OWNER_EMAIL } from "../lib/supabase.js";
 import Avatar from "../components/Avatar.jsx";
